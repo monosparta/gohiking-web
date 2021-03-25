@@ -133,7 +133,7 @@ function PersonalPage(props) {
             edge="start"
             color="inherit"
             aria-label="back"
-            onClick={() => history.goBack()}
+            onClick={() => history.push({pathname:"/home"})}
           >
             <ArrowBackIcon />
           </IconButton>
