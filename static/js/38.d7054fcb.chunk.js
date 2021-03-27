@@ -1,0 +1,2 @@
+(this["webpackJsonpgohiking-web0327"]=this["webpackJsonpgohiking-web0327"]||[]).push([[38],{1020:function(e,t,i){"use strict";i.r(t);i(0);var n=i(91),o=i(6);t.default=function(){return Object(o.jsxs)("div",{style:{position:"absolute",left:0,top:0,bottom:0,right:0,display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"},children:[Object(o.jsx)("h2",{children:"Landing Page"}),Object(o.jsx)("div",{children:Object(o.jsx)(n.Link,{to:"/home",children:"Home"})})]})}}}]);
+//# sourceMappingURL=38.d7054fcb.chunk.js.map
