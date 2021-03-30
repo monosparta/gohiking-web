@@ -5,8 +5,6 @@ import {
   createMuiTheme,
   ThemeProvider,
 } from "@material-ui/core/styles";
-
-import magetty from "../../asset/img/gettyimages-1197742259-2048x2048.jpg";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination } from "swiper";
@@ -24,12 +22,12 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import Navigation from "../../components/Bottom/Navigation";
 import { Height } from "@material-ui/icons";
-import mapple from "../../asset/img/icon-mapple.png";
-import chellenge from "../../asset/img/icon-chellenge.png";
-import hotSpring from "../../asset/img/icon-hot-spring.png";
-import family from "../../asset/img/icon-family.png";
-import forest from "../../asset/img/icon-forest.png";
-import sakura from "../../asset/img/icon-sakura.png";
+import family from "../../asset/img/icon-family.svg";
+import  mapple from '../../asset/img/icon-mapple.svg';
+import chellenge from "../../asset/img/icon-chellenge.svg";
+import hotSpring from "../../asset/img/icon-hot-spring.svg";
+import forest from "../../asset/img/icon-forest.svg";
+import sakura from "../../asset/img/icon-sakura.svg";
 import { Link } from "react-router-dom";
 import TemporaryDrawer from "../../components/SideBar/Sidebar-menu";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
@@ -48,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "NotoSansCJKtc",
     flexGrow: 1,
     width: "100%",
+    paddingBottom:"120px",
+ 
   },
   appbar: {
     backgroundColor: "#3c5754",
@@ -159,7 +159,7 @@ const useStyles = makeStyles((theme) => ({
     width: "174px",
     height: "96px",
     borderRadius: 4,
-    height: "140",
+    height:"96px",
   },
   tangle: {
     width: "100%",
@@ -186,14 +186,14 @@ export default function HomePage() {
   const [articles, setarticle] = useState([]);
   banners.length = 5;
   articles.length = 5;
-  //搜尋主題api
+  //主題api
   const collectionApi = async () => {
     await demoapi.get("/api/collection").then((res) => {
       setcollection(res.data);
     });
   };
 
-  //搜尋首頁行程api
+  //首頁行程api
   const articleApi = async () => {
     await demoapi.get("/api/home").then((res) => {
       setarticle(res.data.articles);
@@ -357,6 +357,7 @@ export default function HomePage() {
           </Swiper>
 
           <Grid className={classes.tangle} />
+        
           <Navigation dfValue={0} />
         </ThemeProvider>
       </div>

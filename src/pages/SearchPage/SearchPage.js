@@ -48,7 +48,7 @@ function SearchPage() {
     const [collection, setCollection] = useState([]);
     const collectionData = async () => {
         const Data = await demoapi.get("api/collection");
-        setSearchResult(Data.data);
+        setCollection(Data.data);
     };
     useEffect(() => {
         collectionData();
@@ -63,7 +63,7 @@ function SearchPage() {
             <SearchBar />
             <div className={classes.quitSearchText}>快速搜尋</div>
                 <Grid container spacing={2}>
-                    <CollectionList data={searchResult}></CollectionList>
+                    <CollectionList data={collection}></CollectionList>
                 </Grid>
             </Container>
             <Navigation dfValue={1} />

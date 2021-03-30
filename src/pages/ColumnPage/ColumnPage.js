@@ -18,12 +18,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     fontFamily: "NotoSansCJKtc",
   },
+
   backArrow: {
     position: "absolute",
     top: "0",
     left: "0",
     margin:"5px",
-    color: "#fff",
+     color: "#ffffff",
     display: "block",
     width: "40px",
     height: "40px",
@@ -125,8 +126,8 @@ function Column(props) {
         <ThemeProvider>
           <img src={article.image} className={classes.Img} />
 
-          <Grid item xs={12}>
-            <Link to="/home" className={classes.backArrow}>
+          <Grid item xs={12} className={classes.backArrow}>
+            <Link to="/home" className={classes.Link}>
               <BackArrow />
             </Link>
           </Grid>

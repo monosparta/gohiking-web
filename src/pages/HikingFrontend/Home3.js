@@ -28,12 +28,12 @@ import SearchIcon from '@material-ui/icons/Search';
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/swiper.scss";
-import mapple from "../../asset/img/icon-mapple.png";
-import chellenge from "../../asset/img/icon-chellenge.png";
-import hotSpring from "../../asset/img/icon-hot-spring.png";
-import family from "../../asset/img/icon-family.png";
-import forest from "../../asset/img/icon-forest.png";
-import sakura from "../../asset/img/icon-sakura.png";
+import family from "../../asset/img/icon-family.svg";
+import  mapple from '../../asset/img/icon-mapple.svg';
+import chellenge from "../../asset/img/icon-chellenge.svg";
+import hotSpring from "../../asset/img/icon-hot-spring.svg";
+import forest from "../../asset/img/icon-forest.svg";
+import sakura from "../../asset/img/icon-sakura.svg";
 import { Link } from "react-router-dom";
 
 

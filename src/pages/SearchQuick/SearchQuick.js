@@ -6,12 +6,12 @@ import { Grid, CardActionArea } from "@material-ui/core";
 import axios from "axios";
 import TrailCard from "../../components/Lists/TrailCard";
 import BackArrow from "../../components/TopBar/BackArrow";
-import family from "../../asset/img/icon-family.png";
-import mapple from "../../asset/img/icon-mapple.png";
-import chellenge from "../../asset/img/icon-chellenge.png";
-import hotSpring from "../../asset/img/icon-hot-spring.png";
-import forest from "../../asset/img/icon-forest.png";
-import sakura from "../../asset/img/icon-sakura.png";
+import family from "../../asset/img/icon-family.svg";
+import  mapple from '../../asset/img/icon-mapple.svg';
+import chellenge from "../../asset/img/icon-chellenge.svg";
+import hotSpring from "../../asset/img/icon-hot-spring.svg";
+import forest from "../../asset/img/icon-forest.svg";
+import sakura from "../../asset/img/icon-sakura.svg";
 import demoapi from "axios/api";//引入api
 import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom";
@@ -61,8 +61,8 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     right: 0,
     bottom: -40,
-    width: 142,
-    height: 142,
+    maxWidth: "132px",
+    height: "132px",
     overflow: "hidden",
   },
 }));
@@ -85,7 +85,7 @@ function SearchQuick(props) {
   const [searchQuick, setSearchQuick] = useState([]);
   const [trail, setTrail] = useState([]);
   const searchApi = async (id) => {
-    await demoapi.get("/api/collection/" + id+"&uuid=1").then((res) => {
+    await demoapi.get("/api/collection/" + id).then((res) => {
       setSearchQuick(res.data);
     });
   };
@@ -134,7 +134,7 @@ function SearchQuick(props) {
               老少咸宜，生活好去處。
             </Typography>
             <img
-              src={ [searchQuick.iconImage]}
+              src={obj[searchQuick.iconImage]}
               className={classes.iconImg}
               
             />
