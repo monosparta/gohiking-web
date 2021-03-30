@@ -7,7 +7,7 @@ import BackArrow from "../../components/TopBar/BackArrow";
 import TemporaryDrawer from "../../components/SideBar/Sidebar";
 import TrailCard from "../../components/Lists/TrailCard";
 import demoapi from "axios/api";
-
+import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -25,6 +25,7 @@ function SearchResult(props) {
   const classes = useStyles();
   console.log(props); //印出SearchBar的aboutProps
   var kw = "";
+  const history = useHistory();//link router 上一頁
   //判斷是否有來自於上一個頁面的kw，若沒有則從localStorage取值
   if (props.location.aboutProps !== undefined) {
     kw = props.location.aboutProps.name;
@@ -65,7 +66,8 @@ function SearchResult(props) {
         spacing={1}
       >
         <Grid item xs={12}>
-          <Link to="/searchPage">
+          <Link  onClick={() => {history.goBack();
+              }}>
             <BackArrow />
           </Link>
         </Grid>
