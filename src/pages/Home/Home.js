@@ -212,8 +212,7 @@ export default function HomePage() {
     collectionApi();
     articleApi();
   }, []);
-  console.log(articles);
-
+  
   return (
     <>
       <div className={classes.root}>
@@ -225,7 +224,6 @@ export default function HomePage() {
                 className={classes.menuButton}
                 color="inherit"
                 aria-label="menu"
-               
                 onClick={toggleDrawer(true)}
               >
                 <MenuIcon />
