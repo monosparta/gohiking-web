@@ -38,21 +38,22 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "4%",
     paddingBottom: "4%",
   },
-  rating:{
-     paddingBottom:"5%",
+  rating: {
+    paddingBottom: "5%",
   },
-  commentButton:{
+  commentButton: {
     position: "absolute",
-     right:10,
-     paddingBottom:3,
-     textAlign:"center",
-     fontSize:"12px",
+    right: 10,
+    paddingBottom: 3,
+    textAlign: "center",
+    fontSize: "12px",
   },
   thumbup: {
     paddingRight: "10%",
   },
   thumbupText: {
     fontSize: "14px",
+    marginLeft: 5,
   },
   gridList: {},
   magetty: {
@@ -81,46 +82,58 @@ const lightTheme = createMuiTheme({
 export default function Commit(props) {
   const classes = useStyles();
   const data = props.data;
-  console.log(data);
-  return (
-     data.map((comment) => (
 
-      <ThemeProvider theme={lightTheme}>
-    <Grid className={classes.comment}>
-      <Grid className={classes.commentName}>王陽明</Grid>
-      <Rating className={classes.rating} name="size-small" defaultValue={comment.star} />
-      <Button className={classes.commentButton} variant="outlined" color="primary">
-        覺得輕鬆
-      </Button>
-    
-      <Grid>
-        {comment.content}
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <IconButton className={classes.thumbup}>
-          <ThumbUpIcon />
-          <Typography className={classes.thumbupText}> {comment.likes}</Typography>
-        </IconButton>
+ 
+  return data.map((comment) => (
+    <ThemeProvider theme={lightTheme}>
+      <Grid className={classes.comment}>
+        <Grid className={classes.commentName}>{comment.user.name}</Grid>
+        <Rating
+          className={classes.rating}
+          name="size-small"
+          defaultValue={comment.star}
+        />
+        <Button
+          className={classes.commentButton}
+          variant="outlined"
+          color="primary"
+        >
+        { comment.difficulty == 1 &&("非常簡單") }
+        { comment.difficulty == 2 &&("簡單") }
+        { comment.difficulty == 3 &&("覺得還好") }
+        { comment.difficulty == 4 &&("困難") }
+        { comment.difficulty == 5 &&("非常困難") }
+        </Button>
 
-        <IconButton  className={classes.thumbup}>
-          <ThumbDownIcon />
-          
-          <Typography className={classes.thumbupText}>{comment.dislikes}</Typography>
-        </IconButton>
+        <Grid>{comment.content}</Grid>
+        <Grid item xs={12} sm={6}>
+          <IconButton className={classes.thumbup}>
+            <ThumbUpIcon />
+            <Typography className={classes.thumbupText}>
+         
+              {comment.likes}
+            </Typography>
+          </IconButton>
+
+          <IconButton className={classes.thumbup}>
+            <ThumbDownIcon />
+
+            <Typography className={classes.thumbupText}>
+              {comment.dislikes}
+            </Typography>
+          </IconButton>
+        </Grid>
+        <Grid className={classes.gridList}>
+          <img src={magetty} className={classes.magetty} />
+          <img src={magetty} className={classes.magetty} />
+          <img src={magetty} className={classes.magetty} />
+          <img src={magetty} className={classes.magetty} />
+        </Grid>
+        <Typography className={classes.time}>
+          {comment.date}.來回時間: {Math.round(comment.duration/60)}h{comment.duration%60}m 
+        </Typography>
+        <hr />
       </Grid>
-      <Grid className={classes.gridList}>
-        <img src={magetty} className={classes.magetty} />
-        <img src={magetty} className={classes.magetty} />
-        <img src={magetty} className={classes.magetty} />
-        <img src={magetty} className={classes.magetty} />
-      </Grid>
-      <Typography className={classes.time}>
-        2020-12-25 · 來回時間: 6h 25m
-      </Typography>
-      <hr />
-    </Grid>
     </ThemeProvider>
-
-      ))
-  );
+  ));
 }
