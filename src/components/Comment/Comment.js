@@ -83,7 +83,6 @@ export default function Commit(props) {
   const classes = useStyles();
   const data = props.data;
 
- 
   return data.map((comment) => (
     <ThemeProvider theme={lightTheme}>
       <Grid className={classes.comment}>
@@ -98,11 +97,11 @@ export default function Commit(props) {
           variant="outlined"
           color="primary"
         >
-        { comment.difficulty == 1 &&("非常簡單") }
-        { comment.difficulty == 2 &&("簡單") }
-        { comment.difficulty == 3 &&("覺得還好") }
-        { comment.difficulty == 4 &&("困難") }
-        { comment.difficulty == 5 &&("非常困難") }
+          {comment.difficulty == 1 && "非常簡單"}
+          {comment.difficulty == 2 && "簡單"}
+          {comment.difficulty == 3 && "覺得還好"}
+          {comment.difficulty == 4 && "困難"}
+          {comment.difficulty == 5 && "非常困難"}
         </Button>
 
         <Grid>{comment.content}</Grid>
@@ -110,7 +109,6 @@ export default function Commit(props) {
           <IconButton className={classes.thumbup}>
             <ThumbUpIcon />
             <Typography className={classes.thumbupText}>
-         
               {comment.likes}
             </Typography>
           </IconButton>
@@ -130,7 +128,8 @@ export default function Commit(props) {
           <img src={magetty} className={classes.magetty} />
         </Grid>
         <Typography className={classes.time}>
-          {comment.date}.來回時間: {Math.round(comment.duration/60)}h{comment.duration%60}m 
+          {comment.date}.來回時間: {Math.round(comment.duration / 60)}h
+          {comment.duration % 60}m
         </Typography>
         <hr />
       </Grid>

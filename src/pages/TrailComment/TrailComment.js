@@ -1,4 +1,4 @@
-import Comment from "../../components/Comment/Comment";
+import Comment from "../../components/Comment/Comment"; //引入討論頁面
 import React, { useState, useEffect, Fragment } from "react";
 import {
   makeStyles,
@@ -88,22 +88,20 @@ export default function TrailCommit() {
   const [comments, setComments] = useState([]);
   const commentApi = async (id) => {
     await demoapi.get("/api/comment/" + id).then((res) => {
-      setComment(res.data);
-      setStars(res.data.stars); //星星等級
-      setComments(res.data.comments); //步道討論
+      setComment(res.data); //步道總討論 api
+      setStars(res.data.stars); //星星等級api
+      setComments(res.data.comments); //步道討論 api
     });
   };
   useEffect(() => {
     commentApi(id);
   }, [id]);
   function financial(x) {
-    return Number.parseFloat(x).toFixed(1); // 小數點後一位
+    return Number.parseFloat(x).toFixed(1); // 判斷總成績 小數點後一位
   }
   var avgStar = comment.avgStar;
-  let avg ="";
   avgStar = financial(avgStar);
 
-  
   return (
     <>
       <div className={classes.root}>
@@ -132,12 +130,7 @@ export default function TrailCommit() {
         <Grid className={classes.progress}>
           <Grid className={classes.rating}>
             <Grid className={classes.fraction}>{avgStar} </Grid>
-            <Rating
-          
-          name="size-small"
-          defaultValue={3}
-          size="small"
-        />
+            <Rating name="size-small" defaultValue={3} size="small" />
             <Grid className={classes.text}> ({comment.totalPeople})</Grid>
           </Grid>
           <List component="nav" aria-label="main mailbox folders">
@@ -146,7 +139,7 @@ export default function TrailCommit() {
               <BorderLinearProgress
                 className={classes.progress}
                 variant="determinate"
-                value={stars.five*100/comment.totalPeople}
+                value={(stars.five * 100) / comment.totalPeople}
               />
             </ListItem>
 
@@ -154,7 +147,7 @@ export default function TrailCommit() {
               <ThemeProvider>4</ThemeProvider>
               <BorderLinearProgress
                 variant="determinate"
-                value={stars.four*100/comment.totalPeople}
+                value={(stars.four * 100) / comment.totalPeople}
                 className={classes.progress}
               />
             </ListItem>
@@ -162,7 +155,7 @@ export default function TrailCommit() {
               <ThemeProvider className={classes.number}> 3</ThemeProvider>
               <BorderLinearProgress
                 variant="determinate"
-                value={stars.three*100/comment.totalPeople}
+                value={(stars.three * 100) / comment.totalPeople}
                 className={classes.progress}
               />
             </ListItem>
@@ -170,7 +163,7 @@ export default function TrailCommit() {
               <ThemeProvider className={classes.number}>2</ThemeProvider>
               <BorderLinearProgress
                 variant="determinate"
-                value={stars.two*100/comment.totalPeople}
+                value={(stars.two * 100) / comment.totalPeople}
                 className={classes.progress}
               />
             </ListItem>
@@ -178,7 +171,7 @@ export default function TrailCommit() {
               <ThemeProvider className={classes.number}>1</ThemeProvider>
               <BorderLinearProgress
                 variant="determinate"
-                value={stars.one*100/comment.totalPeople}
+                value={(stars.one * 100) / comment.totalPeople}
                 className={classes.progress}
               />
             </ListItem>
