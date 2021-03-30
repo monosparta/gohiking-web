@@ -87,7 +87,7 @@ export default function Commit(props) {
 
       <ThemeProvider theme={lightTheme}>
     <Grid className={classes.comment}>
-      <Grid className={classes.commentName}>王曉明</Grid>
+      <Grid className={classes.commentName}>王陽明</Grid>
       <Rating className={classes.rating} name="size-small" defaultValue={comment.star} />
       <Button className={classes.commentButton} variant="outlined" color="primary">
         覺得輕鬆
