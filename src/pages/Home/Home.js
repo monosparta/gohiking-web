@@ -225,6 +225,7 @@ export default function HomePage() {
                 className={classes.menuButton}
                 color="inherit"
                 aria-label="menu"
+               
                 onClick={toggleDrawer(true)}
               >
                 <MenuIcon />
@@ -239,7 +240,8 @@ export default function HomePage() {
               <Typography variant="h6" className={classes.title}>
                 Go Hiking
               </Typography>
-              <Button color="inherit">
+              <Button color="inherit"  href="searchResult">
+
                 <SearchIcon />
               </Button>
             </Toolbar>
