@@ -6,6 +6,7 @@ import { Route } from 'react-router-dom'
 import PersonalPage from 'pages/PersonalPage'
 import EditAccount from 'pages/PersonalPage/EditAccount'
 import CropAvatar from 'pages/PersonalPage/CropAvatar'
+import CommentPage from 'pages/Comment/CommentPage'
 
 
 // const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
@@ -74,6 +75,7 @@ const routes = [
   <Route path="/columnPage/:id" exact component={ColumnPage} />,
   <Route path="/NearByPathway" exact component={NearByPathway}/>,
   <Route path="/attraction" exact component={Attraction}/>,
+  <Route path="/commentPage" exact component={CommentPage} />,
   <AuthorizedRoute path="/my_account" exact component={MyAccount} />,
   <AuthorizedRoute path="/home" exact component={Home} />,
 
