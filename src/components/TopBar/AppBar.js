@@ -40,7 +40,7 @@ export default function CustomAppBar(props) {
     <div className={classes.root}>
       <AppBar
         className={classes.appBar}
-        position="relative"
+        position="fixed"
         style={{ background: "#3c5754" }}
       >
         <Toolbar>
