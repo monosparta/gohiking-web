@@ -25,7 +25,7 @@ function SearchResult(props) {
   const classes = useStyles();
   console.log(props); //印出SearchBar的aboutProps
   var kw = "";
-  const history = useHistory();//link router 上一頁
+  const usehistory = useHistory();//link router 上一頁
   //判斷是否有來自於上一個頁面的kw，若沒有則從localStorage取值
   if (props.location.aboutProps !== undefined) {
     kw = props.location.aboutProps.name;
@@ -66,7 +66,7 @@ function SearchResult(props) {
         spacing={1}
       >
         <Grid item xs={12}>
-          <Link  onClick={() => {history.goBack();
+          <Link  onClick={() => {usehistory.goBack();
               }}>
             <BackArrow />
           </Link>
