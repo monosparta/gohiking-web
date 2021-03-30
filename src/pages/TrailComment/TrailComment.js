@@ -14,7 +14,6 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Rating from "@material-ui/lab/Rating";
 import { Link } from "react-router-dom";
 import { Grid } from "@material-ui/core";
@@ -23,7 +22,7 @@ const BorderLinearProgress = withStyles((theme) => ({
   root: {
     height: 10,
     borderRadius: 5,
-    width: "62%",
+    width: "60%",
   },
   colorPrimary: {
     backgroundColor:
@@ -69,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   },
   progress: {
     marginLeft: "4%",
-    marginBottom:"1%",
+    marginBottom: "1%",
   },
 }));
 
@@ -84,16 +83,27 @@ const lightTheme = createMuiTheme({
 const id = 1;
 export default function TrailCommit() {
   const classes = useStyles();
+  const [stars, setStars] = useState([]);
   const [comment, setComment] = useState([]);
+  const [comments, setComments] = useState([]);
   const commentApi = async (id) => {
     await demoapi.get("/api/comment/" + id).then((res) => {
-      setComment(res.data.comments);
+      setComment(res.data);
+      setStars(res.data.stars); //星星等級
+      setComments(res.data.comments); //步道討論
     });
   };
   useEffect(() => {
     commentApi(id);
   }, [id]);
+  function financial(x) {
+    return Number.parseFloat(x).toFixed(1); // 小數點後一位
+  }
+  var avgStar = comment.avgStar;
+  let avg ="";
+  avgStar = financial(avgStar);
 
+  
   return (
     <>
       <div className={classes.root}>
@@ -121,9 +131,14 @@ export default function TrailCommit() {
 
         <Grid className={classes.progress}>
           <Grid className={classes.rating}>
-            <Grid className={classes.fraction}> 4.7</Grid>
-            <Rating name="size-small" defaultValue={4} size="small" />
-            <Grid className={classes.text}> (1,945)</Grid>
+            <Grid className={classes.fraction}>{avgStar} </Grid>
+            <Rating
+          
+          name="size-small"
+          defaultValue={3}
+          size="small"
+        />
+            <Grid className={classes.text}> ({comment.totalPeople})</Grid>
           </Grid>
           <List component="nav" aria-label="main mailbox folders">
             <ListItem>
@@ -131,7 +146,7 @@ export default function TrailCommit() {
               <BorderLinearProgress
                 className={classes.progress}
                 variant="determinate"
-                value={70}
+                value={stars.five*100/comment.totalPeople}
               />
             </ListItem>
 
@@ -139,7 +154,7 @@ export default function TrailCommit() {
               <ThemeProvider>4</ThemeProvider>
               <BorderLinearProgress
                 variant="determinate"
-                value={80}
+                value={stars.four*100/comment.totalPeople}
                 className={classes.progress}
               />
             </ListItem>
@@ -147,7 +162,7 @@ export default function TrailCommit() {
               <ThemeProvider className={classes.number}> 3</ThemeProvider>
               <BorderLinearProgress
                 variant="determinate"
-                value={60}
+                value={stars.three*100/comment.totalPeople}
                 className={classes.progress}
               />
             </ListItem>
@@ -155,7 +170,7 @@ export default function TrailCommit() {
               <ThemeProvider className={classes.number}>2</ThemeProvider>
               <BorderLinearProgress
                 variant="determinate"
-                value={30}
+                value={stars.two*100/comment.totalPeople}
                 className={classes.progress}
               />
             </ListItem>
@@ -163,14 +178,14 @@ export default function TrailCommit() {
               <ThemeProvider className={classes.number}>1</ThemeProvider>
               <BorderLinearProgress
                 variant="determinate"
-                value={0}
+                value={stars.one*100/comment.totalPeople}
                 className={classes.progress}
               />
             </ListItem>
           </List>
         </Grid>
         <Grid className={classes.tangle} />
-        <Comment data={comment} />
+        <Comment data={comments} />
       </div>
     </>
   );
