@@ -152,7 +152,7 @@ function EditAccount(props) {
             edge="start"
             color="inherit"
             aria-label="back"
-            onClick={() => history.goBack()}
+            onClick={() => history.push({pathname:"/personalPage"})}
           >
             <ArrowBackIcon />
           </IconButton>

@@ -134,7 +134,9 @@ function SearchQuick(props) {
               老少咸宜，生活好去處。
             </Typography>
             <img
-              src={obj[searchQuick.iconImage]}
+
+              src={ obj[searchQuick.iconImage]}
+
               className={classes.iconImg}
               
             />

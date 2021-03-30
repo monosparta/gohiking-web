@@ -136,7 +136,8 @@ export default function Sidebar(props) {
 
         <List component="nav" aria-label="main mailbox folders">
           {id != null && (
-            <ListItem button className={classes.scrim}>
+            <ListItem button component="a" href="/personalPage" className={classes.scrim}>
+              
               <ListItemIcon>
                 <PersonIcon className={classes.icon} />
               </ListItemIcon>
