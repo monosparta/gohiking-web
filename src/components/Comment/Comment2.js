@@ -30,23 +30,27 @@ const useStyles = makeStyles((theme) => ({
   comment: {
     fontWeight: 500,
     fontSize: "14px",
-    paddingLeft: "3%",
-    paddingRight: "2%",
+    padding:'16px 16px 0 16px',
+    // paddingLeft: "3%",
+    // paddingRight: "2%",
   },
   commentName: {
     fontWeight: "bold",
     fontSize:'14px',
-    paddingTop: "4%",
-    paddingBottom: "4%",
+    marginBottom:'16px',
+    // paddingTop: "4%",
+    // paddingBottom: "4%",
     
   },
   rating: {
-    paddingBottom: "5%",
+      marginBottom: '16px',
+    // paddingBottom: "5%",
   },
   commentButton: {
     position: "absolute",
     right: 10,
-    paddingBottom: 3,
+    marginLeft:'16px',
+    // paddingBottom: 3,
     textAlign: "center",
     fontSize: "12px",
   },
@@ -84,8 +88,9 @@ const lightTheme = createMuiTheme({
 export default function Commit(props) {
   const classes = useStyles();
   const data = props.data;
+//   const data = Array.from(props);
  
-  return data.map((comment) => (
+  return data.slice(0,2).map((comment) => (
       
     <ThemeProvider theme={lightTheme}>
       <Grid className={classes.comment}>
@@ -104,15 +109,13 @@ export default function Commit(props) {
         { comment.difficulty == 2 &&("簡單") }
         { comment.difficulty == 3 &&("覺得還好") }
         { comment.difficulty == 4 &&("困難") }
-        { comment.difficulty == 5 &&("非常困難") }
+        { comment.difficulty == 5 &&("非常困難") } 
         </Button>
-
         <Grid>{comment.comment}</Grid>
         <Grid item xs={12} sm={6}>
           <IconButton className={classes.thumbup}>
             <ThumbUpIcon />
-            <Typography className={classes.thumbupText}>
-         
+            <Typography className={classes.thumbupText}>         
               {comment.like}
             </Typography>
           </IconButton>
@@ -141,3 +144,4 @@ export default function Commit(props) {
     
 
 }
+

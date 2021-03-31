@@ -33,7 +33,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import RestoreIcon from '@material-ui/icons/Restore';
-import Comment from '../../components/Comment/Comment';
+import Comment from '../../components/Comment/Comment2';
 import Rating from "@material-ui/lab/Rating";
 
 import CommentIcon from '@material-ui/icons/Comment';
