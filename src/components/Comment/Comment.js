@@ -30,21 +30,27 @@ const useStyles = makeStyles((theme) => ({
   comment: {
     fontWeight: 500,
     fontSize: "14px",
-    paddingLeft: "3%",
-    paddingRight: "2%",
+    padding:'16px 16px 0 16px',
+    // paddingLeft: "3%",
+    // paddingRight: "2%",
   },
   commentName: {
     fontWeight: "bold",
-    paddingTop: "4%",
-    paddingBottom: "4%",
+    fontSize:'14px',
+    marginBottom:'16px',
+    // paddingTop: "4%",
+    // paddingBottom: "4%",
+    
   },
   rating: {
-    paddingBottom: "5%",
+      marginBottom: '16px',
+    // paddingBottom: "5%",
   },
   commentButton: {
     position: "absolute",
     right: 10,
-    paddingBottom: 3,
+    marginLeft:'16px',
+    // paddingBottom: 3,
     textAlign: "center",
     fontSize: "12px",
   },
@@ -82,34 +88,35 @@ const lightTheme = createMuiTheme({
 export default function Commit(props) {
   const classes = useStyles();
   const data = props.data;
-
-  return data.map((comment) => (
+//   const data = Array.from(props);
+ 
+  return data.slice(0,2).map((comment) => (
+      
     <ThemeProvider theme={lightTheme}>
       <Grid className={classes.comment}>
-        <Grid className={classes.commentName}>{comment.user.name}</Grid>
+        <Grid className={classes.commentName}>{comment.username}</Grid>
         <Rating
           className={classes.rating}
           name="size-small"
-          defaultValue={comment.star}
+          defaultValue={comment.rating}
         />
         <Button
           className={classes.commentButton}
           variant="outlined"
           color="primary"
         >
-          {comment.difficulty == 1 && "非常簡單"}
-          {comment.difficulty == 2 && "簡單"}
-          {comment.difficulty == 3 && "覺得還好"}
-          {comment.difficulty == 4 && "困難"}
-          {comment.difficulty == 5 && "非常困難"}
+        { comment.difficulty == 1 &&("非常簡單") }
+        { comment.difficulty == 2 &&("簡單") }
+        { comment.difficulty == 3 &&("覺得還好") }
+        { comment.difficulty == 4 &&("困難") }
+        { comment.difficulty == 5 &&("非常困難") } 
         </Button>
-
-        <Grid>{comment.content}</Grid>
+        <Grid>{comment.comment}</Grid>
         <Grid item xs={12} sm={6}>
           <IconButton className={classes.thumbup}>
             <ThumbUpIcon />
-            <Typography className={classes.thumbupText}>
-              {comment.likes}
+            <Typography className={classes.thumbupText}>         
+              {comment.like}
             </Typography>
           </IconButton>
 
@@ -117,7 +124,7 @@ export default function Commit(props) {
             <ThumbDownIcon />
 
             <Typography className={classes.thumbupText}>
-              {comment.dislikes}
+              {comment.dislike}
             </Typography>
           </IconButton>
         </Grid>
@@ -128,11 +135,13 @@ export default function Commit(props) {
           <img src={magetty} className={classes.magetty} />
         </Grid>
         <Typography className={classes.time}>
-          {comment.date}.來回時間: {Math.round(comment.duration / 60)}h
-          {comment.duration % 60}m
+          {comment.date}. 來回時間: {Math.round(comment.costTime/60)}h {comment.costTime%60}m 
         </Typography>
         <hr />
       </Grid>
     </ThemeProvider>
-  ));
+));
+    
+
 }
+

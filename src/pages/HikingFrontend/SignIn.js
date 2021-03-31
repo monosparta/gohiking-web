@@ -10,7 +10,6 @@ import { useHistory } from "react-router-dom";
 import bg from '../../asset/img/sample.jpg';
 import GoogleLogin from "react-google-login";
 import FacebookLogin from 'react-facebook-login';
-import AppleLogin from 'react-apple-login';
 import axios from "axios";
 import googleIcon from '.../../asset/img/google-icon.svg'
 
@@ -18,8 +17,8 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-import {useAuthState} from 'react-firebase-hooks/auth';
-import {useCollectionData} from 'react-firebase-hooks/firestore';
+// import {useAuthState} from 'react-firebase-hooks/auth';
+// import {useCollectionData} from 'react-firebase-hooks/firestore';
 
 const { useState, useRef, useLayoutEffect } = React; //#####
 
@@ -38,8 +37,8 @@ if (!firebase.apps.length) {
   firebase.app(); // if already initialized, use that one
 }
 
-const auth = firebase.auth();
-const firestore = firebase.firestore();
+// const auth = firebase.auth();
+// const firestore = firebase.firestore();
 
 const useStyles = makeStyles((theme)=> ({
   container: {
@@ -107,19 +106,19 @@ const ColorButton1 = withStyles(() => ({
   },
 }))(Button);
 
-const ColorButton2 = withStyles(() => ({
-  root: {
-    display: 'flex',
-    backgroundColor: "#4267b2",
-    letterSpacing: 2,
-    color: "#ffffff",
-    width: '92%',
-    height: '44px',
-    marginBottom: '16px',
-    margin: 'auto',  
+// const ColorButton2 = withStyles(() => ({
+//   root: {
+//     display: 'flex',
+//     backgroundColor: "#4267b2",
+//     letterSpacing: 2,
+//     color: "#ffffff",
+//     width: '92%',
+//     height: '44px',
+//     marginBottom: '16px',
+//     margin: 'auto',  
     
-  },
-}))(Button);
+//   },
+// }))(Button);
 
 const ColorButton3 = withStyles(() => ({
   root: {

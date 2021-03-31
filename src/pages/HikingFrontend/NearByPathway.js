@@ -11,24 +11,21 @@ import Box from '@material-ui/core/Box';
 import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import Navigation from "../../components/Bottom/Navigation";
-import PathwayDistance from "../../components/Lists/PathwayDistance";
+import PathwayDistance from "../../components/PathwayCard/PathwayDistance";
+import { pathway } from 'data/pathway';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import { ReactComponent as Map } from '../../asset/img/map.svg';
-//for GPS dialog
+// for GPS dialog
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-//Custom the Button theme
+// Custom the Button theme
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from "@material-ui/core/styles"
 import { blue } from '@material-ui/core/colors';
-// for GPS location
-import useGeolocation from "react-hook-geolocation";
-
-import { pathway, pathwayFamily, pathwayFavorite } from 'data/pathway';
 
 const theme = createMuiTheme({
     palette: {
@@ -54,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
     listItem: {
         height: "48px",
-        margin: "20px 0 0",
+        margin: "20px 20px 20px",
         fontSize: "20px"
     },
     title: {
@@ -75,12 +72,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const api = axios.create({
-    baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
-    headers: {
-        "X-Secure-Code": "12345678",
-    },
-});
 
 function a11yProps(index) {
     return {
@@ -102,7 +93,7 @@ function TabPanel(props) {
         >
             {value === index && (
                 <Box p={3}>
-                    <Typography className={classes.listItem}>{children}</Typography>
+                    <Typography component={'span'} className={classes.listItem}>{children}</Typography>
                 </Box>
             )}
         </div>
@@ -123,24 +114,24 @@ function NearByPathway() {
     const [searchChallenge, setSearchChallenge] = useState([]);
     const [searchSpring, setSearchSpring] = useState([]);
     const [searchFamily, setSearchFamily] = useState([]);
-
-    const geolocation = useGeolocation();
+    const [yes, setYes] = useState("");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
     const handleSetting = () => {
         setOpenDialog(false);
-        setGpsSetting(true);
+        setYes(1);       
+
     };
     const handleCancel = () => {
         setOpenDialog(false);
     };
 
-    let lat = geolocation.latitude;
-    let lng = geolocation.longitude;
-    // let loc = lat.concat(',', lng);
-    console.log(lat, lng);
+    const GPS = async() => {
+        await navigator.geolocation.getCurrentPosition(success, error);
+    };
+
     //call trails and set trails data in search and id is category
     const initial = async () => {
         await axios.get('https://go-hiking-backend-laravel.herokuapp.com/api/collection/1')
@@ -176,6 +167,36 @@ function NearByPathway() {
         initial();
     }, []);
 
+    const secondUpdate = useRef(true);
+    useLayoutEffect(() => {
+        if (secondUpdate.current) {
+        secondUpdate.current = false;
+        return;
+        }
+        console.log("GPS is fired now!");
+        GPS();
+    }, [yes]);
+
+   
+    const [lat, setLat] = useState(0);
+    const [lng, setLng] = useState(0);
+
+
+    function success(pos) {
+        var crd = pos.coords;
+        setLat(crd.latitude);
+        setLng(crd.longitude);
+        console.log("Your current position is:");
+        console.log("Latitude : " + crd.latitude);
+        console.log("Longitude: " + crd.longitude);
+        console.log("More or less " + crd.accuracy + " meters.");
+        setGpsSetting(true);
+    }
+
+    function error(err) {
+        console.warn("ERROR(" + err.code + "): " + err.message);
+    }
+
     useEffect(() => {
         console.log('searchChallenge:    ', searchMaple)
     }, [searchFamily])
@@ -203,13 +224,18 @@ function NearByPathway() {
                 {gpsSetting ?
                     <>
                         <TabPanel value={value} index={0}>
-                            {searchMaple.map((path, i) => (
+                            {pathway.suggest.map((path, i) => (
                                 <PathwayDistance
                                     favorite={false}
-                                    avatar={path.coverImage}
-                                    title={path.title}
-                                    location={path.location}
-                                    miles={path.distance}
+                                    avatar={path.img}
+                                    title={path.pathTitle}
+                                    location={path.pathLocation}
+                                    miles={path.pathMiles}
+                                    yourlng={lng}
+                                    yourlat={lat}
+                                    longitude={path.longitude}
+                                    latitude={path.latitude}
+                                    key={i}
                                 />
                             ))}
                         </TabPanel>
@@ -221,6 +247,11 @@ function NearByPathway() {
                                     title={path.title}
                                     location={path.location}
                                     miles={path.distance}
+                                    yourlng={lng}
+                                    yourlat={lat}
+                                    longitude={path.longitude}
+                                    latitude={path.latitude}
+                                    key={i}
                                 />
                             ))}
                         </TabPanel>
@@ -232,6 +263,11 @@ function NearByPathway() {
                                     title={path.title}
                                     location={path.location}
                                     miles={path.distance}
+                                    yourlng={lng}
+                                    yourlat={lat}
+                                    longitude={path.longitude}
+                                    latitude={path.latitude}
+                                    key={i}
                                 />
                             ))}
                         </TabPanel>
@@ -243,6 +279,11 @@ function NearByPathway() {
                                     title={path.title}
                                     location={path.location}
                                     miles={path.distance}
+                                    yourlng={lng}
+                                    yourlat={lat}
+                                    longitude={path.longitude}
+                                    latitude={path.latitude}
+                                    key={i}
                                 />
                             ))}
                         </TabPanel>
@@ -254,7 +295,7 @@ function NearByPathway() {
                         </div>
                     </div>
                 }
-                <Navigation />
+                <Navigation dfValue={2}/>
                 <Dialog
                     fullWidth
                     open={openDialog}
@@ -269,10 +310,10 @@ function NearByPathway() {
                         <ThemeProvider theme={theme}>
                             <Button color="secondary" onClick={handleCancel}>
                                 取消
-                        </Button>
+                            </Button>
                             <Button color="secondary" onClick={handleSetting}>
                                 設定
-                        </Button>
+                            </Button>
                         </ThemeProvider>
                     </DialogActions>
                 </Dialog>

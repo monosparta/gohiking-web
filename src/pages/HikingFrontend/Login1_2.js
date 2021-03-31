@@ -1,17 +1,12 @@
 import React , {useState}from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import { useHistory } from "react-router-dom";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Page from 'material-ui-shell/lib/containers/Page';
 import { useForm } from 'react-hook-form';
-import FormControl from '@material-ui/core/FormControl';
 import ReCAPTCHA from "react-google-recaptcha";
-import Input from '@material-ui/core/Input'
-import axios from "axios";
-import { SignalCellularConnectedNoInternet4BarRounded } from '@material-ui/icons';
+import Input from '@material-ui/core/Input';
 //localhost記得改成127.0.0.1才會出現驗證
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -110,7 +105,6 @@ export default function SignIn() {
   let responsedJSON;
   let back = useHistory();
   let GoNext = useHistory();
-  let GoVerify = useHistory();
   function ResetPassword() {
     GoNext.push("/Verify2");
   }
@@ -159,10 +153,9 @@ export default function SignIn() {
           電子信箱 
         </Typography>   
           <Input
-            onChange={event => setEmail(event.target.value)}
+            onChange = {event => handleChange(event)}
             inputRef={register({ required: true, minLength: 8 })}
             className={classes.InputBackground}
-            onChange = {event => handleChange(event)}
             id="email"
             label="請輸入你的電子信箱"
             name="email"

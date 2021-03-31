@@ -5,8 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {useHistory} from 'react-router-dom';
 
-import Hidden from '@material-ui/core/Hidden';
-import Paper from '@material-ui/core/Paper';
+
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -54,8 +53,6 @@ const api = axios.create({
 
 export default function Verify2(props){
     const classes = useStyles();
-    // const { width } = props;
-
     const [state , setState] = useState({
       code_one:'',
       code_two:'',
@@ -75,7 +72,7 @@ export default function Verify2(props){
     var [number4, setNumber4] = useState(-1);
 
     const headers = {
-      'Email': localStorage.getItem('Email')
+      'email': localStorage.getItem('email')
     }
     console.log(headers);
 
@@ -164,7 +161,6 @@ export default function Verify2(props){
       
       // 這邊是POST的部分
       const history = useHistory();
-      //const [token, setToken] = useState(-1);
       const [error, setError] = useState('');
       const [makesure, setMakesure] = useState('');
 
