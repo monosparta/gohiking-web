@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     const [phoneNumeber, setPhoneNumeber] = React.useState('');
     const [selectedDate, setSelectedDate] = React.useState('');
     const [inputValue, setInputValue] = useState();
-    const [live, setLive] = React.useState('');
+    const [county, setCounty] = React.useState('');
     const { handleSubmit } = useForm()
     const history = useHistory();
 
@@ -115,8 +115,8 @@ const useStyles = makeStyles((theme) => ({
     const handlePhoneRegion = (event) => {
       setPhoneRegion(event.target.value);
     };
-    const handleLiveChange = (event) => {
-      setLive(event.target.value);
+    const handleCountyChange = (event) => {
+      setCounty(event.target.value);
     };
     const handleDateChange = (date, value) => {
       setSelectedDate(date);
@@ -134,7 +134,7 @@ const useStyles = makeStyles((theme) => ({
       phone_number: phoneNumeber,
       phone_region: phoneRegion,
       birth: inputValue,
-      live: live
+      county_id: county
     }
     const headers = {
       'Authorization': 'Bearer '+localStorage.getItem('token')
@@ -239,12 +239,12 @@ const useStyles = makeStyles((theme) => ({
           </Typography>
           <Select
           className={classes.InputBackground}
-          value={live}
+          value={county}
           displayEmpty
           renderValue={
-            live !== "" ? undefined : () => <Placeholder>請選擇</Placeholder>
+            county !== "" ? undefined : () => <Placeholder>請選擇</Placeholder>
           }
-          onChange={handleLiveChange}
+          onChange={handleCountyChange}
           >   
             <MenuItem value={"Taipei"}>台北市</MenuItem>
             <MenuItem value={"Taichung"}>台中市</MenuItem>

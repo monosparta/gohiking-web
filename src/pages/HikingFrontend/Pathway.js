@@ -94,7 +94,7 @@ import MuiAlert from '@material-ui/lab/Alert';
         const chartSetting={
             series: [{
                 name: 'Series 1',
-                data: [4, 3, 1, 2, 2],
+                data: [5, 5, 5, 2, 2],
               }],
             options: {
                 chart: {
@@ -144,7 +144,7 @@ import MuiAlert from '@material-ui/lab/Alert';
                     </Slider>
                     <AppBar className = {classes.appBarTransparent}>
                         <Toolbar>
-                            <IconButton style={{color: 'inherit'}}>
+                            <IconButton style={{color: 'inherit'}} onClick={()=>{history.push('/nearbypathway')}}>
                                 <ArrowBackIcon> </ArrowBackIcon>
                             </IconButton>
                             <span style= {{flexGrow: 1}} /> {/*把剩下的空間全部分配在這個span裡面 */}
