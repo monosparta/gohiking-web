@@ -184,20 +184,18 @@ export default function HomePage() {
   const [banners, setbanners] = useState([]);
   const [collection, setcollection] = useState([]);
   const [articles, setarticle] = useState([]);
+  collection.length=5;
   banners.length = 5;
   articles.length = 5;
   //主題api
-  const collectionApi = async () => {
-    await demoapi.get("/api/collection").then((res) => {
-      setcollection(res.data);
-    });
-  };
+  
 
   //首頁行程api
   const articleApi = async () => {
     await demoapi.get("/api/home").then((res) => {
       setarticle(res.data.articles);
       setbanners(res.data.banners);
+      setcollection(res.data.classifications);
     });
   };
 
@@ -209,7 +207,7 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    collectionApi();
+    
     articleApi();
   }, []);
   
@@ -302,7 +300,7 @@ export default function HomePage() {
                   className={classes.linkstlye}
                 >
                   <img
-                    src={obj[collection.iconImage]}
+                    src={obj[collection.image]}
                     className={classes.iconImg}
                     alt={collection.iconImg}
                   />

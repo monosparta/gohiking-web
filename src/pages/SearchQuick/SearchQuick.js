@@ -84,19 +84,15 @@ function SearchQuick(props) {
   //搜尋結果hook
   const [searchQuick, setSearchQuick] = useState([]);
   const [trail, setTrail] = useState([]);
-  const searchApi = async (id) => {
-    await demoapi.get("/api/collection/" + id).then((res) => {
-      setSearchQuick(res.data);
-    });
-  };
+
   const trailApi = async (id) => {
     await demoapi.get("/api/classification/" + id+"&uuid=1").then((res) => {
-      
+      setSearchQuick(res.data);
       setTrail(res.data.trails);
     });
   };
   useEffect(() => {
-    searchApi(id);
+
     trailApi(id);
   }, [id]);
 
@@ -135,7 +131,7 @@ function SearchQuick(props) {
             </Typography>
             <img
 
-              src={ obj[searchQuick.iconImage]}
+              src={ obj[searchQuick.image]}
 
               className={classes.iconImg}
               
