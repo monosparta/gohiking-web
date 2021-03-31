@@ -235,6 +235,7 @@ function NearByPathway() {
                                     yourlat={lat}
                                     longitude={path.longitude}
                                     latitude={path.latitude}
+                                    // link = {path.pathLink}
                                     key={i}
                                 />
                             ))}

@@ -18,6 +18,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 //import styles from '../../assets/jss/material-kit-pro-react/components/pathwayStyle';
 //import { whiteColor } from 'assets/jss/material-kit-pro-react';
 //Custom the Button theme
+import { useHistory } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from "@material-ui/core/styles"
 import { green } from '@material-ui/core/colors';
@@ -127,6 +128,13 @@ export default function PathwayCard(props) {
     var start = { longitude: yourlng, latitude: yourlat };
     var end = { longitude: longitude, latitude: latitude };
     var m = getDistance(start, end);
+    const history = useHistory();
+
+    const handlePage = () =>{
+        history.push('/pathway');
+    };
+
+
     return (
         <div>
             <Grid container className={classes.gridcontain} spacing={2} spacing={2} direction='row'
@@ -147,10 +155,13 @@ export default function PathwayCard(props) {
                             name='favorite' />
                     </ButtonBase>
                 </Grid>
-                <Grid component={'span'} item xs={5}>
-                    <Typography noWrap className={classes.mediaHeading}>{title}</Typography>
-                    <Typography className={classes.mediaFooter}>{location}</Typography>
-                    <Typography className={classes.mediaDistance}>全程約 {miles} km</Typography>
+                <Grid component={'span'} item xs={5} >
+                    <ButtonBase onClick={handlePage}>
+                        <Typography noWrap className={classes.mediaHeading}>{title}</Typography>
+                    </ButtonBase>
+                        <Typography className={classes.mediaFooter}>{location}</Typography>
+                        <Typography className={classes.mediaDistance}>全程約 {miles} km</Typography>
+                    
                 </Grid>
                 <Grid item xs={3}>
                 <ThemeProvider theme={theme}>

@@ -9,11 +9,11 @@ export const pathway = {
     {
       pathLink: '/pathway',
       img: 'https://cdntwrunning.biji.co/300_b0e9902c4a7b6a7164ff32f0a80e9ce27e8ace627fb20ae7dfd7021891452a07.jpg',
-      pathTitle: '玉山主峰步道',
-      pathLocation: '高雄市桃源區,南投縣信義鄉',
+      pathTitle: '翠峰湖環山步道',
+      pathLocation: '南投縣信義鄉',
       pathMiles: 21.8,
-      longitude:120.56,
-      latitude:23.28
+      longitude:118.56,
+      latitude:22.18
     },
     {
       pathLink: '/pathway',
