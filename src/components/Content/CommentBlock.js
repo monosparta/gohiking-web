@@ -6,9 +6,10 @@ import {
   makeStyles,
   Typography
 } from "@material-ui/core";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import TextField from "@material-ui/core/TextField";
 import { CommentContext } from "contexts/CommentContext";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -57,11 +58,28 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 const CommentBlock = () => {
+  const history = useHistory();
   const classes = useStyles();
-  const { register, control, setValue, getValue, errors } = useContext(
+  const { register, errors, toggleDrawer, handleImage } = useContext(
     CommentContext
   );
-
+  const inputRef = useRef();
+  const triggerImageInput = () => {
+    //觸發照片input
+    inputRef.current.click();
+  };
+  const handleInputChange = event => {
+    if (!event.target.files[0]) return;
+    if (event.target.files.length > 15) {
+      // setshowAlert(true);
+    }
+    if (event.target.files[0].size > 1048576) {
+      // setshowAlert(true);
+    } else {
+      handleImage(event);
+      toggleDrawer(true);
+    }
+  };
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
@@ -107,6 +125,7 @@ const CommentBlock = () => {
                     className={classes.textField}
                     fullWidth
                     placeholder="分鐘"
+                    onChange={event => handleInputChange(event)}
                     InputProps={{
                       style: {
                         fontFamily: "Arial",
@@ -149,10 +168,22 @@ const CommentBlock = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} className={classes.commentGrid}>
+              <input
+                ref={inputRef}
+                type="file"
+                id="avatar_img"
+                name="avatar_img"
+                multiple="multiple"
+                accept="image/*"
+                onChange={event => {
+                  handleInputChange(event);
+                }}
+                hidden
+              />
               <Button
-                type="submit"
                 fullWidth
                 variant="outlined"
+                onClick={triggerImageInput}
                 style={{
                   padding: 8,
                   color: "#00d04c",

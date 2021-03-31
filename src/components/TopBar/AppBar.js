@@ -49,12 +49,12 @@ export default function CustomAppBar(props) {
               edge="start"
               color="inherit"
               aria-label="back"
-              //   onClick={() =>
-              //     history.push({
-              //       pathname: "/editAccount",
-              //       state: { pData: pData }
-              //     })
-              //   }
+              // onClick={() =>
+              //   history.push({
+              //     pathname: "/editAccount",
+              //     state: { pData: pData }
+              //   })
+              // }
             >
               <ArrowBackIcon />
             </IconButton>
@@ -69,6 +69,7 @@ export default function CustomAppBar(props) {
               className={classes.finishButton}
               color="inherit"
               edge="end"
+              type="submit"
               onClick={props.next}
             >
               {props.next}

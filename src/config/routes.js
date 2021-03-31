@@ -7,6 +7,8 @@ import PersonalPage from 'pages/PersonalPage'
 import EditAccount from 'pages/PersonalPage/EditAccount'
 import CropAvatar from 'pages/PersonalPage/CropAvatar'
 import CommentPage from 'pages/Comment/CommentPage'
+import TestSwiper from 'pages/playground/test'
+
 
 
 // const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
@@ -76,6 +78,8 @@ const routes = [
   <Route path="/NearByPathway" exact component={NearByPathway}/>,
   <Route path="/attraction" exact component={Attraction}/>,
   <Route path="/commentPage" exact component={CommentPage} />,
+  <Route path="/test" exact component={TestSwiper} />,
+
   <AuthorizedRoute path="/my_account" exact component={MyAccount} />,
   <AuthorizedRoute path="/home" exact component={Home} />,
 

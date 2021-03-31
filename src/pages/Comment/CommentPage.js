@@ -6,7 +6,10 @@ import {
   Grid,
   Typography,
   withStyles,
-  Slider
+  Slider,
+  Snackbar,
+  Drawer,
+  AppBar
 } from "@material-ui/core";
 import CommentBlock from "components/Content/CommentBlock";
 import Rating from "@material-ui/lab/Rating";
@@ -22,7 +25,9 @@ import moment from "moment";
 import React, { createContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Alert from "@material-ui/lab/Alert";
 import * as yup from "yup";
+import ImageDrawer from "./ImageDrawer";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,6 +64,25 @@ const useStyles = makeStyles(theme => ({
 
 const CommentPage = () => {
   const classes = useStyles();
+  const [showAlert, setshowAlert] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [files, setFiles] = useState([]);
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setshowAlert(false);
+  };
+  const toggleDrawer = state => {
+    setOpenDrawer(state);
+  };
+  const handleImage = event => {
+    // let filesArray = [];
+    // for (let i = 0; i < event.target.files.length; i++) {
+    //   filesArray.push(URL.createObjectURL(event.target.files[i]));
+    // }
+    setFiles(event.target.files);
+  };
   const schema = yup.object().shape({
     hikingDate: yup
       .date()
@@ -68,8 +92,8 @@ const CommentPage = () => {
       .number()
       .positive()
       .integer()
-      .min(1,"請評價正確星等")
-      .max(5,"請評價正確星等")
+      .min(1, "請評價正確星等")
+      .max(5, "請評價正確星等")
       .required("請評價星等"),
     difficulty: yup
       .number()
@@ -110,17 +134,24 @@ const CommentPage = () => {
   return (
     <>
       <div className={classes.root}>
-        <CustomAppBar title="評論步道" back={true} next="發布" />
+        <ImageDrawer
+          openDrawer={openDrawer}
+          toggleDrawer={toggleDrawer}
+          selectedImages={files}
+        />
         <CommentContext.Provider
           value={{
             register: register,
             control: control,
             setValue: setValue,
             getValues: getValues,
-            errors: errors
+            errors: errors,
+            toggleDrawer: toggleDrawer,
+            handleImage: handleImage
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
+            <CustomAppBar title="評論步道" back={true} next="發布" />
             <DateBlock />
             <RatingBlock />
             <SliderBlock
@@ -132,6 +163,13 @@ const CommentPage = () => {
             <CommentBlock />
           </form>
         </CommentContext.Provider>
+        <Snackbar
+          open={showAlert}
+          autoHideDuration={3000}
+          onClose={handleAlertClose}
+        >
+          <Alert severity="error">圖片不可大於1mb! 請重新選擇圖片。</Alert>
+        </Snackbar>
       </div>
     </>
   );
