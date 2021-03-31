@@ -109,7 +109,7 @@ export default function Commit(props) {
         { comment.difficulty == 2 &&("簡單") }
         { comment.difficulty == 3 &&("覺得還好") }
         { comment.difficulty == 4 &&("困難") }
-        { comment.difficulty == 5 &&("非常困難") }
+        { comment.difficulty == 5 &&("非常困難") } 
         </Button>
 
         <Grid>{comment.comment}</Grid>
