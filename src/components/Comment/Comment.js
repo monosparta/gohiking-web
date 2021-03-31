@@ -111,13 +111,11 @@ export default function Commit(props) {
         { comment.difficulty == 4 &&("困難") }
         { comment.difficulty == 5 &&("非常困難") } 
         </Button>
-
         <Grid>{comment.comment}</Grid>
         <Grid item xs={12} sm={6}>
           <IconButton className={classes.thumbup}>
             <ThumbUpIcon />
-            <Typography className={classes.thumbupText}>
-         
+            <Typography className={classes.thumbupText}>         
               {comment.like}
             </Typography>
           </IconButton>
@@ -146,3 +144,4 @@ export default function Commit(props) {
     
 
 }
+

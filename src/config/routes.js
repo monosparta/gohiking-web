@@ -6,6 +6,7 @@ import { Route } from 'react-router-dom'
 import PersonalPage from 'pages/PersonalPage'
 import EditAccount from 'pages/PersonalPage/EditAccount'
 import CropAvatar from 'pages/PersonalPage/CropAvatar'
+import TrailCard from 'components/Lists/TrailCard'
 
 
 // const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
@@ -28,7 +29,8 @@ const SearchQuick = lazy(() => import('../pages/SearchQuick/SearchQuick'))
 const SearchResult = lazy(() => import('../pages/SearchResult/SearchResult'))
 const CollectPage = lazy(() => import('../pages/CollectPage/CollectPage'))
 const CollectPage2 = lazy(() => import('../pages/CollectPage/CollectPage2'))
-
+const TrailComment = lazy(() => import('../pages/TrailComment/TrailComment'))
+const TrailComment2 = lazy(() => import('../pages/TrailComment/TrailComment2'))
 const PrivacyPolicy = lazy(()=> import('../pages/PrivacyPolicy/PrivacyPolicy'))
 const AboutUs =lazy(()=>import('../pages/AboutUs/AboutUs'))
 const ColumnPage = lazy(() => import('../pages/ColumnPage/ColumnPage'))
@@ -59,7 +61,8 @@ const routes = [
     exact
     component={PasswordReset}
   />,
-  
+  <Route path="/trailComment" exact component={TrailComment} />,
+  <Route path="/trailComment2" exact component={TrailComment2} />,
   <Route path="/searchPage" exact component={SearchPage} />,
   <Route path="/searchQuick/:id" exact component={SearchQuick} />,
   <Route path="/searchResult" exact component={SearchResult} />,

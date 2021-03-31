@@ -101,11 +101,12 @@ export default function Sidebar(props) {
   const [state, setState] = useState(false);
   const [anchor] = useState("left");
   var id = 0;
+  console.log(localStorage.getItem("userId"));
   // var id =null;
   if (localStorage.getItem("userId")) {
     id = localStorage.getItem("userId"); //取得localstorage ussrId
   } else {
-    id = 1; //取不到user Id
+    id = null; //取不到user Id
   }
 
   const userApi = async (id) => {
@@ -135,7 +136,8 @@ export default function Sidebar(props) {
 
         <List component="nav" aria-label="main mailbox folders">
           {id != null && (
-            <ListItem button className={classes.scrim}>
+            <ListItem button component="a" href="/personalPage" className={classes.scrim}>
+              
               <ListItemIcon>
                 <PersonIcon className={classes.icon} />
               </ListItemIcon>

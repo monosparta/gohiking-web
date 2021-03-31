@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     position:"fixed",
     bottom:0,
     left:0,
+    zIndex:1,
     width:"100%",
     fontFamily:"NotoSansCJKtc",
   }, 
@@ -40,10 +41,10 @@ function Navigation(props) {
      >
      
       <BottomNavigationAction label="首頁" href="/home" icon={<HomeIcon />} />
-      <BottomNavigationAction label="步道搜尋" href="/searchResult" icon={<SearchIcon />} />
+      <BottomNavigationAction label="步道搜尋" href="/searchPage" icon={<SearchIcon />} />
       <BottomNavigationAction label="附近步道"  href="/nearbypathway"  icon={ <LocationSearchingIcon />} />
       <BottomNavigationAction label="我的收藏" href="/CollectPage"  icon={<FavoriteIcon  />} />
-        </BottomNavigation>
+     </BottomNavigation>
     </div>
   </Fragment>
   );
