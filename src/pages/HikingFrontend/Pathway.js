@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React , {useState} from 'react';
 import Slider from "react-slick";
 import {makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import fontStyle from '../../assets/jss/fontStyle';
 import basicStyle from '../../assets/jss/basicStyle';
-import { pathway, pathwayInfo } from '../../data/pathway';
+import { pathwayInfo } from '../../data/pathway';
 import darkTheme from '../../config/darkTheme';
 
 import AppBar from '@material-ui/core/AppBar';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -27,6 +28,17 @@ import Charts from 'react-apexcharts';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Zmage from 'react-zmage'
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import RestoreIcon from '@material-ui/icons/Restore';
+import Comment from '../../components/Comment/Comment';
+import Rating from "@material-ui/lab/Rating";
+
+import CommentIcon from '@material-ui/icons/Comment';
+import GPSMapLink from '../components/GPSMapLink/GPSMapLink';
+import MuiAlert from '@material-ui/lab/Alert';
 
     const style = {
         ...fontStyle,
@@ -51,28 +63,34 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
         infinite: false,
         speed:300,
     };
+    const twoRowCarousel = {
+        rows: 2,
+        dots: false,
+        arrows: false,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      };
+   
 
+      function Alert(props) {
+        return <MuiAlert elevation={6} variant="filled" {...props} style={{
+          position: 'fixed', bottom: '8vh',
+          left: '50%',
+          transform: 'translate(-50%, -50%)', width: 379
+        }} />;
+      }
 
     const Pathway = () =>{
         const classes = useStyles();
         const history = useHistory();        
-        const [auth, setAuth] = React.useState(true);
         const imagePath = pathwayInfo.map;
-        // const [anchorEl, setAnchorEl] = React.useState(null);
-        // const open = Boolean(anchorEl);
-
-        // const handleChange = (event) => {
-        // setAuth(event.target.checked);
-        // };
-
-        // const handleMenu = (event) => {
-        // setAnchorEl(event.currentTarget);
-        // };
-
-        // const handleClose = () => {
-        // setAnchorEl(null);
-        // };
-
+        const[value, setValue] = useState('');
+        const [open, setOpen] = React.useState(true);
+        const handleClose = () => {
+            setOpen(false);
+          };
+      
         const chartSetting={
             series: [{
                 name: 'Series 1',
@@ -257,15 +275,23 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
                     </div>
                     <Divider style={{height:'8px'}} />
                     <div style={{padding: '16px 16px 0 16px'}}>
-                        <Typography style={{marginBottom: '16px', fontSize:'16px'}}>步道介紹</Typography>
+                        <Typography style={{marginBottom: '16px', fontSize:'16px', fontWeight: '700'}}>步道介紹</Typography>
                         <Typography style={{marginBottom: '24px', fontSize:'14px'}}>{pathwayInfo.intro}</Typography>
-                        <a className={classes.buttonBase} onClick={() => Zmage.browsing({ src: imagePath})}>                
-                            {/* <img style={{position:'absolute', width:'100%', height:'224px', objectFit:'cover'}}alt={'map'} src={pathwayInfo.map}/>
-                            <div style={{position:'relative', width:'100%', height:'224px',backgroundColor: 'rgba(0,0,0,0.6)', top:'100px', left:'50px'}}></div> */}
+
+                        {/* <a className={classes.buttonBase} onClick={() => Zmage.browsing({ src: imagePath })}>                
+                            <img style={{position:'absolute', width:'100%', height:'224px', objectFit:'cover'}}alt={'map'} src={pathwayInfo.map}/>
+                            <div style={{position:'relative', width:'100%', height:'224px',backgroundColor: 'rgba(0,0,0,0.6)', top:'100px', left:'50px'}}></div> 
                             <img alt={'map'} src={pathwayInfo.map} className={classes.map} />
                             <div className={classes.overlay} />
                             <div className={classes.mapIcon}><ZoomInIcon fontSize="large" /></div>                            
-                        </a>
+                            </a> */}
+                        <ButtonBase className={classes.buttonBase} onClick={() => Zmage.browsing({ src: pathwayInfo.map })} >
+                            <img alt={'map'} src={pathwayInfo.map} className={classes.map} />
+                            <div className={classes.overlay} />
+                            <div className={classes.mapIcon}>
+                                <ZoomInIcon fontSize="large" />
+                            </div>
+                        </ButtonBase>
                     </div>
                     <Divider style={{height:'8px'}} />
                     <div>
@@ -293,6 +319,20 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
                         </Slider>
                     </div>
                     <Divider style={{height:'8px'}} />
+                    <div style={{padding:'16px 0 0 16px', marginBottom:'16px', display:'flex'}}>
+                    <Typography style={{fontSize:'16px', fontWeight: '700'}}>步道紀錄與評價</Typography>
+                        <span style= {{flexGrow: 1}} />
+                        <Typography style={{fontSize:'14px', color: '#00d04c', fontWeight:'900'}} >顯示更多</Typography>
+                        <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push('/announcement')}}>
+                            <ChevronRightIcon></ChevronRightIcon>
+                        </IconButton>                                            
+                    </div>
+                    <Rating defaultValue={4} style={{fontSize:'28px', marginBottom:'16px', marginLeft:'16px',}}></Rating>
+                    <Divider />
+                    <div>
+                        <Comment data={pathwayInfo.comments}></Comment>
+                    </div>
+                    <Divider style={{height:'8px'}} />
                     <div>
                         <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>相關文章</Typography>
                             <Slider {...pathwayCarousel}>
@@ -306,20 +346,59 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
                             </Slider>                       
                     </div>
                     <Divider style={{height:'8px'}} />
-                    {/* <div>
+                    <div>
                         <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>相似步道</Typography>
-                            <Slider {...pathwayCarousel}>
+                            <Slider {...twoRowCarousel}>
+
                                 {pathwayInfo.similar.map((item, i) => (
                                     <div key={i}>
-                                        <img src={item.img} style={{width:'174px', height:'96px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
-                                        <Typography style={{fontSize:'16px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.pathTitle}</Typography>
-                                        <Typography style={{fontSize:'14px', color:'979797', marginBottom:'16px',marginLeft:'16px',}}>{item.pathLocation}</Typography>
-                                        <Typography style={{fontSize:'12px', color:'979797', marginBottom:'16px',marginLeft:'16px',}}>{item.pathMiles}</Typography>
+                                        <Grid container spacing={0}>
+                                            <Grid item xs={4}>
+                                                <img src={item.img} style={{width:'104px', height:'72px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
+                                            </Grid>
+                                            <Grid item xs={8}>
+                                                <Typography style={{fontSize:'16px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.pathTitle}</Typography>
+                                                <Typography style={{fontSize:'14px', color:'979797',marginLeft:'16px', color: '#979797', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden',}}>{item.pathLocation}</Typography>
+                                                <Typography style={{fontSize:'12px', color:'979797', marginBottom:'16px',marginLeft:'16px', color: '#979797'}}>全程約 {item.pathMiles} km</Typography>
+                                            </Grid>
+                                        </Grid>
                                     </div>
                                 ))}
                             </Slider>                       
-                    </div> */}
+                    </div>
+                    <br /><br /><br /><br />
+                    <Snackbar open={open} onClose={handleClose}>
+                        <Alert severity="info" onClose={handleClose}>目前全線封閉，暫停開放。</Alert>
+                    </Snackbar>
+                    <BottomNavigation
+                    showLabels
+                    className={classes.bottomNavigation}
+                    >
+                    <BottomNavigationAction onClick={() => (history.push('/add_comment'))} label={<Typography className={`${classes.descText} ${classes.noWrap}`} color={'textPrimary'}>評論步道</Typography>} icon={<CommentIcon color={'secondary'} />} className={classes.leftNavigation} />
+                    <BottomNavigationAction label={
+                        <GPSMapLink
+                        text={
+                            <Typography className={`${classes.mainText} ${classes.boldFont}`} >
+                            打開GPS路線
+                            </Typography>
+                        }
+                        destination={pathwayInfo.name + pathwayInfo.trailhead[1].name}
+                        />
+                    } className={classes.rightNavigation} />
+                    </BottomNavigation>
 
+                    {/* <BottomNavigation
+                        value={value}
+                        onChange={(event, newValue) => {
+                            setValue(newValue);
+                        }}
+                        showLabels
+                        className={classes.bottomNavigation}
+                        >                            
+                        <BottomNavigationAction  className={classes.leftNavigation} label="評論步道" icon={<RestoreIcon />} />                            
+                        <BottomNavigationAction  className={classes.rightNavigation}  label="打開GPS"/>
+
+                    </BottomNavigation> */}
                 </div>
             </ThemeProvider>
         )

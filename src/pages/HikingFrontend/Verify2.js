@@ -72,7 +72,7 @@ export default function Verify2(props){
     var [number4, setNumber4] = useState(-1);
 
     const headers = {
-      'Email': localStorage.getItem('Email')
+      'email': localStorage.getItem('email')
     }
     console.log(headers);
 

@@ -21,7 +21,6 @@ const TabsDemo = lazy(() => import('../pages/TabsDemo'))
 const MyAccount = lazy(() => import('../pages/MyAccount/MyAccount'))
 
 const SignIn = lazy(() => import('../pages/HikingFrontend/SignIn'))
-const Home3 = lazy(() => import('../pages/HikingFrontend/Home3'))
 const Verify2 = lazy(() => import('../pages/HikingFrontend/Verify2'))
 
 const SearchPage = lazy(() => import('../pages/SearchPage/SearchPage'))
@@ -42,6 +41,7 @@ const NearByPathway = lazy(()=>import('../pages/HikingFrontend/NearByPathway'));
 const Attraction = lazy(()=>import('../pages/HikingFrontend/Attraction'));
 const Pathway = lazy(()=>import('../pages/HikingFrontend/Pathway'));
 const Announcement = lazy(()=>import('../pages/HikingFrontend/Announcement'));
+const Trailhead = lazy(()=>import('../pages/HikingFrontend/Trailhead'));
 
 
 const routes = [
@@ -77,6 +77,7 @@ const routes = [
   <Route path="/attraction" exact component={Attraction}/>,
   <Route path="/pathway" exact component={Pathway}/>,
   <Route path="/announcement" exact component={Announcement}/>,
+  <Route path="/trailhead" exact component={Trailhead}/>,
   <AuthorizedRoute path="/my_account" exact component={MyAccount} />,
   <AuthorizedRoute path="/home" exact component={Home} />,
 
