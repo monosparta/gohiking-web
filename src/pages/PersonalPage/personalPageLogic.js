@@ -14,12 +14,14 @@ const PersonalPageLogic = (info = null) => {
     if (!info) getPersonalInfo();
   }, [info]);
   const getPersonalInfo = async () => {
-    const uid = localStorage.getItem("userId")
-      ? localStorage.getItem("userId")
-      : 1;
+    // const uid = localStorage.getItem("userId")
+    //   ? localStorage.getItem("userId")
+    //   : 1;
+    const uid = 1;
     await demoapi.get("/api/user/" + uid).then(res => {
       setisLoading(false);
       res.data.users.gender = res.data.users.gender ? "男" : "女";
+
       console.log(res.data.users.name);
       setpersonalInfo(res.data);
     });
@@ -93,9 +95,10 @@ const PersonalPageLogic = (info = null) => {
 
   const updateInfo = async data => {
     setisLoading(true);
-    const uid = localStorage.getItem("userId")
-      ? localStorage.getItem("userId")
-      : 1;
+    // const uid = localStorage.getItem("userId")
+    //   ? localStorage.getItem("userId")
+    //   : 1;
+    const uid = 1;
     if (data.croppedImage) {
       let blob = await fetch(data.croppedImage).then(r => r.blob());
       const file = new File([blob], "1234567890.jpg", {
@@ -111,7 +114,7 @@ const PersonalPageLogic = (info = null) => {
         gender: data.gender,
         phone_number: data.phone_number,
         birth: data.birth,
-        image: data.croppedImage ? data.croppedImage : data.image,
+        image: data.croppedImage ? data.croppedImage : "",
         county: data.county,
         country_code_id: data.countryCode
       })
