@@ -9,23 +9,29 @@ export const pathway = {
     {
       pathLink: '/pathway',
       img: 'https://cdntwrunning.biji.co/300_b0e9902c4a7b6a7164ff32f0a80e9ce27e8ace627fb20ae7dfd7021891452a07.jpg',
-      pathTitle: '玉山主峰步道',
-      pathLocation: '高雄市桃源區,南投縣信義鄉',
-      pathMiles: 21.8
+      pathTitle: '翠峰湖環山步道',
+      pathLocation: '南投縣信義鄉',
+      pathMiles: 21.8,
+      longitude:118.56,
+      latitude:22.18
     },
     {
       pathLink: '/pathway',
       img: 'https://cdntwrunning.biji.co/300_02d18e0dd865e50a4892cc490e213881.jpg',
       pathTitle: '玉山前五峰登山步道',
       pathLocation: '南投縣信義鄉,嘉義縣阿里山鄉,高雄市桃源區',
-      pathMiles: 35.8
+      pathMiles: 35.8,
+      longitude:122.56,
+      latitude:24.28
     },
     {
       pathLink: '/pathway',
       img: 'https://cdntwrunning.biji.co/300_a45454b7c2a7042b404b5f518a87922d.jpg',
       pathTitle: '玉山前峰登山山徑',
       pathLocation: '南投縣信義鄉,嘉義縣阿里山鄉',
-      pathMiles: 7
+      pathMiles: 7,
+      longitude:120.56,
+      latitude:23.28
     },
     {
       pathLink: '/pathway',
@@ -33,7 +39,9 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_f07ba26d97f5dbf47010fef624c7c3c2fde401b0fa53a72bbbc951cc1f024ec0.jpg',
       pathTitle: '鹿林山步道',
       pathLocation: '南投縣信義鄉',
-      pathMiles: 5.5
+      pathMiles: 5.5,
+      longitude:120.44,
+      latitude:22.28
     },
     {
       pathLink: '/pathway',
@@ -41,7 +49,9 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_1193d0c9b815a897bc1182131e0b1487bf8264af5d0079a1ba0f7d6be3d217e5.jpg',
       pathTitle: '麟趾山步道',
       pathLocation: '南投縣信義鄉',
-      pathMiles: 6.7
+      pathMiles: 6.7,
+      longitude:120.92,
+      latitude:25.00
     },
     {
       pathLink: '/pathway',
@@ -49,7 +59,9 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_01a9d668856ec1623987aeea37db76ae4f4813054d7c46c54fc5c5c52740e57d.jpg',
       pathTitle: '瓦拉米步道',
       pathLocation: '花蓮縣卓溪鄉',
-      pathMiles: 28
+      pathMiles: 28,
+      longitude:121.45,
+      latitude:24.78
     },
     {
       pathLink: '/pathway',
@@ -57,7 +69,9 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_c046b2af40596282a2aa2bace205c58345a6e138e22a84d906dd21f96ca80607.jpg',
       pathTitle: '八通關雲龍瀑布步道',
       pathLocation: '南投縣信義鄉',
-      pathMiles: 8
+      pathMiles: 8,
+      longitude:121.47,
+      latitude:23.55
     },
     {
       pathLink: '/pathway',
@@ -65,7 +79,9 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_5a6eca81cb7b04692a0e49aae1b080434334c7cfeb9fc1dfa6b58b3ca418ebe4.jpg',
       pathTitle: '東埔山步道',
       pathLocation: '南投縣信義鄉',
-      pathMiles: 1.6
+      pathMiles: 1.6,
+      longitude:122.12,
+      latitude:24.77
     },
   ]
 };
@@ -203,6 +219,7 @@ export const pathwayFavorite = {
 };
 
 export const pathwayInfo = {
+  trail_id: 3,
   favorite: true,
   name: '翠峰湖環山步道',
   distance: 25.2,
@@ -431,8 +448,9 @@ export const pathwayInfo = {
   comments: [
     {
       commentLink: '/comment',
-      username: '王小明',
+      username: '黃先生',
       rating: 3,
+      difficulty: 4,
       comment: '真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 ',
       like: 136,
       dislike: 3,
@@ -457,6 +475,7 @@ export const pathwayInfo = {
       commentLink: '/comment',
       username: '陳美美',
       rating: 5,
+      difficulty: 2,
       comment: '真的很棒，不虛此行 ',
       like: 11,
       dislike: 1,
@@ -467,8 +486,9 @@ export const pathwayInfo = {
     },
     {
       commentLink: '/comment',
-      username: '王小明',
+      username: '李太太',
       rating: 1,
+      difficulty: 5,
       comment: '好難',
       like: 1,
       dislike: 32,
@@ -482,8 +502,9 @@ export const pathwayInfo = {
     },
     {
       commentLink: '/comment',
-      username: '王小明',
+      username: '陳明天',
       rating: 3,
+      difficulty: 4,
       comment: '真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 但爬起來不簡單，沒攀爬經驗的朋友別輕易嘗試喔！真的很棒，不虛此行 ',
       like: 136,
       dislike: 3,
@@ -502,6 +523,62 @@ export const pathwayInfo = {
       date: moment()
         .format('YYYY-MM-DD'),
       costTime: 385,
+    },
+  ],
+  article:[
+    {
+      title: '這是相關文章的標題A',
+      img: 'https://nyanphoto.com/wp-content/uploads/2018/09/%E5%A4%AA%E5%B9%B3%E5%B1%B1%E7%BF%A0%E5%B3%B0%E6%B9%96%E7%92%B0%E5%B1%B1%E6%AD%A5%E9%81%93-%E8%B5%B0%E5%9C%A8%E6%B3%A5%E6%BF%98.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題B',
+      img: 'https://1.blog.xuite.net/1/2/d/3/13757412/blog_2163183/txt/503594616/0.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題C',
+      img: 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1455678250067.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題D',
+      img: 'https://nyanphoto.com/wp-content/uploads/2018/09/%E5%A4%AA%E5%B9%B3%E5%B1%B1%E7%BF%A0%E5%B3%B0%E6%B9%96%E7%92%B0%E5%B1%B1%E6%AD%A5%E9%81%93-%E8%B5%B0%E5%9C%A8%E6%B3%A5%E6%BF%98.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題E',
+      img: 'https://1.blog.xuite.net/1/2/d/3/13757412/blog_2163183/txt/503594616/0.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題F',
+      img: 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1455678250067.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題G',
+      img: 'https://nyanphoto.com/wp-content/uploads/2018/09/%E5%A4%AA%E5%B9%B3%E5%B1%B1%E7%BF%A0%E5%B3%B0%E6%B9%96%E7%92%B0%E5%B1%B1%E6%AD%A5%E9%81%93-%E8%B5%B0%E5%9C%A8%E6%B3%A5%E6%BF%98.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題H',
+      img: 'https://1.blog.xuite.net/1/2/d/3/13757412/blog_2163183/txt/503594616/0.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題I',
+      img: 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1455678250067.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
     },
   ],
   similar: [

@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // @material-ui/icons
 // core components
 // import styles from 'assets/jss/material-kit-pro-react/components/pathwayStyle.js';
-import Box from '@material-ui/core/Box';
+// import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
@@ -18,6 +18,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 //import styles from '../../assets/jss/material-kit-pro-react/components/pathwayStyle';
 //import { whiteColor } from 'assets/jss/material-kit-pro-react';
 //Custom the Button theme
+import { useHistory } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from "@material-ui/core/styles"
 import { green } from '@material-ui/core/colors';
@@ -59,11 +60,12 @@ const styles = {
         width: '38vw',
     },
     img: {
-        width:'250px',
-        margin: 'auto',
-        display: 'block',
-        maxWidth: '100%',
-        maxHeight: '100%',
+        objectFit:'cover',
+        width:'100%',
+        height:72,
+        borderRadius:4,
+        minWidth:72,
+        maxWidth:300
     },
     favorite: {
         position: 'absolute',
@@ -83,6 +85,25 @@ const styles = {
     }
 };
 
+function getDistance(start, end) {
+    var lon1 = (Math.PI / 180) * start.longitude;
+    var lat1 = (Math.PI / 180) * start.latitude;
+
+    var lon2 = (Math.PI / 180) * end.longitude;
+    var lat2 = (Math.PI / 180) * end.latitude;
+
+    // 地球半徑
+    var R = 6371;
+
+    // 兩點間距離 KM
+    var d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)) * R;
+
+    // 公里轉公尺
+    var abs = Math.abs(d);
+
+    return Math.round(abs);
+}
+
 const useStyles = makeStyles(styles);
 
 export default function PathwayCard(props) {
@@ -94,13 +115,26 @@ export default function PathwayCard(props) {
         miles,
         distance,
         favorite,
-        ...rest
+        yourlng,
+        yourlat,
+        longitude,
+        latitude,
     } = props;
     const classes = useStyles();
     const [checked, setChecked] = React.useState(favorite);
     const handleChange = () => {
         setChecked(!checked);
     };
+    var start = { longitude: yourlng, latitude: yourlat };
+    var end = { longitude: longitude, latitude: latitude };
+    var m = getDistance(start, end);
+    const history = useHistory();
+
+    const handlePage = () =>{
+        history.push('/pathway');
+    };
+
+
     return (
         <div>
             <Grid container className={classes.gridcontain} spacing={2} spacing={2} direction='row'
@@ -121,10 +155,13 @@ export default function PathwayCard(props) {
                             name='favorite' />
                     </ButtonBase>
                 </Grid>
-                <Grid component={'span'} item xs={5}>
-                    <Typography noWrap className={classes.mediaHeading}>{title}</Typography>
-                    <Typography className={classes.mediaFooter}>{location}</Typography>
-                    <Typography className={classes.mediaDistance}>全程約 {miles} km</Typography>
+                <Grid component={'span'} item xs={5} >
+                    <ButtonBase onClick={handlePage}>
+                        <Typography noWrap className={classes.mediaHeading}>{title}</Typography>
+                    </ButtonBase>
+                        <Typography className={classes.mediaFooter}>{location}</Typography>
+                        <Typography className={classes.mediaDistance}>全程約 {miles} km</Typography>
+                    
                 </Grid>
                 <Grid item xs={3}>
                 <ThemeProvider theme={theme}>
@@ -136,7 +173,7 @@ export default function PathwayCard(props) {
                             className={classes.Rectangle}
                             startIcon={<LocationOnIcon />}
                         >
-                            {miles} km
+                            {m} km
                     </Button>
                 </ThemeProvider>
                 </Grid>

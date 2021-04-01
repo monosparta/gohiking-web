@@ -104,8 +104,8 @@ const useStyles = makeStyles((theme) => ({
     const [phoneRegion, setPhoneRegion] = React.useState('');
     const [phoneNumeber, setPhoneNumeber] = React.useState('');
     const [selectedDate, setSelectedDate] = React.useState('');
-    const [inputValue, setInputValue] = useState();
-    const [live, setLive] = React.useState('');
+    const [inputValue, setInputValue] = useState([]);
+    const [county, setCounty] = React.useState('');
     const { handleSubmit } = useForm()
     const history = useHistory();
 
@@ -115,8 +115,8 @@ const useStyles = makeStyles((theme) => ({
     const handlePhoneRegion = (event) => {
       setPhoneRegion(event.target.value);
     };
-    const handleLiveChange = (event) => {
-      setLive(event.target.value);
+    const handleCountyChange = (event) => {
+      setCounty(event.target.value);
     };
     const handleDateChange = (date, value) => {
       setSelectedDate(date);
@@ -132,9 +132,9 @@ const useStyles = makeStyles((theme) => ({
       name: name,
       gender: gender,
       phone_number: phoneNumeber,
-      phone_region: phoneRegion,
+      country_code_id: phoneRegion,
       birth: inputValue,
-      live: live
+      county_id: county
     }
     const headers = {
       'Authorization': 'Bearer '+localStorage.getItem('token')
@@ -204,8 +204,8 @@ const useStyles = makeStyles((theme) => ({
           }
           onChange={handlePhoneRegion}
           >   
-            <MenuItem value={886}>台灣+886</MenuItem>
-            <MenuItem value={852}>香港+852</MenuItem>
+            <MenuItem value={4}>台灣+886</MenuItem>
+            <MenuItem value={424}>香港+852</MenuItem>
           </Select>
           <Input 
           className={classes.PhoneNumberBackground} 
@@ -239,15 +239,15 @@ const useStyles = makeStyles((theme) => ({
           </Typography>
           <Select
           className={classes.InputBackground}
-          value={live}
+          value={county}
           displayEmpty
           renderValue={
-            live !== "" ? undefined : () => <Placeholder>請選擇</Placeholder>
+            county !== "" ? undefined : () => <Placeholder>請選擇</Placeholder>
           }
-          onChange={handleLiveChange}
+          onChange={handleCountyChange}
           >   
-            <MenuItem value={"Taipei"}>台北市</MenuItem>
-            <MenuItem value={"Taichung"}>台中市</MenuItem>
+            <MenuItem value={"4"}>台北市</MenuItem>
+            <MenuItem value={"14"}>台中市</MenuItem>
           </Select>
           <Button
               type="submit"

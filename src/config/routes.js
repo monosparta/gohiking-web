@@ -6,7 +6,10 @@ import { Route } from 'react-router-dom'
 import PersonalPage from 'pages/PersonalPage'
 import EditAccount from 'pages/PersonalPage/EditAccount'
 import CropAvatar from 'pages/PersonalPage/CropAvatar'
+
 import TrailCard from 'components/Lists/TrailCard'
+import CommentPage from 'pages/Comment/CommentPage'
+import TestSwiper from 'pages/playground/test'
 
 
 // const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
@@ -22,9 +25,7 @@ const TabsDemo = lazy(() => import('../pages/TabsDemo'))
 const MyAccount = lazy(() => import('../pages/MyAccount/MyAccount'))
 
 const SignIn = lazy(() => import('../pages/HikingFrontend/SignIn'))
-const Home3 = lazy(() => import('../pages/HikingFrontend/Home3'))
 const Verify2 = lazy(() => import('../pages/HikingFrontend/Verify2'))
-const Collection = lazy(() => import('../pages/HikingFrontend/Collection'))
 
 const SearchPage = lazy(() => import('../pages/SearchPage/SearchPage'))
 const SearchQuick = lazy(() => import('../pages/SearchQuick/SearchQuick'))
@@ -43,6 +44,9 @@ const Register0_1 = lazy(() => import('../pages/HikingFrontend/Register0_1'))
 const ResetPassword = lazy(() => import('../pages/HikingFrontend/ResetPassword'))
 const NearByPathway = lazy(()=>import('../pages/HikingFrontend/NearByPathway'));
 const Attraction = lazy(()=>import('../pages/HikingFrontend/Attraction'));
+const Pathway = lazy(()=>import('../pages/HikingFrontend/Pathway'));
+const Announcement = lazy(()=>import('../pages/HikingFrontend/Announcement'));
+const Trailhead = lazy(()=>import('../pages/HikingFrontend/Trailhead'));
 
 
 const routes = [
@@ -77,6 +81,13 @@ const routes = [
   <Route path="/columnPage/:id" exact component={ColumnPage} />,
   <Route path="/NearByPathway" exact component={NearByPathway}/>,
   <Route path="/attraction" exact component={Attraction}/>,
+
+  <Route path="/pathway" exact component={Pathway}/>,
+  <Route path="/announcement" exact component={Announcement}/>,
+  <Route path="/trailhead" exact component={Trailhead}/>,
+  <Route path="/commentPage" exact component={CommentPage} />,
+  <Route path="/test" exact component={TestSwiper} />,
+
   <AuthorizedRoute path="/my_account" exact component={MyAccount} />,
   <AuthorizedRoute path="/home" exact component={Home} />,
 

@@ -9,14 +9,12 @@ import {
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Rating from "@material-ui/lab/Rating";
+import { Link } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
-import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined';
 import Button from "@material-ui/core/Button";
-import { Checkbox } from "@material-ui/core";
-import demoapi from "axios/api";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     fontFamily: "NotoSansCJKtc",
@@ -32,23 +30,27 @@ const useStyles = makeStyles((theme) => ({
   comment: {
     fontWeight: 500,
     fontSize: "14px",
-    paddingLeft: "3%",
-    paddingRight: "2%",
+    padding:'16px 16px 0 16px',
+    // paddingLeft: "3%",
+    // paddingRight: "2%",
   },
   commentName: {
     fontWeight: "bold",
     fontSize:'14px',
-    paddingTop: "4%",
-    paddingBottom: "4%",
+    marginBottom:'16px',
+    // paddingTop: "4%",
+    // paddingBottom: "4%",
     
   },
   rating: {
-    paddingBottom: "5%",
+      marginBottom: '16px',
+    // paddingBottom: "5%",
   },
   commentButton: {
     position: "absolute",
     right: 10,
-    paddingBottom: 3,
+    marginLeft:'16px',
+    // paddingBottom: 3,
     textAlign: "center",
     fontSize: "12px",
   },
@@ -86,44 +88,9 @@ const lightTheme = createMuiTheme({
 export default function Commit(props) {
   const classes = useStyles();
   const data = props.data;
-
-  // const a = {...data};
-  // console.log(a);
-  const [checked, setChecked] = useState(data.like);
-  const handleChange = (id) => {
-    const uid = localStorage.getItem("userid")
-      ? localStorage.getItem("userid")
-      : 1;
-    setChecked(!checked);
-    demoapi
-      .post(
-        "/api/likeComment/?user_id=" + 1 + "&comment_id=" + 6 + "&status=" + 1
-      )
-      .then((res) => {
-        console.log(res.status);
-      });
-  };
-  const handleChange1 = (id) => {
-  
-    setChecked(!checked);
-    demoapi
-      .post(
-        "/api/likeComment/?user_id=" +
-          1 +
-          "&comment_id=" +
-          6 +
-          "&status=" +
-          "-1"
-      )
-      .then((res) => {
-        console.log(res.status);
-      });
-  };
-
-  // console.log(data[0]);
-
+//   const data = Array.from(props);
  
-  return data.map((comment) => (
+  return data.slice(0,2).map((comment) => (
       
     <ThemeProvider theme={lightTheme}>
       <Grid className={classes.comment}>
@@ -142,48 +109,30 @@ export default function Commit(props) {
         { comment.difficulty == 2 &&("簡單") }
         { comment.difficulty == 3 &&("覺得還好") }
         { comment.difficulty == 4 &&("困難") }
-        { comment.difficulty == 5 &&("非常困難") }
+        { comment.difficulty == 5 &&("非常困難") } 
         </Button>
-
         <Grid>{comment.comment}</Grid>
         <Grid item xs={12} sm={6}>
           <IconButton className={classes.thumbup}>
-            <Checkbox
-              checked={checked}
-              onChange={() => {
-                handleChange(data.id);
-              }}
-              icon={<ThumbUpIcon/>}
-              checkedIcon={<ThumbUpIcon style={{ color: "#3c5754" }} />}
-            />
-
-            <Typography className={classes.thumbupText}>
-
+            <ThumbUpIcon />
+            <Typography className={classes.thumbupText}>         
               {comment.like}
             </Typography>
-        </IconButton>
+          </IconButton>
 
           <IconButton className={classes.thumbup}>
-            <Checkbox
-              checked={checked}
-              onChange={() => {
-                handleChange1(data.id);
-              }}
-              icon={<ThumbDownIcon />}
-              checkedIcon={<ThumbDownIcon  style={{ color: "#3c5754" }}/>}
-            />
+            <ThumbDownIcon />
 
             <Typography className={classes.thumbupText}>
               {comment.dislike}
             </Typography>
           </IconButton>
         </Grid>
-
         <Grid className={classes.gridList}>
-          <img
-            src={data[0].comments_images[1].s3_url}
-            className={classes.magetty}
-          />
+          <img src={magetty} className={classes.magetty} />
+          <img src={magetty} className={classes.magetty} />
+          <img src={magetty} className={classes.magetty} />
+          <img src={magetty} className={classes.magetty} />
         </Grid>
         <Typography className={classes.time}>
           {comment.date}. 來回時間: {Math.round(comment.costTime/60)}h {comment.costTime%60}m 
@@ -195,3 +144,4 @@ export default function Commit(props) {
     
 
 }
+

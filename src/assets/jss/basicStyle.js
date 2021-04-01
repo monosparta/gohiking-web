@@ -294,6 +294,12 @@ const basicStyle = {
     width: '100%',
     boxShadow: '0 -2px 2px 0 rgba(0, 0, 0, 0.05)',
   },
+  rootRoot: {
+    color: "#e57373",
+    "&$selected": {
+      color: "#007aff"
+    }
+  },
   leftNavigation: {
     minWidth: 120,
     width: '20vw',
@@ -304,6 +310,7 @@ const basicStyle = {
     minWidth: 291,
     width: '80vw',
     color: whiteColor,
+    fontSize:'80px',
     backgroundColor: primaryColor[0],
   },
   categoryContent: {
@@ -336,6 +343,13 @@ const basicStyle = {
   },
   inputBox:{
     padding:8,
-  }
+  },
+  hikingInfoLeft:{
+    margin: '16px 0 16px 16px',
+  },
+  hikingInfoRight:{
+    textAlign: 'right',
+    margin: '14px 16px 13px 0',
+  },
 };
 export default basicStyle;
