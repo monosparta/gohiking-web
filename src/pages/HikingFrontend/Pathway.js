@@ -32,7 +32,6 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import Snackbar from '@material-ui/core/Snackbar';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import RestoreIcon from '@material-ui/icons/Restore';
 import Comment from '../../components/Comment/Comment2';
 import Rating from "@material-ui/lab/Rating";
 
@@ -175,7 +174,7 @@ import MuiAlert from '@material-ui/lab/Alert';
                     <Divider style={{height:'8px'}} />
                     <div style={{paddingTop: '8px', paddingBottom: '8px'}}>
                         {pathwayInfo.chips.map((chip,i) =>(
-                             <Chip label={chip} key={i} href="#chip" variant="outlined" style={{margin: '8px', marginRight: 0, padding: '6px', fontSize: '14px', fontWeight: '700'}} />
+                             <Chip key= {i} label={chip} href="#chip" variant="outlined" style={{margin: '8px', marginRight: 0, padding: '6px', fontSize: '14px', fontWeight: '700'}} />
                         ))}
                     </div>
                     <Divider style={{height:'8px'}} />                  
@@ -310,7 +309,7 @@ import MuiAlert from '@material-ui/lab/Alert';
                         {pathwayInfo.attraction.map((item, i) => (
                             <div key={i}>
                                 <Button variant={'contained'} style={{ backgroundColor: '#abddeb', minWidth:'83px', margin:'0 0 16px 16px' }}
-                                component={Link} to={'/attraction'}
+                                onClick={()=>{history.push('/attraction')}}
                                 disableElevation>{item.category}</Button>
                             </div>
                         ))}
