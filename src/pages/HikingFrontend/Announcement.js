@@ -29,7 +29,7 @@ const Attraction = () => {
 
     //return to 7.0 page
     function backhandleClick() {
-        history.push("./pathway");
+        history.goBack();
     }
     return (
         <>
