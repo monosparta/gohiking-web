@@ -9,12 +9,14 @@ import {
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Rating from "@material-ui/lab/Rating";
-import { Link } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
+import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined';
 import Button from "@material-ui/core/Button";
-
+import { Checkbox } from "@material-ui/core";
+import demoapi from "axios/api";
 const useStyles = makeStyles((theme) => ({
   root: {
     fontFamily: "NotoSansCJKtc",
@@ -84,6 +86,42 @@ const lightTheme = createMuiTheme({
 export default function Commit(props) {
   const classes = useStyles();
   const data = props.data;
+
+  // const a = {...data};
+  // console.log(a);
+  const [checked, setChecked] = useState(data.like);
+  const handleChange = (id) => {
+    const uid = localStorage.getItem("userid")
+      ? localStorage.getItem("userid")
+      : 1;
+    setChecked(!checked);
+    demoapi
+      .post(
+        "/api/likeComment/?user_id=" + 1 + "&comment_id=" + 6 + "&status=" + 1
+      )
+      .then((res) => {
+        console.log(res.status);
+      });
+  };
+  const handleChange1 = (id) => {
+  
+    setChecked(!checked);
+    demoapi
+      .post(
+        "/api/likeComment/?user_id=" +
+          1 +
+          "&comment_id=" +
+          6 +
+          "&status=" +
+          "-1"
+      )
+      .then((res) => {
+        console.log(res.status);
+      });
+  };
+
+  // console.log(data[0]);
+
  
   return data.map((comment) => (
       
@@ -110,26 +148,42 @@ export default function Commit(props) {
         <Grid>{comment.comment}</Grid>
         <Grid item xs={12} sm={6}>
           <IconButton className={classes.thumbup}>
-            <ThumbUpIcon />
+            <Checkbox
+              checked={checked}
+              onChange={() => {
+                handleChange(data.id);
+              }}
+              icon={<ThumbUpIcon/>}
+              checkedIcon={<ThumbUpIcon style={{ color: "#3c5754" }} />}
+            />
+
             <Typography className={classes.thumbupText}>
-         
+
               {comment.like}
             </Typography>
-          </IconButton>
+        </IconButton>
 
           <IconButton className={classes.thumbup}>
-            <ThumbDownIcon />
+            <Checkbox
+              checked={checked}
+              onChange={() => {
+                handleChange1(data.id);
+              }}
+              icon={<ThumbDownIcon />}
+              checkedIcon={<ThumbDownIcon  style={{ color: "#3c5754" }}/>}
+            />
 
             <Typography className={classes.thumbupText}>
               {comment.dislike}
             </Typography>
           </IconButton>
         </Grid>
+
         <Grid className={classes.gridList}>
-          <img src={magetty} className={classes.magetty} />
-          <img src={magetty} className={classes.magetty} />
-          <img src={magetty} className={classes.magetty} />
-          <img src={magetty} className={classes.magetty} />
+          <img
+            src={data[0].comments_images[1].s3_url}
+            className={classes.magetty}
+          />
         </Grid>
         <Typography className={classes.time}>
           {comment.date}. 來回時間: {Math.round(comment.costTime/60)}h {comment.costTime%60}m 
