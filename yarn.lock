@@ -13347,9 +13347,9 @@ svgo@^1.0.0, svgo@^1.2.2:
     util.promisify "~1.0.0"
 
 swiper@^6.5.2:
-  version "6.5.2"
-  resolved "https://registry.npm.taobao.org/swiper/download/swiper-6.5.2.tgz#c72596486ed91ce63d0cf4e96a551494fcd352a0"
-  integrity sha1-xyWWSG7ZHOY9DPTpalUUlPzTUqA=
+  version "6.5.3"
+  resolved "https://registry.npm.taobao.org/swiper/download/swiper-6.5.3.tgz?cache=0&sync_timestamp=1617252954867&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fswiper%2Fdownload%2Fswiper-6.5.3.tgz#ff42617dd87277bd0f622c729572d3db47bee225"
+  integrity sha1-/0Jhfdhyd70PYixylXLT20e+4iU=
   dependencies:
     dom7 "^3.0.0"
     ssr-window "^3.0.0"

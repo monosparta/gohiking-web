@@ -25,7 +25,7 @@ export default function TagSelector(props) {
         inputProps={{ "aria-label": "Without label" }}
       >
         <MenuItem value={0} disabled>
-          請選擇{props.index}
+          請選擇
         </MenuItem>
         {imageLabel.map((item, i) => (
           <MenuItem value={item.value} key={i}>

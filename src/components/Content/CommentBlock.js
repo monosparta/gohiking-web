@@ -60,21 +60,28 @@ const useStyles = makeStyles(theme => ({
 const CommentBlock = () => {
   const history = useHistory();
   const classes = useStyles();
-  const { register, errors, toggleDrawer, handleImage } = useContext(
-    CommentContext
-  );
+  const {
+    register,
+    errors,
+    toggleDrawer,
+    handleImage,
+    setshowAlert
+  } = useContext(CommentContext);
   const inputRef = useRef();
   const triggerImageInput = () => {
     //觸發照片input
     inputRef.current.click();
   };
   const handleInputChange = event => {
+    console.log("qwertyuiop");
     if (!event.target.files[0]) return;
     if (event.target.files.length > 15) {
-      // setshowAlert(true);
+      setshowAlert("圖片數量不可大於15張! 請重新選擇圖片。");
+      return;
     }
     if (event.target.files[0].size > 1048576) {
-      // setshowAlert(true);
+      setshowAlert("圖片不可大於1mb! 請重新選擇圖片。");
+      return;
     } else {
       handleImage(event);
       toggleDrawer(true);
@@ -125,7 +132,6 @@ const CommentBlock = () => {
                     className={classes.textField}
                     fullWidth
                     placeholder="分鐘"
-                    onChange={event => handleInputChange(event)}
                     InputProps={{
                       style: {
                         fontFamily: "Arial",

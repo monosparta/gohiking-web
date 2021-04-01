@@ -9,6 +9,7 @@ import {
   Typography
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -36,6 +37,7 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function CustomAppBar(props) {
   const classes = useStyles();
+  const history = useHistory();
   return (
     <div className={classes.root}>
       <AppBar
@@ -49,12 +51,13 @@ export default function CustomAppBar(props) {
               edge="start"
               color="inherit"
               aria-label="back"
-              // onClick={() =>
-              //   history.push({
-              //     pathname: "/editAccount",
-              //     state: { pData: pData }
-              //   })
-              // }
+              onClick={() => {
+                if (props.handleBack) {
+                  props.handleBack();
+                } else {
+                  history.goBack();
+                }
+              }}
             >
               <ArrowBackIcon />
             </IconButton>

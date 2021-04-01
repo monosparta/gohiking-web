@@ -28,6 +28,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Alert from "@material-ui/lab/Alert";
 import * as yup from "yup";
 import ImageDrawer from "./ImageDrawer";
+import freeDemoStyle from "asset/jss/material-kit-pro-react/views/presentationSections/freeDemoStyle";
+import demoapi from "axios/api";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,18 +66,22 @@ const useStyles = makeStyles(theme => ({
 
 const CommentPage = () => {
   const classes = useStyles();
-  const [showAlert, setshowAlert] = useState(false);
+  const [showAlert, setshowAlert] = useState("");
   const [openDrawer, setOpenDrawer] = useState(false);
   const [files, setFiles] = useState([]);
+  const [tag, setTag] = useState([]);
+
   const handleAlertClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-    setshowAlert(false);
+    setshowAlert("");
   };
+
   const toggleDrawer = state => {
     setOpenDrawer(state);
   };
+
   const handleImage = event => {
     // let filesArray = [];
     // for (let i = 0; i < event.target.files.length; i++) {
@@ -129,7 +135,22 @@ const CommentPage = () => {
     handleSubmit
   } = useForm({ resolver: yupResolver(schema) });
   const onSubmit = data => {
+    console.log(files);
+    console.log(tag);
     console.log(data);
+    const formatData = {
+      user_id: 1,
+      trail_id: 5,
+      date: moment(data.hikingDate).format("YYYY-MM-DD"),
+      star: data.ratingStar,
+      difficulty: data.difficulty,
+      beauty: data.view,
+      duration: data.timeSpentH * 60 + data.timeSpentM,
+      content: data.comment
+      // images: freeDemoStyle,
+      // tag_id: tag
+    };
+    demoapi.post("/api/comment/");
   };
   return (
     <>
@@ -138,6 +159,8 @@ const CommentPage = () => {
           openDrawer={openDrawer}
           toggleDrawer={toggleDrawer}
           selectedImages={files}
+          setTag={setTag}
+          setFiles={setFiles}
         />
         <CommentContext.Provider
           value={{
@@ -147,7 +170,8 @@ const CommentPage = () => {
             getValues: getValues,
             errors: errors,
             toggleDrawer: toggleDrawer,
-            handleImage: handleImage
+            handleImage: handleImage,
+            setshowAlert: setshowAlert
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -168,7 +192,7 @@ const CommentPage = () => {
           autoHideDuration={3000}
           onClose={handleAlertClose}
         >
-          <Alert severity="error">圖片不可大於1mb! 請重新選擇圖片。</Alert>
+          <Alert severity="error">{showAlert}</Alert>
         </Snackbar>
       </div>
     </>
