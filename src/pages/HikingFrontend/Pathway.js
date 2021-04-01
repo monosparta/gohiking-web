@@ -56,12 +56,11 @@ import MuiAlert from '@material-ui/lab/Alert';
     };
     const pathwayCarousel = { //控制react-slick的properties
         dots: false,
-        arrows: true,
+        arrows: false,
         variableWidth: true,
         swipeToSlide: true,
         swipe: true,
         infinite: false,
-        speed:300,
     };
     const twoRowCarousel = {
         rows: 2,
@@ -84,7 +83,7 @@ import MuiAlert from '@material-ui/lab/Alert';
     const Pathway = () =>{
         const classes = useStyles();
         const history = useHistory();        
-        const imagePath = pathwayInfo.map;
+        const trail_id = pathwayInfo.trail_id;
         const[value, setValue] = useState('');
         const [open, setOpen] = React.useState(true);
         const handleClose = () => {
@@ -323,7 +322,7 @@ import MuiAlert from '@material-ui/lab/Alert';
                     <Typography style={{fontSize:'16px', fontWeight: '700'}}>步道紀錄與評價</Typography>
                         <span style= {{flexGrow: 1}} />
                         <Typography style={{fontSize:'14px', color: '#00d04c', fontWeight:'900'}} >顯示更多</Typography>
-                        <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push('/announcement')}}>
+                        <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push('/trailComment')}}>
                             <ChevronRightIcon></ChevronRightIcon>
                         </IconButton>                                            
                     </div>
@@ -365,16 +364,16 @@ import MuiAlert from '@material-ui/lab/Alert';
                                     </div>
                                 ))}
                             </Slider>                       
-                    </div>
+                    </div>       
                     <br /><br /><br /><br />
                     <Snackbar open={open} onClose={handleClose}>
-                        <Alert severity="info" onClose={handleClose}>目前全線封閉，暫停開放。</Alert>
+                    <Alert severity="info" onClose={handleClose}>目前全線封閉，暫停開放。</Alert>
                     </Snackbar>
                     <BottomNavigation
                     showLabels
                     className={classes.bottomNavigation}
                     >
-                    <BottomNavigationAction onClick={() => (history.push('/add_comment'))} label={<Typography className={`${classes.descText} ${classes.noWrap}`} color={'textPrimary'}>評論步道</Typography>} icon={<CommentIcon color={'secondary'} />} className={classes.leftNavigation} />
+                    <BottomNavigationAction onClick={() => (history.push({pathname:'/commentPage'}))} label={<Typography className={`${classes.descText} ${classes.noWrap}`} color={'textPrimary'}>評論步道</Typography>} icon={<CommentIcon color={'secondary'} />} className={classes.leftNavigation} />
                     <BottomNavigationAction label={
                         <GPSMapLink
                         text={
@@ -387,18 +386,18 @@ import MuiAlert from '@material-ui/lab/Alert';
                     } className={classes.rightNavigation} />
                     </BottomNavigation>
 
-                    {/* <BottomNavigation
-                        value={value}
-                        onChange={(event, newValue) => {
-                            setValue(newValue);
-                        }}
-                        showLabels
-                        className={classes.bottomNavigation}
-                        >                            
-                        <BottomNavigationAction  className={classes.leftNavigation} label="評論步道" icon={<RestoreIcon />} />                            
-                        <BottomNavigationAction  className={classes.rightNavigation}  label="打開GPS"/>
+                        {/* <BottomNavigation
+                            value={value}
+                            onChange={(event, newValue) => {
+                                setValue(newValue);
+                            }}
+                            showLabels
+                            className={classes.bottomNavigation}
+                            >                            
+                            <BottomNavigationAction  className={classes.leftNavigation} label="評論步道" icon={<RestoreIcon />} />                            
+                            <BottomNavigationAction  className={classes.rightNavigation}  label="打開GPS"/>
 
-                    </BottomNavigation> */}
+                        </BottomNavigation> */}
                 </div>
             </ThemeProvider>
         )
