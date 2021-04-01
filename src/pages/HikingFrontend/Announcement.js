@@ -14,6 +14,8 @@ import { pathwayInfo } from 'data/pathway';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import fontStyle from '../../assets/jss/fontStyle';
+import {ThemeProvider} from '@material-ui/core/styles';
+import darkTheme from '../../config/darkTheme';
 const style = {
     ...basicStyle,
     ...fontStyle,
@@ -31,24 +33,26 @@ const Attraction = () => {
     }
     return (
         <>
-            <AppBar className={classes.appBar} position="static">
-                <Toolbar>
-                    <ArrowBackIcon className={classes.arrow} onClick={backhandleClick} />
-                    <Typography className={classes.titleText}>步道消息</Typography>
-                </Toolbar>
-            </AppBar>
-            <div className={classes.basicPaper} >
-                {attrData.map((news, i) => (
-                    <AnnouncementCard
-                        pathLink={news.link}
-                        coverImage={news.img}
-                        title={news.title}
-                        date={news.date}
-                        source={news.source}
-                        key={i}
-                    />
-                ))}
-            </div>
+            <ThemeProvider theme={darkTheme}>
+                <AppBar className={classes.appBar} position="static">
+                    <Toolbar>
+                        <ArrowBackIcon className={classes.arrow} onClick={backhandleClick} />
+                        <Typography className={classes.titleText}>步道消息</Typography>
+                    </Toolbar>
+                </AppBar>
+                <div className={classes.basicPaper} >
+                    {attrData.map((news, i) => (
+                        <AnnouncementCard
+                            pathLink={news.link}
+                            coverImage={news.img}
+                            title={news.title}
+                            date={news.date}
+                            source={news.source}
+                            key={i}
+                        />
+                    ))}
+                </div>
+            </ThemeProvider>
        </>
     );
 };
