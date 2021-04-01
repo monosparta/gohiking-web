@@ -108,7 +108,7 @@ export default function TrailCommit() {
         <ThemeProvider theme={lightTheme}>
           <AppBar position="static">
             <Toolbar>
-              <Link to={{ pathname: "/home" }}>
+              <Link to={{ pathname: "/pathway" }}>
                 <IconButton
                   edge="start"
                   className={classes.menuButton}

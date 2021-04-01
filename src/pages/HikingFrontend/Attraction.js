@@ -62,7 +62,7 @@ function allyProps(index) {
 
 const Attraction = () => {
     const history = useHistory();
-    const [tab, setTab] = React.useState(0);
+    const [tab, setTab] = React.useState(0);    
     const classes = useStyles();
     const handleChange = (event, newValue) => {
         setTab(newValue);

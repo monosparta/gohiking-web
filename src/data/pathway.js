@@ -219,6 +219,7 @@ export const pathwayFavorite = {
 };
 
 export const pathwayInfo = {
+  trail_id: 3,
   favorite: true,
   name: '翠峰湖環山步道',
   distance: 25.2,
