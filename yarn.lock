@@ -11622,9 +11622,9 @@ react-hook-geolocation@^1.0.7:
   integrity sha1-TvJlMY3Oj9P09ASWYBVxqtOIdRE=
 
 react-hover@^2.0.0:
-  version "1.4.0"
-  resolved "https://registry.npm.taobao.org/react-hover/download/react-hover-1.4.0.tgz#2f1e1423b17626529bfb196b0f81876e2e4bafb5"
-  integrity sha1-Lx4UI7F2JlKb+xlrD4GHbi5Lr7U=
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-hover/-/react-hover-2.0.0.tgz#b17ccbe56388700c5cc8bba3a144c370854c97ab"
+  integrity sha512-3fb7OsDCwR4CWBp+1gpy5LezyQnlCV5LxIk3FM+9RcO7ckMh+27rPHrPkld7jfBPO/ZTvNANkhZU9IFynSn+ZQ==
   dependencies:
     prop-types "^15.5.10"
 
