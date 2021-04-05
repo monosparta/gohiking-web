@@ -375,7 +375,11 @@ import MuiAlert from '@material-ui/lab/Alert';
                         showLabels
                         className={classes.bottomNavigation}
                         >
-                        <BottomNavigationAction onClick={() => (history.push({pathname:'/commentPage'}))} label={<Typography className={`${classes.descText} ${classes.noWrap}`} color={'textPrimary'}>評論步道</Typography>} icon={<CommentIcon color={'secondary'} />} className={classes.leftNavigation} />
+                        <BottomNavigationAction onClick={() => (history.push({
+                            pathname:'/commentPage',
+                            state: {trail_id: {trail_id}},
+                            }))} 
+                            label={<Typography className={`${classes.descText} ${classes.noWrap}`} color={'textPrimary'}>評論步道</Typography>} icon={<CommentIcon color={'secondary'} />} className={classes.leftNavigation} />
                         <BottomNavigationAction label={
                             <GPSMapLink
                             text={
