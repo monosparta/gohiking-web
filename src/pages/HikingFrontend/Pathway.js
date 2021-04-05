@@ -309,7 +309,10 @@ import MuiAlert from '@material-ui/lab/Alert';
                         {pathwayInfo.attraction.map((item, i) => (
                             <div key={i}>
                                 <Button variant={'contained'} style={{ backgroundColor: '#abddeb', minWidth:'83px', margin:'0 0 16px 16px' }}
-                                onClick={()=>{history.push('/attraction')}}
+                                onClick={()=>{history.push({
+                                    pathname: '/attraction',
+                                    state: { detail: {i} },
+                                })}}
                                 disableElevation>{item.category}</Button>
                             </div>
                         ))}
@@ -369,20 +372,20 @@ import MuiAlert from '@material-ui/lab/Alert';
                     <Alert severity="info" onClose={handleClose}>目前全線封閉，暫停開放。</Alert>
                     </Snackbar>
                     <BottomNavigation
-                    showLabels
-                    className={classes.bottomNavigation}
-                    >
-                    <BottomNavigationAction onClick={() => (history.push({pathname:'/commentPage'}))} label={<Typography className={`${classes.descText} ${classes.noWrap}`} color={'textPrimary'}>評論步道</Typography>} icon={<CommentIcon color={'secondary'} />} className={classes.leftNavigation} />
-                    <BottomNavigationAction label={
-                        <GPSMapLink
-                        text={
-                            <Typography className={`${classes.mainText} ${classes.boldFont}`} >
-                            打開GPS路線
-                            </Typography>
-                        }
-                        destination={pathwayInfo.name + pathwayInfo.trailhead[1].name}
-                        />
-                    } className={classes.rightNavigation} />
+                        showLabels
+                        className={classes.bottomNavigation}
+                        >
+                        <BottomNavigationAction onClick={() => (history.push({pathname:'/commentPage'}))} label={<Typography className={`${classes.descText} ${classes.noWrap}`} color={'textPrimary'}>評論步道</Typography>} icon={<CommentIcon color={'secondary'} />} className={classes.leftNavigation} />
+                        <BottomNavigationAction label={
+                            <GPSMapLink
+                            text={
+                                <Typography className={`${classes.mainText} ${classes.boldFont}`} >
+                                打開GPS路線
+                                </Typography>
+                            }
+                            destination={pathwayInfo.name + pathwayInfo.trailhead[1].name}
+                            />
+                        } className={classes.rightNavigation} />
                     </BottomNavigation>
 
                         {/* <BottomNavigation
