@@ -17,10 +17,8 @@ import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
 import AvatarUploadDialog from "components/Dialog/AvatarUploadDialog";
 import AvatarUploadDialogLogic from "components/Dialog/AvatarUploadDialogLogic";
-import { countryInfo } from "../../data/countryInfo";
 import PersonalPageLogic from "./personalPageLogic";
 import { useHistory } from "react-router";
-import ClipLoader from "react-spinners/ClipLoader";
 
 const useStyles = makeStyles(theme => ({
   root: {
