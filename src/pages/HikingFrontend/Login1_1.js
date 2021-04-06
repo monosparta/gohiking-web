@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   ErrorInfo:{
     width: '100%',
     height: '21px',
-    margin: '16px 263px 56px 0',
+    margin: '16px 0 32px 0',
     fontFamily: "NotoSansCJKtc",
     fontSize: '14px',
     fontWeight: 'normal',
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100px',
     height: '21px',
     fontFamily: "NotoSansCJKtc",
-    margin: '-77px 0 56px 263px',
+    margin: '-30px 0 56px 263px',
     fontSize: '14px',
     fontWeight: '500',
     fontStretch: 'normal',
@@ -104,6 +104,13 @@ export default function SignIn() {
   const classes = useStyles();
   const { register, handleSubmit, errors } = useForm()
   const axios = require('axios');
+  const [serverState, setServerState] = React.useState();
+  const handleServerResponse = (login, msg) => {
+    setServerState({
+      login,
+      msg
+    });
+  };
   //JSON
   let responsedJSON;
   //Go to ? Page
@@ -134,6 +141,7 @@ export default function SignIn() {
     .catch(function (error) {
       console.log('error');
       responsedJSON = error.response.data;
+      handleServerResponse(false, responsedJSON.error)
     })
     .finally(function () {
       console.log(responsedJSON);
@@ -150,29 +158,32 @@ export default function SignIn() {
         <Typography className={classes.Text}  textalign="left">
           電子信箱 
         </Typography>   
-          <TextField
-            inputRef={register({ required: true })}
-            className={classes.InputBackground}
-            id="email"
-            placeholder="請輸入你的電子信箱"
-            name="email"
-          />
+        <TextField
+          inputRef={register({ required: true })}
+          className={classes.InputBackground}
+          id="email"
+          placeholder="請輸入你的電子信箱"
+          name="email"
+        />
         <Typography className={classes.ErrorInfo}  textalign="left">
           {errors.email && "請輸入正確Email"}
         </Typography>  
         <Typography className={classes.Text}  textalign="left">
           密碼
         </Typography>  
-          <TextField
-            inputRef={register({ required: true, minLength: 8 })}
-            className={classes.InputBackground}
-            id="password"
-            placeholder="請輸入你的密碼"
-            name="password"
-            type="password"
-          />
+        <TextField
+          inputRef={register({ required: true, minLength: 8 })}
+          className={classes.InputBackground}
+          id="password"
+          placeholder="請輸入你的密碼"
+          name="password"
+          type="password"
+        />
         <Typography className={classes.ErrorInfo} >
           {errors.password && "密碼必須包含8個字元以上"}
+          {serverState && (
+          <Typography className={classes.ErrorInfo}>{serverState.msg}</Typography>
+          )}
         </Typography>  
         <Grid container justify="flex-end">
             <Link  onClick={GoToLogin1_2}>
