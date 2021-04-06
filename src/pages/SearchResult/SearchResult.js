@@ -7,7 +7,7 @@ import BackArrow from "../../components/TopBar/BackArrow";
 import TemporaryDrawer from "../../components/SideBar/Sidebar";
 import TrailCard from "../../components/Lists/TrailCard";
 import demoapi from "axios/api";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -25,10 +25,10 @@ function SearchResult(props) {
   const classes = useStyles();
   console.log(props); //印出SearchBar的aboutProps
   var kw = "";
-  const usehistory = useHistory();//link router 上一頁
+  const usehistory = useHistory(); //link router 上一頁
   //判斷是否有來自於上一個頁面的kw，若沒有則從localStorage取值
-  if (props.location.aboutProps !== undefined) {
-    kw = props.location.aboutProps.name;
+  if (props.location.state !== undefined) {
+    kw = props.location.state.name;
   } else {
     kw = localStorage.getItem("kw");
   }
@@ -44,9 +44,11 @@ function SearchResult(props) {
   }, [kw]);
   //搜尋function
   const searchApi = async kw => {
-    await demoapi.get("/api/trail?filters=title:" + kw+"&uuid=1").then(res => {
-      setSearchResult(res.data);
-    });
+    await demoapi
+      .get("/api/trail?filters=title:" + kw + "&uuid=1")
+      .then(res => {
+        setSearchResult(res.data);
+      });
   };
   //搜尋function2
   const searchApiSlideBar = async url => {
@@ -66,8 +68,11 @@ function SearchResult(props) {
         spacing={1}
       >
         <Grid item xs={12}>
-          <Link  onClick={() => {usehistory.goBack();
-              }}>
+          <Link
+            onClick={() => {
+              usehistory.push({ pathname: "/searchPage" });
+            }}
+          >
             <BackArrow />
           </Link>
         </Grid>
@@ -94,12 +99,16 @@ function SearchResult(props) {
           <div className={classes.text}>搜尋結果</div>
         </Grid>
         <Grid item xs={12} container direction="row">
-          {/* 步道list component */}
-          <GridList cellHeight={72} cols={1}>
-            {searchResult.map(trail => (
-              <TrailCard data={trail} />
-            ))}
-          </GridList>
+          {searchResult.length > 0 ? (
+            // {/* 步道list component */}
+            <GridList cellHeight={72} cols={1}>
+              {searchResult.map(trail => (
+                <TrailCard data={trail} />
+              ))}
+            </GridList>
+          ) : (
+            <>查無結果</>
+          )}
         </Grid>
       </Grid>
     </div>
