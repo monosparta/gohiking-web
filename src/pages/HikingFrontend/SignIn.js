@@ -177,6 +177,7 @@ export default function ImgMediaCard() {
       console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
       localStorage.setItem('userId',response2.data.userId);
+      localStorage.setItem('expireTime', response2.data.expireTime);
       history.push('/home');
     })
     .catch(function (error) {
@@ -200,6 +201,7 @@ export default function ImgMediaCard() {
       console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
       localStorage.setItem('userId',response2.data.userId);
+      localStorage.setItem('expireTime', response2.data.expireTime);
       history.push('/home');
     })
     .catch(function (error){
@@ -273,6 +275,7 @@ export default function ImgMediaCard() {
           console.log('====second response token====', response3.data.token);
           localStorage.setItem('token', response3.data.token);
           localStorage.setItem('userId',response3.data.userId);
+          localStorage.setItem('expireTime', response3.data.expireTime);
           history.push('/home');
         })
         .catch(function (error){

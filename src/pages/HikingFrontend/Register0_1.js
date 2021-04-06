@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
     const headers = {
       'Authorization': 'Bearer '+localStorage.getItem('token')
     }
-    console.log(headers);
+    // console.log(headers);
     const axios = require('axios');
     let responsedJson; // 將回傳的JSON先定義為變數，後面再賦值
     const onSubmit = async(data) => {
