@@ -113,7 +113,6 @@ export default function PathwayCard(props) {
         title,
         location,
         miles,
-        distance,
         favorite,
         yourlng,
         yourlat,
@@ -137,14 +136,14 @@ export default function PathwayCard(props) {
 
     return (
         <div>
-            <Grid container className={classes.gridcontain} spacing={2} spacing={2} direction='row'
+            <Grid container className={classes.gridcontain} spacing={2} direction='row'
                 justify='center'
                 alignItems='center'
 
             >
                 <Grid item className={classes.gridItem} xs={4}>
                     <ButtonBase >
-                        <img className={classes.img} src={avatar}  />
+                        <img alt="" className={classes.img} src={avatar}  />
                         <Checkbox
                             data-testid='checkFavorite'
                             checked={checked}

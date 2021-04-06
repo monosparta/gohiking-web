@@ -165,6 +165,7 @@ function NearByPathway() {
         }
         console.log('prepare to initial!');
         initial();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const secondUpdate = useRef(true);
@@ -175,6 +176,7 @@ function NearByPathway() {
         }
         console.log("GPS is fired now!");
         GPS();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [yes]);
 
    
@@ -199,6 +201,7 @@ function NearByPathway() {
 
     useEffect(() => {
         console.log('searchChallenge:    ', searchMaple)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchFamily])
 
     return (
