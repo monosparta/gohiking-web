@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect, useLayoutEffect} from 'react';
+import React, {useState, useRef, useLayoutEffect} from 'react';
 import {createMuiTheme, makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
@@ -83,23 +83,23 @@ export default function Verify2(props){
               ...prevState,
               [id] : value
           }))
-          if(id=='code_one' && value.length >0){
+          if(id === 'code_one' && value.length >0){
               setNumber1(number1 = value); 
               console.log(number1);
               codeTwoInput.current.focus();
           }
           
-          if(id=='code_two' && value.length >0){
+          if(id === 'code_two' && value.length >0){
               setNumber2(number2 = value); 
               console.log(number2);
               codeThreeInput.current.focus();
           }
-          if(id=='code_three' && value.length >0){             
+          if(id === 'code_three' && value.length >0){             
               setNumber3(number3 = value); 
               console.log(number3);
               codeFourInput.current.focus();
           }
-          if(id=='code_four' && value.length >0){              
+          if(id === 'code_four' && value.length >0){              
               setNumber4(number4 = value); 
               console.log(number4);
         }
@@ -107,14 +107,14 @@ export default function Verify2(props){
     }
         const backspaceTrigger = (e) =>{
           if (e.keyCode === 8 && e.target.id ==='code_two'){
-            if(e.target.value != ''){
+            if(e.target.value !== ''){
               codeTwoInput.current.focus();
             }else{
               codeOneInput.current.focus();
             }
           }
           if (e.keyCode === 8 && e.target.id ==='code_three'){
-            if(e.target.value != ''){
+            if(e.target.value !== ''){
               codeThreeInput.current.focus();
             }else{
               codeTwoInput.current.focus();
@@ -157,6 +157,7 @@ export default function Verify2(props){
           }    
           console.log('code is like this Effect: ');
           postBack();      
+          // eslint-disable-next-line react-hooks/exhaustive-deps
         },[code]);
       
       // 這邊是POST的部分

@@ -16,7 +16,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import basicStyle from 'assets/jss/basicStyle';
 import { pathwayInfo } from 'data/pathway';
 import * as PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ads from '../../assets/img/assets-for-demo/cards-test.png';
 import fontStyle from '../../assets/jss/fontStyle';
@@ -60,13 +60,21 @@ function allyProps(index) {
     };
 }
 
-const Attraction = () => {
+const Attraction = (props) => {
     const history = useHistory();
-    const [tab, setTab] = React.useState(0);    
+    const [tab, setTab] = useState(0);    
     const classes = useStyles();
     const handleChange = (event, newValue) => {
         setTab(newValue);
     };
+    // 以下console.log是拿來debug用的
+    // console.log('props is like:', props);
+    // console.log('props.location.state.detail is like: ', props.location.state.detail.i);
+    useEffect(() =>{
+        setTab(props.location.state.detail.i);
+    },[props])
+    console.log('temp is like: ',tab);
+
     return (
         <ThemeProvider theme={darkTheme}>
             <div>
