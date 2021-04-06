@@ -208,14 +208,14 @@ export default function ImgMediaCard() {
   }
 
   const componentClicked =()=>console.log("clicked!")
-  const state={
-      isLoggedIn:false,
-      userID:'',
-      name:'',
-      email:'',
-      picture:''
+  // const state={
+  //     isLoggedIn:false,
+  //     userID:'',
+  //     name:'',
+  //     email:'',
+  //     picture:''
 
-  }
+  // }
 
 // Apple第三方登入
 
@@ -238,7 +238,7 @@ export default function ImgMediaCard() {
           var name ='';
           var counter = false;
           s.split("").forEach(character => {
-            if(character == '@' || counter == true){
+            if(character === '@' || counter === true){
               counter = true;
             }else{
               name = name + character;
@@ -257,12 +257,11 @@ export default function ImgMediaCard() {
         })
         .catch((error) => {
           // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
+          console.log('error message:  ', error.message);
           // The email of the user's account used.
-          var email = error.email;
+          // var email = error.email;
           // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
+          // var credential = error.credential;
         });
         // var headers = {"Access-Control-Allow-Origin": "https://gohiking-server.herokuapp.com:443"} //#####
     }
@@ -288,6 +287,7 @@ export default function ImgMediaCard() {
         return;
       }
       signInWithAppleChangePage();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     },[appleData]);
 
   return (   
@@ -308,7 +308,7 @@ export default function ImgMediaCard() {
           <GoogleLogin
             clientId="184500302467-kn257cjsh71fconchpf7dmd52qmdvkkg.apps.googleusercontent.com"
             render={renderProps => (
-              <ColorButton1 className = {classes.google} onClick={renderProps.onClick} disabled={renderProps.disabled} variant = "contained" startIcon={<img src = {googleIcon} style={{height: '18px', weight: '18px'}}/>}>透過Google登入</ColorButton1>
+              <ColorButton1 className = {classes.google} onClick={renderProps.onClick} disabled={renderProps.disabled} variant = "contained" startIcon={<img src = {googleIcon} alt = 'google_icon' style={{height: '18px', weight: '18px'}}/>}>透過Google登入</ColorButton1>
             )}
             buttonText="使用 Google 登入"
             onSuccess={responseGoogle}

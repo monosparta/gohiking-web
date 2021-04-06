@@ -38,6 +38,9 @@ import Rating from "@material-ui/lab/Rating";
 import CommentIcon from '@material-ui/icons/Comment';
 import GPSMapLink from '../components/GPSMapLink/GPSMapLink';
 import MuiAlert from '@material-ui/lab/Alert';
+import demoapi from "../../axios/api";
+import { Checkbox } from "@material-ui/core";
+import { Favorite, FavoriteBorder } from "@material-ui/icons";
 
     const style = {
         ...fontStyle,
@@ -83,11 +86,24 @@ import MuiAlert from '@material-ui/lab/Alert';
         const classes = useStyles();
         const history = useHistory();        
         const trail_id = pathwayInfo.trail_id;
-        const[value, setValue] = useState('');
+        const [checked, setChecked] = useState(true);
         const [open, setOpen] = React.useState(true);
         const handleClose = () => {
             setOpen(false);
           };
+
+        var data = pathwayInfo.trail_id;
+        const handleChange = id => {
+            const uid = localStorage.getItem("userid")
+            ? localStorage.getItem("userid")
+            : 1;
+            setChecked(!checked);
+            demoapi
+                .post("/api/favorite/?user_id=" + uid + "&trail_id=" + id)
+                .then(res => {
+                console.log(res.status);
+                });
+        };
       
         const chartSetting={
             series: [{
@@ -154,6 +170,19 @@ import MuiAlert from '@material-ui/lab/Alert';
                             </IconButton>               
                         </Toolbar>
                     </AppBar>
+
+                    <Checkbox
+                        checked= {true}
+                        onChange={() => {
+                        handleChange(data);
+                        }}
+                        icon={<FavoriteBorder fontSize={"small"} />}
+                        checkedIcon={
+                        <Favorite fontSize={"small"} style={{ color: "#FFF" }} />
+                        }
+                        className={classes.favorite}
+                        name="favorite"
+                    />
                     
                     <div style={{display: 'flex',}}>
                         <Typography variant="h6" className={classes.titleXLL} style={{marginLeft: '8px', marginTop: '8px', fontWeight: '900'}} >
@@ -262,7 +291,7 @@ import MuiAlert from '@material-ui/lab/Alert';
                     <div style={{marginLeft:'8px',}}>
                         {pathwayInfo.announcement.slice(0,3).map((news, i) => (
                             <AnnouncementCard
-                            pathLink={news.link}
+                            // pathLink={news.link}
                             coverImage={news.img}
                             title={news.title}
                             date={news.date}
@@ -339,7 +368,7 @@ import MuiAlert from '@material-ui/lab/Alert';
                             <Slider {...pathwayCarousel}>
                                 {pathwayInfo.article.map((item, i) => (
                                     <div key={i}>
-                                        <img src={item.img} style={{width:'174px', height:'96px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
+                                        <img src={item.img} alt = 'related_article_images' style={{width:'174px', height:'96px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
                                         <Typography style={{fontSize:'14px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.title}</Typography>
                                         <Typography style={{fontSize:'10px', color:'979797', marginBottom:'16px',marginLeft:'16px',}}>{item.date}</Typography>
                                     </div>
@@ -355,12 +384,12 @@ import MuiAlert from '@material-ui/lab/Alert';
                                     <div key={i}>
                                         <Grid container spacing={0}>
                                             <Grid item xs={4}>
-                                                <img src={item.img} style={{width:'104px', height:'72px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
+                                                <img src={item.img} alt = 'similar_pathway_images' style={{width:'104px', height:'72px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
                                             </Grid>
                                             <Grid item xs={8}>
                                                 <Typography style={{fontSize:'16px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.pathTitle}</Typography>
-                                                <Typography style={{fontSize:'14px', color:'979797',marginLeft:'16px', color: '#979797', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden',}}>{item.pathLocation}</Typography>
-                                                <Typography style={{fontSize:'12px', color:'979797', marginBottom:'16px',marginLeft:'16px', color: '#979797'}}>全程約 {item.pathMiles} km</Typography>
+                                                <Typography style={{fontSize:'14px',marginLeft:'16px', color: '#979797', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden',}}>{item.pathLocation}</Typography>
+                                                <Typography style={{fontSize:'12px', color:'#979797', marginBottom:'16px',marginLeft:'16px',}}>全程約 {item.pathMiles} km</Typography>
                                             </Grid>
                                         </Grid>
                                     </div>
