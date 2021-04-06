@@ -87,8 +87,26 @@ import MuiAlert from '@material-ui/lab/Alert';
         const [open, setOpen] = React.useState(true);
         const handleClose = () => {
             setOpen(false);
-          };
-      
+        };
+        
+        const handleShare = () => {
+            if (navigator.share) {
+                console.log("Congrats! Your browser supports Web Share API");
+                navigator
+                    .share({
+                        url: `https://share.toogoodtogo.com/store/1006/milestones/meals-saved/`
+                    })
+                    .then(() => {
+                        console.log("Sharing successfull");
+                    })
+                    .catch(() => {
+                        console.log("Sharing failed");
+                    }); 
+            } else {
+                console.log("Sorry! Your browser does not support Web Share API");
+            }
+        };
+
         const chartSetting={
             series: [{
                 name: 'Series 1',
@@ -150,7 +168,7 @@ import MuiAlert from '@material-ui/lab/Alert';
                                 <FavoriteIcon />  {/*這邊要想辦法串收藏 */}
                             </IconButton>        
                             <IconButton edge="end" color="inherit" style = {{marginLeft: '24px',}} aria-label="share article" onClick={() => {}}>
-                                <ShareIcon />  {/*這邊要想辦法串第三方分享 */}
+                                <ShareIcon onClick={handleShare} />  {/*這邊要想辦法串第三方分享 */}
                             </IconButton>               
                         </Toolbar>
                     </AppBar>
