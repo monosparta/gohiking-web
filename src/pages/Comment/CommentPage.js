@@ -1,19 +1,10 @@
 import {
   makeStyles,
-  TextField,
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-  withStyles,
-  Slider,
   Snackbar,
-  Drawer,
-  AppBar
+  Backdrop,
+  CircularProgress
 } from "@material-ui/core";
 import CommentBlock from "components/Content/CommentBlock";
-import Rating from "@material-ui/lab/Rating";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
 import DateBlock from "components/Content/DateBlock";
 import RatingBlock from "components/Content/RatingBlock";
 import SliderBlock from "components/Content/SliderBlock";
@@ -22,14 +13,14 @@ import { CommentContext } from "contexts/CommentContext";
 import { DifficultyLabel } from "data/difficulty";
 import { ViewLabel } from "data/viewLabel";
 import moment from "moment";
-import React, { createContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Alert from "@material-ui/lab/Alert";
 import * as yup from "yup";
 import ImageDrawer from "./ImageDrawer";
-import freeDemoStyle from "asset/jss/material-kit-pro-react/views/presentationSections/freeDemoStyle";
 import demoapi from "axios/api";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,16 +52,23 @@ const useStyles = makeStyles(theme => ({
     fontSize: 16,
     margin: 16,
     float: "right"
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff"
   }
 }));
 
 const CommentPage = () => {
+  const history = useHistory();
   const classes = useStyles();
   const [showAlert, setshowAlert] = useState("");
   const [openDrawer, setOpenDrawer] = useState(false);
   const [files, setFiles] = useState([]);
   const [tag, setTag] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
+  //開關警示通知
   const handleAlertClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -78,17 +76,17 @@ const CommentPage = () => {
     setshowAlert("");
   };
 
+  //開關選擇標籤頁面
   const toggleDrawer = state => {
     setOpenDrawer(state);
   };
 
+  //設置選取的圖片
   const handleImage = event => {
-    // let filesArray = [];
-    // for (let i = 0; i < event.target.files.length; i++) {
-    //   filesArray.push(URL.createObjectURL(event.target.files[i]));
-    // }
     setFiles(event.target.files);
   };
+
+  //表單驗證機制
   const schema = yup.object().shape({
     hikingDate: yup
       .date()
@@ -126,6 +124,7 @@ const CommentPage = () => {
       .required("請填寫花費時間"),
     comment: yup.string().required("請撰寫評論")
   });
+  //react hook form
   const {
     register,
     control,
@@ -134,23 +133,41 @@ const CommentPage = () => {
     errors,
     handleSubmit
   } = useForm({ resolver: yupResolver(schema) });
+
+  //通過驗證後表單送出
   const onSubmit = data => {
-    console.log(files);
-    console.log(tag);
-    console.log(data);
-    const formatData = {
-      user_id: 1,
-      trail_id: 5,
-      date: moment(data.hikingDate).format("YYYY-MM-DD"),
-      star: data.ratingStar,
-      difficulty: data.difficulty,
-      beauty: data.view,
-      duration: data.timeSpentH * 60 + data.timeSpentM,
-      content: data.comment
-      // images: freeDemoStyle,
-      // tag_id: tag
-    };
-    demoapi.post("/api/comment/");
+    //跳出載入圈ㄑㄢ
+    setIsLoading(true);
+    //打包資料
+    const fd = new FormData();
+    fd.append("user_id", 1);
+    fd.append("trail_id", 5);
+    fd.append("date", moment(data.hikingDate).format("YYYY-MM-DD"));
+    fd.append("star", data.ratingStar);
+    fd.append("difficulty", data.difficulty);
+    fd.append("beauty", data.view);
+    fd.append("duration", data.timeSpentH * 60 + data.timeSpentM);
+    fd.append("content", data.comment);
+
+    if (files.length > 0 && tag.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        fd.append("images[" + i + "]", files[i]);
+        fd.append("tag_id[" + i + "]", tag[i]);
+      }
+    }
+    //post資料
+    demoapi
+      .post("/api/comment/", fd, {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          history.push("/trailComment");
+        }
+      });
   };
   return (
     <>
@@ -175,15 +192,20 @@ const CommentPage = () => {
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
+            {/* AppBar */}
             <CustomAppBar title="評論步道" back={true} next="發布" />
+            {/* 日期區塊 */}
             <DateBlock />
+            {/* 評價區塊 */}
             <RatingBlock />
+            {/* 滑動選擇器區塊 */}
             <SliderBlock
               title="難易度"
               label={DifficultyLabel}
               name="difficulty"
             />
             <SliderBlock title="景色" label={ViewLabel} name="view" />
+            {/* 其他區塊 */}
             <CommentBlock />
           </form>
         </CommentContext.Provider>
@@ -195,6 +217,9 @@ const CommentPage = () => {
           <Alert severity="error">{showAlert}</Alert>
         </Snackbar>
       </div>
+      <Backdrop className={classes.backdrop} open={isLoading}>
+        <CircularProgress />
+      </Backdrop>
     </>
   );
 };

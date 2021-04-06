@@ -1,5 +1,5 @@
 import demoapi from "axios/api";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const PersonalPageLogic = (info = null) => {
   const [isLoading, setisLoading] = useState(info ? false : true);

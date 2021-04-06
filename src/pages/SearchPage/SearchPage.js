@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   makeStyles,
   createMuiTheme,
@@ -44,15 +44,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SearchPage() {
-    const classes = useStyles();
-    const [collection, setCollection] = useState([]);
-    const collectionData = async () => {
-        const Data = await demoapi.get("api/collection");
-        setCollection(Data.data);
-    };
-    useEffect(() => {
-        collectionData();
-    }, []);
+  const classes = useStyles();
+  const [collection, setCollection] = useState([]);
+  const collectionData = async () => {
+    const Data = await demoapi.get("api/collection");
+    setCollection(Data.data);
+  };
+  useEffect(() => {
+    collectionData();
+  }, []);
 
   return (
     <>
@@ -62,16 +62,15 @@ function SearchPage() {
           <Container maxWidth="sm">
             <SearchBar />
             <div className={classes.quitSearchText}>快速搜尋</div>
-                <Grid container spacing={2}>
-                    <CollectionList data={collection}></CollectionList>
-                </Grid>
-            </Container>
-            <Navigation dfValue={1} />
-            
-            </ThemeProvider>
-            </div>
-        </>
-    )
+            <Grid container spacing={2}>
+              <CollectionList data={collection} />
+            </Grid>
+          </Container>
+          <Navigation dfValue={1} />
+        </ThemeProvider>
+      </div>
+    </>
+  );
 }
 
 export default SearchPage;

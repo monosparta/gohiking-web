@@ -1,11 +1,8 @@
 import {
-  Box,
-  Button,
   Drawer,
   Grid,
   makeStyles,
   MenuItem,
-  TextField,
   Typography,
   Select
 } from "@material-ui/core";
@@ -18,7 +15,6 @@ import "swiper/swiper.scss";
 import "swiper/components/pagination/pagination.scss";
 import "./ImageDrawer.css";
 import { useForm } from "react-hook-form";
-import TagSelector from "./TagSelector";
 
 SwiperCore.use([Pagination]);
 const useStyles = makeStyles(theme => ({
@@ -70,28 +66,40 @@ export default function ImageDrawer(props) {
   const toggleDrawer = props.toggleDrawer;
   const setTag = props.setTag;
   const files = props.selectedImages;
-  const [selectors, setSelectors] = useState([]);
-  const [images, setImages] = useState([]);
+  const [selectors, setSelectors] = useState([]); //紀錄標籤陣列
+  const [images, setImages] = useState([]); //顯示圖片陣列
   const [error, setError] = useState(false);
-  const { handleSubmit } = useForm();
+  const { handleSubmit } = useForm(); //react hook form
   const onSubmit = data => {
+    //送出表單
+    //檢查是否有未選擇標籤的圖片
     if (selectors.includes(0)) {
       setError(true);
       return;
     } else {
-      setTag([...[], selectors]);
+      setError(false);
+      setTag(selectors);
       console.log(selectors);
       toggleDrawer(false);
     }
   };
   const handleBack = () => {
-    toggleDrawer(false);
+    //返回按鈕
+    if (selectors.includes(0)) {
+      setError(true);
+      return;
+    } else {
+      setError(false);
+      setTag(selectors);
+      console.log(selectors);
+      toggleDrawer(false);
+    }
   };
-  const [TagSelectors, setTagSelectors] = useState([]);
 
-  // Slides current index
+  //目前圖片index
   const [currentIndex, updateCurrentIndex] = useState(0);
 
+  //輪播器設定
   const params = {
     initialSlide: 3,
     pagination: {
@@ -108,19 +116,19 @@ export default function ImageDrawer(props) {
   };
 
   const handleTag = (index, value) => {
+    //選擇完標籤將標籤id記錄到陣列中
     let newArr = [...selectors];
     newArr[index] = value;
     setSelectors(newArr);
   };
 
   useEffect(() => {
+    //檢查是否有圖片被選擇
     if (files.length < 1) {
-      console.log("null");
-      console.log(selectors);
+      return;
     } else {
-      console.log("yes");
       for (let i = 0; i < files.length; i++) {
-        setTagSelectors(e => [...e, <TagSelector index={i} img={files} />]);
+        // setTagSelectors(e => [...e, <TagSelector index={i} img={files} />]);
         setImages(e => [...e, URL.createObjectURL(files[i])]);
         setSelectors(e => [...e, 0]);
       }
@@ -165,8 +173,8 @@ export default function ImageDrawer(props) {
             </Grid>
             <Grid item xs={12} className={classes.inputBox}>
               <Typography className={classes.mainTextWeight}>標籤</Typography>
-              {/* <div className={classes.inputBox}>{TagSelectors[currentIndex]}</div> */}
               <div>
+                {/* 下拉選單 */}
                 <Select
                   fullWidth
                   value={selectors[currentIndex]}
