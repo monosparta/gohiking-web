@@ -163,7 +163,7 @@ export default function ImgMediaCard() {
   }
 // Google第三方登入
   const responseGoogle = async(response) => {
-    console.log(response);
+    console.log('response: ', response);
     var data = {
       'email': response.profileObj.email,
       'name': response.profileObj.name,
@@ -171,13 +171,15 @@ export default function ImgMediaCard() {
       'avatar': response.profileObj.imageUrl,
       'token': response.tokenId,
     }
-    console.log('data: ' + data);
-    await axios.post('https://gohiking-server.herokuapp.com/api/auth/social/callback', data).then(function(response2){
+    console.log('data: ', data);
+    var headers= {"Access-Control-Allow-Origin": "*"}
+    await axios.post('https://staging-server.gohiking.app/api/auth/social/callback', data, headers).then(function(response2){
       console.log('====second response==== ',response2);
       console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
       localStorage.setItem('userId',response2.data.userId);
-      localStorage.setItem('expireTime', response2.data.expireTime);
+      const now = new Date()
+      localStorage.setItem('expireTime', now.getTime() + response2.data.expireTime)
       history.push('/home');
     })
     .catch(function (error) {
@@ -196,12 +198,13 @@ export default function ImgMediaCard() {
       'token': response.accessToken,
     }
     console.log('====data====',data);
-    await axios.post('https://gohiking-server.herokuapp.com/api/auth/social/callback', data).then(function(response2){
+    await axios.post('https://staging-server.gohiking.app/api/auth/social/callback', data).then(function(response2){
       console.log('====second response==== ', response2);
       console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
       localStorage.setItem('userId',response2.data.userId);
-      localStorage.setItem('expireTime', response2.data.expireTime);
+      const now = new Date()
+      localStorage.setItem('expireTime', now.getTime() + response2.data.expireTime)
       history.push('/home');
     })
     .catch(function (error){
@@ -265,17 +268,18 @@ export default function ImgMediaCard() {
           // The firebase.auth.AuthCredential type that was used.
           // var credential = error.credential;
         });
-        // var headers = {"Access-Control-Allow-Origin": "https://gohiking-server.herokuapp.com:443"} //#####
+        // var headers = {"Access-Control-Allow-Origin": "https://staging-server.gohiking.app:443"} //#####
     }
 
     const signInWithAppleChangePage = async() =>{ //#####
       console.log('========final data_apple===========', appleData);
-      await axios.post('https://gohiking-server.herokuapp.com/api/auth/social/callback', appleData).then(function(response3){
+      await axios.post('https://staging-server.gohiking.app/api/auth/social/callback', appleData).then(function(response3){
           console.log("====post success====",response3);
           console.log('====second response token====', response3.data.token);
           localStorage.setItem('token', response3.data.token);
           localStorage.setItem('userId',response3.data.userId);
-          localStorage.setItem('expireTime', response3.data.expireTime);
+          const now = new Date()
+          localStorage.setItem('expireTime', now.getTime() + response3.data.expireTime)
           history.push('/home');
         })
         .catch(function (error){
