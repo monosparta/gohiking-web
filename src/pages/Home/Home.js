@@ -20,7 +20,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import Navigation from "../../components/Bottom/Navigation";
-import { Height } from "@material-ui/icons";
 import family from "../../asset/img/icon-family.svg";
 import  mapple from '../../asset/img/icon-mapple.svg';
 import chellenge from "../../asset/img/icon-chellenge.svg";
@@ -135,8 +134,8 @@ const useStyles = makeStyles((theme) => ({
   },
   swiperslide2: {
     width: "174px",
-    height: "94px",
-    margin: 8,
+    
+    margin: 20,
   },
   text: {
     textOverflow: "ellipsis",
@@ -186,8 +185,7 @@ export default function HomePage() {
   collection.length=7;
   banners.length = 5;
   articles.length = 5;
-  //主題api
-  
+
 
   //首頁行程api
   const articleApi = async () => {
@@ -241,6 +239,8 @@ export default function HomePage() {
               </Button>
             </Toolbar>
           </AppBar>
+
+            
 
           <Swiper
             className={classes.rectangle}
@@ -308,7 +308,7 @@ export default function HomePage() {
               </SwiperSlide>
             ))}
           </Swiper>
-
+                 
           <Grid className={classes.tangle} />
           <Grid className={classes.retitle}>行程推薦</Grid>
           <Swiper
@@ -346,6 +346,7 @@ export default function HomePage() {
                   className={classes.linkstlye}
                 >
                   <img src={articles.image} className={classes.Img} />
+                  
                   <div className={classes.text}>{articles.title}</div>
                   <div className={classes.time}>{articles.created_at}</div>
                 </Link>
