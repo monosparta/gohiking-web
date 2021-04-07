@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Divider } from "@material-ui/core";
+import { Grid, Divider, ButtonBase, Hidden } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
 import { Checkbox } from "@material-ui/core";
 import demoapi from "axios/api";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,30 +45,34 @@ const useStyles = makeStyles(theme => ({
     float: "right",
     "& img": {
       borderRadius: "4px",
-      minWidth: "104px",
       width: "100%",
       height: "72px",
-      objectFit: "cover",
-      maxWidth: "300px"
+      maxWidth: "1000px",
+      minWidth: "104px",
+      objectFit: "cover"
     }
+  },
+  buttonbase: {
+    // margin: 0,
+    marginBottom: 14
   }
 }));
 
 const TrailCard = props => {
+  const history = useHistory();
   const classes = useStyles();
   //api回傳資料
   const data = props.data;
   const [checked, setChecked] = useState(data.favorite);
   const handleChange = id => {
-    const uid = localStorage.getItem("userid")
-      ? localStorage.getItem("userid")
-      : 1;
+    let uid = 0;
+    if (localStorage.getItem("userId")) {
+      uid = localStorage.getItem("userId");
+    } else {
+      history.push({ pathname: "/signin" });
+    }
     setChecked(!checked);
-    demoapi
-      .post("/api/favorite/?user_id=" + uid + "&trail_id=" + id)
-      .then(res => {
-        console.log(res.status);
-      });
+    demoapi.post("/api/favorite/?user_id=" + uid + "&trail_id=" + id);
   };
   return (
     <div className={classes.root}>
@@ -84,11 +89,7 @@ const TrailCard = props => {
         >
           <Grid item xs={4}>
             <div className={classes.mediaAvatar}>
-              <img
-                src={data.coverImage}
-                alt={data.title}
-                className={classes.thumb}
-              />
+              <img src={data.coverImage} alt={data.title} />
               <Checkbox
                 checked={checked}
                 onChange={() => {
@@ -109,13 +110,20 @@ const TrailCard = props => {
             container
             direction="column"
             alignItems="flex-start"
+            onClick={() => {
+              history.push({
+                pathname: "/pathway",
+                state: { trail_id: data.id }
+              });
+            }}
           >
             <Grid item xs={12} className={classes.title}>
               <div style={{ marginTop: 2 }}>{data.title}</div>
             </Grid>
             <Grid item xs={12} className={classes.location}>
               <div style={{ marginTop: 2 }}>
-                {data.location ? data.location.county.name : ""}{data.location ? data.location.name : ""}
+                {data.location ? data.location.county.name : ""}
+                {data.location ? data.location.name : ""}
               </div>
             </Grid>
             <Grid item xs={12} className={classes.distance}>
