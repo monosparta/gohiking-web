@@ -1,14 +1,12 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, {  useState, useEffect } from "react";
 import {
   makeStyles,
-  createMuiTheme,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import { Grid, GridList } from "@material-ui/core";
-import axios from "axios";
+import {  Grid, GridList } from "@material-ui/core";
 import TrailCard from "../../components/Lists/TrailCard";
-import BackArrow from "../../components/TopBar/BackArrow";
 import { Link } from "react-router-dom";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import demoapi from "../../axios/api"; //引入api
@@ -24,10 +22,13 @@ const useStyles = makeStyles((theme) => ({
     top: "0",
     left: "0",
     margin:"5px",
-     color: "#ffffff",
     display: "block",
     width: "40px",
     height: "40px",
+   
+  },
+  link:{
+    color:"#ffffff",
   },
   favoriteIcon: {
     width: "40px",
@@ -60,9 +61,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     height: "36px",
     textIndent: "5%",
-    fontSize: "22px",
+    fontSize: "20px",
     fontWeight: "bold",
-    lineHeight: "1.64",
+    lineHeight: "1.5",
     letterSpacing: "0.46px",
 
     color: "#232323",
@@ -98,6 +99,12 @@ const useStyles = makeStyles((theme) => ({
     margin: "1px 32px 2px 0",
     objectFit: "contain",
   },
+  back:{
+    textDecoration:"none",
+    color:"#0000FF",
+  },
+ 
+
 }));
 
 function Column(props) {
@@ -127,9 +134,10 @@ function Column(props) {
           <img src={article.image} className={classes.Img} />
 
           <Grid item xs={12} className={classes.backArrow}>
-            <Link to="/home" className={classes.Link}>
-              <BackArrow />
-            </Link>
+          <Link to="/home" className={classes.link}> 
+          <ArrowBackIcon />
+          </Link>
+        
           </Grid>
           <Grid className={classes.favoriteIcon}>
             <FavoriteIcon />
