@@ -1,5 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import {
   makeStyles,
   createMuiTheme,
@@ -184,7 +183,7 @@ export default function HomePage() {
   const [banners, setbanners] = useState([]);
   const [collection, setcollection] = useState([]);
   const [articles, setarticle] = useState([]);
-  collection.length=5;
+  collection.length=7;
   banners.length = 5;
   articles.length = 5;
   //主題api
