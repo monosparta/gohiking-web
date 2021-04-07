@@ -71,7 +71,23 @@ export default function CollectPage() {
    }else{
      id = null;  //取不到user Id
    }
-   
+  
+  function checkExpireTime() {
+    const expireTime = localStorage.getItem('expireTime');
+    console.log(expireTime);
+    if (!expireTime) { return null; }
+    const now = new Date();
+    if (now.getTime() > expireTime) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('expireTime');
+      localStorage.removeItem('userId');
+      console.log('remove');
+      return null;
+    }
+    console.log('token')
+    return localStorage.getItem('token');
+  }
+  checkExpireTime();
 
   useEffect(() => {
     searchApi(kw);
