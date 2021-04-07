@@ -59,8 +59,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CommentPage = () => {
+const CommentPage = props => {
   const history = useHistory();
+  const trail_id =
+    props.location.state === undefined ? null : props.location.state.trail_id;
+  if (!trail_id) {
+    history.push({ pathname: "/trailComment" });
+  }
   const classes = useStyles();
   const [showAlert, setshowAlert] = useState("");
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -138,10 +143,17 @@ const CommentPage = () => {
   const onSubmit = data => {
     //跳出載入圈ㄑㄢ
     setIsLoading(true);
+    //取得userId
+    let uid = 0;
+    if (localStorage.getItem("userId")) {
+      uid = localStorage.getItem("userId");
+    } else {
+      history.push({ pathname: "/signin" });
+    }
     //打包資料
     const fd = new FormData();
-    fd.append("user_id", 1);
-    fd.append("trail_id", 5);
+    fd.append("user_id", uid);
+    fd.append("trail_id", trail_id);
     fd.append("date", moment(data.hikingDate).format("YYYY-MM-DD"));
     fd.append("star", data.ratingStar);
     fd.append("difficulty", data.difficulty);
