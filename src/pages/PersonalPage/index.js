@@ -1,9 +1,12 @@
 import React from "react";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import {
-  makeStyles,
-  withStyles
-} from "@material-ui/core/styles";
-import { Avatar, Backdrop, CircularProgress, Divider, Grid } from "@material-ui/core";
+  Avatar,
+  Backdrop,
+  CircularProgress,
+  Divider,
+  Grid
+} from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -133,7 +136,7 @@ function PersonalPage(props) {
             edge="start"
             color="inherit"
             aria-label="back"
-            onClick={() => history.push({pathname:"/home"})}
+            onClick={() => history.push({ pathname: "/home" })}
           >
             <ArrowBackIcon />
           </IconButton>
@@ -181,6 +184,7 @@ function PersonalPage(props) {
                     : croppedImage
                 }
                 className={classes.avatar}
+                alt=""
               />
             </div>
           </Grid>
