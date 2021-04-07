@@ -114,10 +114,16 @@ function Column(props) {
   const id = props.match.params.id;
 
   console.log(id);
+  var uid = 0;
+  if(localStorage.getItem('userId')){
+     uid= localStorage.getItem('userId'); //取得localstorage ussrId
+   }else{
+     uid = null;  //取不到user Id
+   }
 
   const articleApi = async (id) => {
     //搜尋文章頁面api
-    await demoapi.get("/api/article/" + id + "&uuid=1").then((res) => {
+    await demoapi.get("/api/article/" + id + "?uuid="+uid).then((res) => {
       setArticle(res.data);
       setTrail(res.data.trails);
     });
