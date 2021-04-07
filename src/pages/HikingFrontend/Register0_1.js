@@ -143,7 +143,7 @@ const useStyles = makeStyles((theme) => ({
       data = testOuputObj;
       console.log(data);
       console.log(headers);
-      await axios.post('https://gohiking-server.herokuapp.com/api/profile', data, { headers })
+      await axios.post('https://staging-server.gohiking.app/api/profile', data, { headers })
       .then(function (response) {
         console.log('correct');
         responsedJson = response.data;
