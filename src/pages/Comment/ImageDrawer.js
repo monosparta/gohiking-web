@@ -13,7 +13,7 @@ import Swiper from "react-id-swiper";
 import SwiperCore, { Pagination } from "swiper";
 import "swiper/swiper.scss";
 import "swiper/components/pagination/pagination.scss";
-import "./ImageDrawer.css";
+import "./ImageDrawer.scoped.scss";
 import { useForm } from "react-hook-form";
 
 SwiperCore.use([Pagination]);
@@ -158,11 +158,13 @@ export default function ImageDrawer(props) {
           >
             <Grid item xs={12}>
               <div className={classes.swiperContainer}>
-                <Swiper {...params} ref={swiperRef}>
-                  {images.map(image => (
-                    <img src={image} />
-                  ))}
-                </Swiper>
+                <div className="customSwiper">
+                  <Swiper {...params} ref={swiperRef}>
+                    {images.map(image => (
+                      <img src={image} />
+                    ))}
+                  </Swiper>
+                </div>
               </div>
             </Grid>
 
