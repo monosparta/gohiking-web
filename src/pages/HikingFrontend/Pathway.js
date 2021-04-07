@@ -417,7 +417,7 @@ import axios from 'axios';
                     <Typography style={{fontSize:'16px', fontWeight: '700'}}>步道紀錄與評價</Typography>
                         <span style= {{flexGrow: 1}} />
                         <Typography style={{fontSize:'14px', color: '#00d04c', fontWeight:'900'}} >顯示更多</Typography>
-                        <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push('/commentPage')}}>
+                        <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push('/trailComment')}}>
                             <ChevronRightIcon></ChevronRightIcon>
                         </IconButton>                                            
                     </div>
