@@ -172,8 +172,7 @@ export default function ImgMediaCard() {
       'token': response.tokenId,
     }
     console.log('data: ', data);
-    var headers= {"Access-Control-Allow-Origin": "*"}
-    await axios.post('https://staging-server.gohiking.app/api/auth/social/callback', data, headers).then(function(response2){
+    await axios.post('https://staging-server.gohiking.app/api/auth/social/callback', data).then(function(response2){
       console.log('====second response==== ',response2);
       console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
