@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import {
   makeStyles,
   ThemeProvider,
@@ -7,7 +7,7 @@ import {
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Rating from "@material-ui/lab/Rating";
-import { Grid } from "@material-ui/core";
+import { Grid, Link } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
@@ -15,6 +15,8 @@ import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import Button from "@material-ui/core/Button";
 import { Checkbox } from "@material-ui/core";
 import demoapi from "axios/api";
+import { useHistory } from "react-router";
+import { set } from "date-fns";
 const useStyles = makeStyles((theme) => ({
   root: {
     fontFamily: "NotoSansCJKtc",
@@ -35,10 +37,9 @@ const useStyles = makeStyles((theme) => ({
   },
   commentName: {
     fontWeight: "bold",
-    fontSize:'14px',
+    fontSize: "14px",
     paddingTop: "4%",
     paddingBottom: "4%",
-    
   },
   rating: {
     paddingBottom: "5%",
@@ -85,56 +86,73 @@ const lightTheme = createMuiTheme({
 });
 
 export default function Commit(props) {
+  const history = useHistory();
   const classes = useStyles();
 
   const comment = props.data;
-  
-  const [checked, setChecked] = useState(comment.likestatus);
-  const [checked1, setChecked1] = useState(comment.dislikestatus);
+  const [like, setLike] = useState(comment.like);
+  const [dislike, setDisLike] = useState(comment.dislike);
+  const [likeCheck, setLikeCheck] = useState(comment.likestatus);
+  const [dislikeCheck, setDislikeCheck] = useState(comment.dislikestatus);
   console.log(comment);
+ 
 
-  const handleChange = id => {
-    const uid = localStorage.getItem("userId")
-      ? localStorage.getItem("userId")
+  const handleChange = (id) => {
+    //觸發  likeCheck 喜歡 post status +1
 
-      : 1;
-    setChecked(!checked);
+    let uid = 0;
+    if (localStorage.getItem("userId")) {
+      uid = localStorage.getItem("userId");
+    } else {
+      history.push({ pathname: "/signin" });
+    }
+    setLikeCheck((prev) => !prev);
+
+    if (likeCheck) {
+      setLike(like - 1);
+    } else {
+      setLike(like + 1);
+    }
+    if (dislikeCheck) {
+      setDislikeCheck(false);
+      setDisLike(like - 1);
+    } //如果 dislikeCheck 不喜歡 為true 改為false
     demoapi
-
       .post(
-        "/api/likeComment/?user_id=" +
-          uid+
-          "&comment_id=" +
-          id +
-          "&status=" +
-          1
+        "/api/likeComment/?user_id=" + uid + "&comment_id=" + id + "&status=" + 1
       )
       .then((res) => {
         console.log(res.status);
       });
   };
-  const handleChange1 = id => {
-    const uid = localStorage.getItem("userId")
-      ? localStorage.getItem("userId")
-      : 1;
-    setChecked1(!checked1);
+  const handleChange1 = (id) => {
+    //觸發  didlikeCheck 不喜歡poststatus -1
+    let uid = 0;
+    if (localStorage.getItem("userId")){
+      uid = localStorage.getItem("userId");
+    } else {
+
+      history.push({ pathname: "/signin" });
+    }
+    setDislikeCheck((prev) => !prev);
+    if (dislikeCheck) {
+      setDisLike(dislike - 1);
+    } else {
+      setDisLike(dislike + 1);
+    }
+    if (likeCheck) {
+      setLikeCheck(false);
+      setLike(like - 1);
+    } //如果 likeCheck 喜歡 為true 改為false
     demoapi
       .post(
-        "/api/likeComment/?user_id=" +
-          uid +
-          "&comment_id=" +
-          id +
-          "&status=" +
-          "-1"
+        "/api/likeComment/?user_id=" + uid + "&comment_id=" + id + "&status=" + -1
       )
       .then((res) => {
         console.log(res.status);
       });
   };
-
-
-return (
-
+  return (
     <ThemeProvider theme={lightTheme}>
       <Grid className={classes.comment}>
         <Grid className={classes.commentName}>{comment.user.name}</Grid>
@@ -148,51 +166,39 @@ return (
           variant="outlined"
           color="primary"
         >
-        { comment.difficulty == 1 &&("非常簡單") }
-        { comment.difficulty == 2 &&("簡單") }
-        { comment.difficulty == 3 &&("覺得還好") }
-        { comment.difficulty == 4 &&("困難") }
-        { comment.difficulty == 5 &&("非常困難") }
+          {comment.difficulty == 1 && "非常簡單"}
+          {comment.difficulty == 2 && "簡單"}
+          {comment.difficulty == 3 && "覺得還好"}
+          {comment.difficulty == 4 && "困難"}
+          {comment.difficulty == 5 && "非常困難"}
         </Button>
 
-        <Grid>{comment.comment}</Grid>
+        <Grid>{comment.content}</Grid>
         <Grid item xs={12} sm={6}>
           <IconButton className={classes.thumbup}>
             <Checkbox
-              checked={checked}
+              checked={likeCheck}
               onChange={() => {
-       
                 handleChange(comment.id);
-               
-                
-                
-            
               }}
-              icon={< ThumbUpAltOutlinedIcon />}
+              icon={<ThumbUpAltOutlinedIcon />}
               checkedIcon={<ThumbUpIcon style={{ color: "#3c5754" }} />}
             />
 
-            <Typography className={classes.thumbupText}>
-
-              {comment.like}
-            </Typography>
+            <Typography className={classes.thumbupText}>{like}</Typography>
           </IconButton>
 
           <IconButton className={classes.thumbup}>
             <Checkbox
-              checked={checked1}
+              checked={dislikeCheck}
               onChange={() => {
-              
-                  handleChange1(comment.id);
-               
+                handleChange1(comment.id);
               }}
               icon={<ThumbDownAltOutlinedIcon />}
               checkedIcon={<ThumbDownIcon style={{ color: "#3c5754" }} />}
             />
 
-            <Typography className={classes.thumbupText}>
-              {comment.dislike}
-            </Typography>
+            <Typography className={classes.thumbupText}>{dislike}</Typography>
           </IconButton>
         </Grid>
 
@@ -202,11 +208,29 @@ return (
           ))}
         </Grid>
         <Typography className={classes.time}>
-          {comment.date}. 來回時間: {Math.round(comment.duration/60)}h {comment.duration%60}m 
+          {comment.date}. 來回時間: {Math.round(comment.duration / 60)}h{" "}
+          {comment.duration % 60}m
         </Typography>
         <hr />
       </Grid>
     </ThemeProvider>
-
   );
 }
+function checkExpireTime() {
+  const expireTime = localStorage.getItem("expireTime");
+  console.log(expireTime);
+  if (!expireTime) {
+    return null;
+  }
+  const now = new Date();
+  if (now.getTime() > expireTime) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("expireTime");
+    localStorage.removeItem("userId");
+    console.log("remove");
+    return null;
+  }
+  console.log("token");
+  return localStorage.getItem("token");
+}
+checkExpireTime();

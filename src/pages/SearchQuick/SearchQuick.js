@@ -14,7 +14,7 @@ import forest from "../../asset/img/icon-forest.svg";
 import sakura from "../../asset/img/icon-sakura.svg";
 import demoapi from "axios/api";//引入api
 import { useHistory } from 'react-router-dom';
-import { Link } from "react-router-dom";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -80,13 +80,14 @@ const obj = {
 function SearchQuick(props) {
   const classes = useStyles();
   const id = props.match.params.id;
+  let uid = localStorage.getItem("userId");
   const history = useHistory();
   //搜尋結果hook
   const [searchQuick, setSearchQuick] = useState([]);
   const [trail, setTrail] = useState([]);
 
   const trailApi = async (id) => {
-    await demoapi.get("/api/classification/" + id+"&uuid=1").then((res) => {
+    await demoapi.get("/api/classification/" + id+"?uuid="+uid).then((res) => {
       setSearchQuick(res.data);
       setTrail(res.data.trails);
     });

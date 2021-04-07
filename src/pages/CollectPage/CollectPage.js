@@ -65,11 +65,11 @@ export default function CollectPage() {
   const classes = useStyles();
   const [searchResult, setSearchResult] = useState([]);
   const kw = "步道";
-  var id = 0;
+  var uid = 0;
   if(localStorage.getItem('userId')){
-     id= localStorage.getItem('userId'); //取得localstorage ussrId
+     uid= localStorage.getItem('userId'); //取得localstorage ussrId
    }else{
-     id = null;  //取不到user Id
+     uid = null;  //取不到user Id
    }
   
   function checkExpireTime() {
@@ -96,14 +96,15 @@ export default function CollectPage() {
     };
     //載入完就清空kw，使重新載入頁面時會再發送一次apia請求
   }, [kw]);
+
   const searchApi = async () => {
     await demoapi
-      .get("/api/trail?filters=title:" + kw + "&uuid=1")
+      .get("/api/trail?filters=title:" + kw + "&uuid="+uid)
       .then((res) => {
         setSearchResult(res.data);
       });
   };
-  if(id !=null ) {return (
+  if(uid !=null ) {return (
     <>
       <div className={classes.root}>
         <ThemeProvider theme={lightTheme}>
