@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -8,7 +8,6 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import "./sidebar.scoped.scss";
 import Avatar from "@material-ui/core/Avatar";
-import Tooltip from "@material-ui/core/Tooltip";
 import PersonIcon from "@material-ui/icons/Person";
 import LockIcon from "@material-ui/icons/Lock";
 import InfoIcon from "@material-ui/icons/Info";
@@ -98,15 +97,18 @@ const useStyles = makeStyles({
 export default function Sidebar(props) {
   const classes = useStyles();
   const [user, setuser] = useState([]);
-  const [state, setState] = useState(false);
-  const [anchor] = useState("left");
   var id = 0;
   console.log(localStorage.getItem("userId"));
-  // var id =null;
+  const removeToken = (props) => {
+    let userId = localStorage.removeItem("userId");
+    console.log("userId", userId);
+    return userId;
+  };
+
   if (localStorage.getItem("userId")) {
     id = localStorage.getItem("userId"); //取得localstorage ussrId
   } else {
-    id = null; //取不到user Id
+    id = null; //取不到user Id 假設user id =1
   }
 
   const userApi = async (id) => {
@@ -115,86 +117,138 @@ export default function Sidebar(props) {
     });
   };
 
-  const toggleDrawer = (open) => (event) => {
-    if (event.type === "keydown") return;
-    setState(open);
-  };
   useEffect(() => {
     userApi(id);
   }, [id]);
 
-  return (
-    <>
-      <div className={classes.list} role="presentation">
-        {id != null && <Avatar className={classes.avater} src={user.image} />}
-        {id != null && <Grid className={classes.name}>{user.name}</Grid>}
-        {id != null && <Grid className={classes.mail}>{user.email}</Grid>}
-        {id == null && <Avatar className={classes.avater} />}
-        {id == null && <Grid className={classes.name}>訪客</Grid>}
+  if (id != null) {
+    return (
+      <>
+        <div className={classes.list} role="presentation">
+          <Avatar className={classes.avater} src={user.image} />
+          <Grid className={classes.name}>{user.name}</Grid>
+          <Grid className={classes.mail}>{user.email}</Grid>
 
-        <hr />
+          <hr />
 
-        <List component="nav" aria-label="main mailbox folders">
-          {id != null && (
-            <ListItem button component="a" href="/personalPage" className={classes.scrim}>
-              
+          <List component="nav" aria-label="main mailbox folders">
+            <ListItem
+              button
+              component="a"
+              href="/personalPage"
+              className={classes.scrim}
+            >
               <ListItemIcon>
                 <PersonIcon className={classes.icon} />
               </ListItemIcon>
 
               <ListItemText primary="個人檔案" />
             </ListItem>
-          )}
-          <ListItem
-            button
-            className={classes.scrim}
-            component="a"
-            href="/privacyPolicy"
-          >
-            <ListItemIcon>
-              <LockIcon className={classes.icon} />
-            </ListItemIcon>
 
-            <ListItemText primary="隱私權政策" />
-          </ListItem>
-          <ListItem
-            button
-            className={classes.scrim}
-            component="a"
-            href="/aboutUs"
-          >
-            <ListItemIcon>
-              <InfoIcon className={classes.icon} />
-            </ListItemIcon>
+            <ListItem
+              button
+              className={classes.scrim}
+              component="a"
+              href="/privacyPolicy"
+            >
+              <ListItemIcon>
+                <LockIcon className={classes.icon} />
+              </ListItemIcon>
 
-            <ListItemText primary="關於我們" />
-          </ListItem>
-        </List>
+              <ListItemText primary="隱私權政策" />
+            </ListItem>
+            <ListItem
+              button
+              className={classes.scrim}
+              component="a"
+              href="/aboutUs"
+            >
+              <ListItemIcon>
+                <InfoIcon className={classes.icon} />
+              </ListItemIcon>
 
-        <hr />
-        <List component="nav" aria-label="secondary mailbox folders">
-          <ListItem button>
-            <ListItemText primary="版本" className={classes.version} />
-            <ListItemSecondaryAction className={classes.versiont}>
-              <ListItemText primary="1.1.1" />
-            </ListItemSecondaryAction>
-          </ListItem>
-        </List>
-        <hr />
-        <List component="nav" aria-label="secondary mailbox folders">
-          {id == null && (
+              <ListItemText primary="關於我們" />
+            </ListItem>
+          </List>
+
+          <hr />
+          <List component="nav" aria-label="secondary mailbox folders">
+            <ListItem button>
+              <ListItemText primary="版本" className={classes.version} />
+              <ListItemSecondaryAction className={classes.versiont}>
+                <ListItemText primary="1.1.1" />
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
+          <hr />
+          <List component="nav" aria-label="secondary mailbox folders">
+            <ListItem
+              button
+              component="a"
+              href="/signin"
+            
+            onClick={() =>removeToken(props)}
+             
+            >
+              <ListItemText primary="登出" className={classes.log} />
+            </ListItem>
+          </List>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className={classes.list} role="presentation">
+          <Avatar className={classes.avater} />
+          <Grid className={classes.name}>訪客</Grid>
+
+          <hr />
+
+          <List component="nav" aria-label="main mailbox folders">
+            <ListItem
+              button
+              className={classes.scrim}
+              component="a"
+              href="/privacyPolicy"
+            >
+              <ListItemIcon>
+                <LockIcon className={classes.icon} />
+              </ListItemIcon>
+
+              <ListItemText primary="隱私權政策" />
+            </ListItem>
+            <ListItem
+              button
+              className={classes.scrim}
+              component="a"
+              href="/aboutUs"
+            >
+              <ListItemIcon>
+                <InfoIcon className={classes.icon} />
+              </ListItemIcon>
+
+              <ListItemText primary="關於我們" />
+            </ListItem>
+          </List>
+
+          <hr />
+          <List component="nav" aria-label="secondary mailbox folders">
+            <ListItem button>
+              <ListItemText primary="版本" className={classes.version} />
+              <ListItemSecondaryAction className={classes.versiont}>
+                <ListItemText primary="1.1.1" />
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
+          <hr />
+          <List component="nav" aria-label="secondary mailbox folders">
             <ListItem button component="a" href="/signin">
               <ListItemText primary="登入" className={classes.log} />
             </ListItem>
-          )}
-
-          {id != null && (
-            <ListItem button component="a" href="/signin">
-              <ListItemText primary="登出" className={classes.log} />
-            </ListItem>
-          )}
-        </List>
-      </div>
-    </>
-  );
+          </List>
+        </div>
+      </>
+    );
+  }
 }
