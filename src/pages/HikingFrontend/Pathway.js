@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React , {useState, useLayoutEffect, useRef} from 'react';
 import Slider from "react-slick";
 import {makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import fontStyle from '../../assets/jss/fontStyle';
@@ -38,9 +38,10 @@ import Rating from "@material-ui/lab/Rating";
 import CommentIcon from '@material-ui/icons/Comment';
 import GPSMapLink from '../components/GPSMapLink/GPSMapLink';
 import MuiAlert from '@material-ui/lab/Alert';
-import demoapi from "../../axios/api";
+import demoapi from "axios/api";
 import { Checkbox } from "@material-ui/core";
-import { Favorite, FavoriteBorder } from "@material-ui/icons";
+import { Favorite, FavoriteBorder, RadioButtonUnchecked } from "@material-ui/icons";
+import axios from 'axios';
 
     const style = {
         ...fontStyle,
@@ -82,24 +83,68 @@ import { Favorite, FavoriteBorder } from "@material-ui/icons";
         }} />;
       }
 
+      
+
     const Pathway = () =>{
         const classes = useStyles();
         const history = useHistory();        
-        const trail_id = pathwayInfo.trail_id;
-        const [checked, setChecked] = useState(true);
+        const trail_id = pathwayInfo.trail_id; // 這邊應該要吃axios回傳的後端資料        
+        const [checked, setChecked] = useState(); //這邊應該要吃axios回傳的後端資料
         const [open, setOpen] = React.useState(true);
         const handleClose = () => {
             setOpen(false);
-          };
+        };
 
-        var data = pathwayInfo.trail_id;
-        const handleChange = id => {
-            const uid = localStorage.getItem("userid")
-            ? localStorage.getItem("userid")
+        const checkFavorite = async() =>{
+            console.log('checkFavortite starts!');            
+            const userId = localStorage.getItem("userId")
+                ? localStorage.getItem("userId")
+                : 1;
+            console.log('userId: ', userId);
+            await demoapi.get("/api/favorites" + "?uuid=" + userId) // 查詢使用者收藏的步道
+            .then(res =>{
+                console.log('enter res');
+                console.log('res', res);
+                console.log('trail_id', trail_id);
+                res.data.map(element =>{
+                    console.log('element: ', element);
+                    let counter = element.trail_id;
+                    if (counter == trail_id){
+                        console.log("this trail has already been liked!");
+                        setChecked('checked');
+                    }
+                })
+            })
+            .catch(function (error){
+                console.log('====error==== ',error);
+                setChecked('checked');
+                console.log('checked is checked!');
+              })
+
+            
+        }
+        checkFavorite();
+        console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+
+        // const firstUpdate = useRef(true);
+        // useLayoutEffect(()=>{
+        //     if (firstUpdate.current){
+        //         firstUpdate.current = false;
+        //         checkFavorite();
+        //         return;
+        //       }          
+        // },[])
+
+        
+
+         
+        const handleChange = trail_id => {
+            const userId = localStorage.getItem("userId")
+            ? localStorage.getItem("userId")
             : 1;
             setChecked(!checked);
             demoapi
-                .post("/api/favorite/?user_id=" + uid + "&trail_id=" + id)
+                .post("/api/favorite/?user_id=" + userId + "&trail_id=" + trail_id)
                 .then(res => {
                 console.log(res.status);
                 });
@@ -180,27 +225,28 @@ import { Favorite, FavoriteBorder } from "@material-ui/icons";
                                 <ArrowBackIcon> </ArrowBackIcon>
                             </IconButton>
                             <span style= {{flexGrow: 1}} /> {/*把剩下的空間全部分配在這個span裡面 */}
-                            <IconButton edge="end" color="inherit" aria-label="add to the favorite" onClick={() => {}}>
-                                <FavoriteIcon />  {/*這邊要想辦法串收藏 */}
-                            </IconButton>        
+                            {/* <IconButton edge="end" color="inherit" aria-label="add to the favorite" onClick={() => {}}>
+                                <FavoriteIcon /> 
+                            </IconButton>   */}
+                            <Checkbox
+                                checked= {checked} //這邊應該要吃axios回傳的後端資料
+                                onChange={() => {
+                                handleChange(trail_id); //這邊應該要吃axios回傳的後端資料
+                                }}
+                                icon={<FavoriteBorder fontSize={"small"} />}
+                                checkedIcon={
+                                <Favorite style={{ color: "#FFF", fontSize:'24px', }} />
+                                }
+                                className={classes.favorite}
+                                name="favorite"
+                            />      
                             <IconButton edge="end" color="inherit" style = {{marginLeft: '24px',}} aria-label="share article" onClick={() => {}}>
-                                <ShareIcon onClick={handleShare} />  {/*這邊要想辦法串第三方分享 */}
+                                <ShareIcon onClick={handleShare} />
                             </IconButton>               
                         </Toolbar>
                     </AppBar>
 
-                    <Checkbox
-                        checked= {true}
-                        onChange={() => {
-                        handleChange(data);
-                        }}
-                        icon={<FavoriteBorder fontSize={"small"} />}
-                        checkedIcon={
-                        <Favorite fontSize={"small"} style={{ color: "#FFF" }} />
-                        }
-                        className={classes.favorite}
-                        name="favorite"
-                    />
+                    
                     
                     <div style={{display: 'flex',}}>
                         <Typography variant="h6" className={classes.titleXLL} style={{marginLeft: '8px', marginTop: '8px', fontWeight: '900'}} >

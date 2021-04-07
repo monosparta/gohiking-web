@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // nodejs library to set properties for components
 import PropTypes from 'prop-types';
 // @material-ui/core components
@@ -22,6 +22,8 @@ import { useHistory } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from "@material-ui/core/styles"
 import { green } from '@material-ui/core/colors';
+//import api
+import demoapi from "axios/api";
 
 const theme = createMuiTheme({
     palette: {
@@ -41,9 +43,13 @@ const styles = {
         margin: "16px 0 0 0",
         /* flexBasis: "auto" */
     },
+    mediaHeading: {
+        textOverflow: 'ellipsis',
+        fontSize: '16px',
+    },
     mediaFooter: {
         fontSize: '14px',
-        textOverflow: 'ellipsis',
+        
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         color: '#919191'
@@ -76,14 +82,27 @@ const styles = {
     },
     Rectangle: {
         fontSize: "12px",
-        width: "100px",//need to be fix
+        width: "105px",//need to be fix
         backgroundColor: "rgba(0, 208, 76, 0.1)",
         minHeight: 32,
+        minWidth:83
     },
     root: {
         width: '100%',
     }
 };
+//指定title字數多的變"..."避免擋到顯示距離的button
+function renderContentLimit(p){
+    const len = 9; // 超過9個字以"..."取代
+    //console.log(p.length);
+    if(p.length>len){
+        const final=p.substring(0,len-1)+"...";
+        return final
+    }
+    else{
+        return p
+    }
+}
 
 function getDistance(start, end) {
     var lon1 = (Math.PI / 180) * start.longitude;
@@ -114,16 +133,17 @@ export default function PathwayCard(props) {
         location,
         miles,
         favorite,
+        trail_id,
         yourlng,
         yourlat,
         longitude,
         latitude,
     } = props;
     const classes = useStyles();
-    const [checked, setChecked] = React.useState(favorite);
-    const handleChange = () => {
-        setChecked(!checked);
-    };
+    //const [checked, setChecked] = React.useState(favorite);
+    //const handleChange = () => {
+        //setChecked(!checked);
+    //};
     var start = { longitude: yourlng, latitude: yourlat };
     var end = { longitude: longitude, latitude: latitude };
     var m = getDistance(start, end);
@@ -132,8 +152,20 @@ export default function PathwayCard(props) {
     const handlePage = () =>{
         history.push('/pathway');
     };
-
-
+    //api回傳資料
+    const data = props;
+    const [checked, setChecked] = useState(data.favorite);
+    const handleFavoriteChange = id => {
+        const uid = localStorage.getItem("userid")
+            ? localStorage.getItem("userid")
+            : 1;
+        setChecked(!checked);
+        demoapi
+            .post("/api/favorite/?user_id=" + uid + "&trail_id=" + id)
+            .then(res => {
+                console.log(res.status);
+            });
+    };
     return (
         <div>
             <Grid container className={classes.gridcontain} spacing={2} direction='row'
@@ -147,7 +179,7 @@ export default function PathwayCard(props) {
                         <Checkbox
                             data-testid='checkFavorite'
                             checked={checked}
-                            onChange={handleChange}
+                            onChange={() =>{handleFavoriteChange(data.trail_id)}}
                             icon={<FavoriteBorder fontSize={'small'} />}
                             checkedIcon={<Favorite fontSize={'small'} />}
                             className={classes.favorite}
@@ -156,7 +188,7 @@ export default function PathwayCard(props) {
                 </Grid>
                 <Grid component={'span'} item xs={5} >
                     <ButtonBase onClick={handlePage}>
-                        <Typography noWrap className={classes.mediaHeading}>{title}</Typography>
+                        <Typography noWrap className={classes.mediaHeading}>{renderContentLimit(title)}</Typography>
                     </ButtonBase>
                         <Typography className={classes.mediaFooter}>{location}</Typography>
                         <Typography className={classes.mediaDistance}>全程約 {miles} km</Typography>

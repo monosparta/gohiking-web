@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import axios from "axios";
 import {
-    makeStyles,
+    makeStyles,withStyles ,
 } from "@material-ui/core/styles";
 // Import Swiper React components
 // Import Swiper styles
@@ -12,7 +12,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import Navigation from "../../components/Bottom/Navigation";
 import PathwayDistance from "../../components/PathwayCard/PathwayDistance";
-import { pathway } from 'data/pathway';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import { ReactComponent as Map } from '../../asset/img/map.svg';
@@ -29,10 +28,24 @@ import { blue } from '@material-ui/core/colors';
 
 const theme = createMuiTheme({
     palette: {
+        primary: {
+            // This is green we need to use
+            main: '#00d04c',
+        },
         secondary: blue,
     },
 });
-const useStyles = makeStyles((theme) => ({
+
+const WhiteTextTypography = withStyles({
+    root: {
+      color: "#FFFFFF"
+    }
+  })(Typography);
+
+const styles = {
+    indicator: {
+        backgroundColor: '#00d04c',
+    },
     root: {
         fontFamily: "NotoSansCJKtc",
         flexGrow: 1,
@@ -70,8 +83,8 @@ const useStyles = makeStyles((theme) => ({
         color: '#007aff',
         fontSize: '14px'
     }
-}));
-
+};
+const useStyles = makeStyles(styles);
 
 function a11yProps(index) {
     return {
@@ -106,9 +119,11 @@ TabPanel.propTypes = {
 };
 
 function NearByPathway() {
+    //style for this page
+    const classes = useStyles();
+    //gps & get api setting
     const [gpsSetting, setGpsSetting] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(true);
-    const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [searchMaple, setSearchMaple] = useState([]);
     const [searchChallenge, setSearchChallenge] = useState([]);
@@ -121,35 +136,35 @@ function NearByPathway() {
     };
     const handleSetting = () => {
         setOpenDialog(false);
-        setYes(1);       
+        setYes(1);
 
     };
     const handleCancel = () => {
         setOpenDialog(false);
     };
 
-    const GPS = async() => {
+    const GPS = async () => {
         await navigator.geolocation.getCurrentPosition(success, error);
     };
 
     //call trails and set trails data in search and id is category
     const initial = async () => {
-        await axios.get('https://go-hiking-backend-laravel.herokuapp.com/api/collection/1')
+        await axios.get('http://minyen.monosparta.org/api/collection/1')
             .then((response) => {
                 console.log(response.data.trails);
                 setSearchMaple(response.data.trails);
             });
-        await axios.get('https://go-hiking-backend-laravel.herokuapp.com/api/collection/11')
+        await axios.get('http://minyen.monosparta.org/api/collection/2')
             .then((response) => {
                 console.log(response.data.trails);
                 setSearchChallenge(response.data.trails);
             });
-        await axios.get('https://go-hiking-backend-laravel.herokuapp.com/api/collection/21')
+        await axios.get('http://minyen.monosparta.org/api/collection/3')
             .then((response) => {
                 console.log(response.data.trails);
                 setSearchSpring(response.data.trails);
             });
-        await axios.get('https://go-hiking-backend-laravel.herokuapp.com/api/collection/31')
+        await axios.get('http://minyen.monosparta.org/api/collection/4')
             .then((response) => {
                 console.log(response.data.trails);
                 setSearchFamily(response.data.trails);
@@ -171,15 +186,15 @@ function NearByPathway() {
     const secondUpdate = useRef(true);
     useLayoutEffect(() => {
         if (secondUpdate.current) {
-        secondUpdate.current = false;
-        return;
+            secondUpdate.current = false;
+            return;
         }
         console.log("GPS is fired now!");
         GPS();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [yes]);
 
-   
+
     const [lat, setLat] = useState(0);
     const [lng, setLng] = useState(0);
 
@@ -206,122 +221,128 @@ function NearByPathway() {
 
     return (
         <>
-            <div className={classes.root}>
-                <AppBar className={classes.appbar} position="static">
-                    <Typography className={classes.title}>
-                        附近步道
-                    </Typography>
-                    <Tabs
-                        className={classes.tabs}
-                        value={value}
-                        onChange={handleChange}
-                        variant="fullWidth"
-                        aria-label="collection tabs"
-                    >
-                        <Tab label={<span style={{ color: '#ffffff' }}>賞楓</span>} {...a11yProps(0)} />
-                        <Tab label={<span style={{ color: '#ffffff' }}>挑戰</span>} {...a11yProps(1)} />
-                        <Tab label={<span style={{ color: '#ffffff' }}>溫泉</span>} {...a11yProps(2)} />
-                        <Tab label={<span style={{ color: '#ffffff' }}>親子</span>} {...a11yProps(3)} />
-                    </Tabs>
-                </AppBar>
-                {gpsSetting ?
-                    <>
-                        <TabPanel value={value} index={0}>
-                            {pathway.suggest.map((path, i) => (
-                                <PathwayDistance
-                                    favorite={false}
-                                    avatar={path.img}
-                                    title={path.pathTitle}
-                                    location={path.pathLocation}
-                                    miles={path.pathMiles}
-                                    yourlng={lng}
-                                    yourlat={lat}
-                                    longitude={path.longitude}
-                                    latitude={path.latitude}
-                                    // link = {path.pathLink}
-                                    key={i}
-                                />
-                            ))}
-                        </TabPanel>
-                        <TabPanel value={value} index={1}>
-                            {searchChallenge.map((path, i) => (
-                                <PathwayDistance
-                                    favorite={false}
-                                    avatar={path.coverImage}
-                                    title={path.title}
-                                    location={path.location}
-                                    miles={path.distance}
-                                    yourlng={lng}
-                                    yourlat={lat}
-                                    longitude={path.longitude}
-                                    latitude={path.latitude}
-                                    key={i}
-                                />
-                            ))}
-                        </TabPanel>
-                        <TabPanel value={value} index={2}>
-                            {searchSpring.map((path, i) => (
-                                <PathwayDistance
-                                    favorite={false}
-                                    avatar={path.coverImage}
-                                    title={path.title}
-                                    location={path.location}
-                                    miles={path.distance}
-                                    yourlng={lng}
-                                    yourlat={lat}
-                                    longitude={path.longitude}
-                                    latitude={path.latitude}
-                                    key={i}
-                                />
-                            ))}
-                        </TabPanel>
-                        <TabPanel value={value} index={3}>
-                            {searchFamily.map((path, i) => (
-                                <PathwayDistance
-                                    favorite={false}
-                                    avatar={path.coverImage}
-                                    title={path.title}
-                                    location={path.location}
-                                    miles={path.distance}
-                                    yourlng={lng}
-                                    yourlat={lat}
-                                    longitude={path.longitude}
-                                    latitude={path.latitude}
-                                    key={i}
-                                />
-                            ))}
-                        </TabPanel>
-                    </>
-                    :
-                    <div >
-                        <div className={classes.mapBox}>
-                            <Map /><br />GPS未開啓<br />請至『設定』並開啟位置設定
+
+            <ThemeProvider theme={theme}>
+                <div className={classes.root}>
+                    <AppBar className={classes.appbar} position="static">
+                        <WhiteTextTypography className={classes.title}>
+                            附近步道
+                        </WhiteTextTypography>
+                        <Tabs
+                            indicatorColor="primary"
+                            className={classes.tabs}
+                            value={value}
+                            onChange={handleChange}
+                            variant="fullWidth"
+                            aria-label="collection tabs"
+                        >
+                            <Tab label={<span style={{ color: '#ffffff' }}>賞楓</span>} {...a11yProps(0)} />
+                            <Tab label={<span style={{ color: '#ffffff' }}>挑戰</span>} {...a11yProps(1)} />
+                            <Tab label={<span style={{ color: '#ffffff' }}>溫泉</span>} {...a11yProps(2)} />
+                            <Tab label={<span style={{ color: '#ffffff' }}>親子</span>} {...a11yProps(3)} />
+                        </Tabs>
+                    </AppBar>
+                    {gpsSetting ?
+                        <>
+                            <TabPanel value={value} index={0}>
+                                {searchMaple.map((path, i) => (
+                                    <PathwayDistance
+                                        favorite={false}
+                                        avatar={path.img}
+                                        title={path.pathTitle}
+                                        location={path.pathLocation}
+                                        miles={path.pathMiles}
+                                        yourlng={lng}
+                                        yourlat={lat}
+                                        longitude={path.longitude}
+                                        latitude={path.latitude}
+                                        // link = {path.pathLink}
+                                        trail_id={path.id}
+                                        key={i}
+                                    />
+                                ))}
+                            </TabPanel>
+                            <TabPanel value={value} index={1}>
+                                {searchChallenge.map((path, i) => (
+                                    <PathwayDistance
+                                        favorite={false}
+                                        avatar={path.coverImage}
+                                        title={path.title}
+                                        location={path.location}
+                                        miles={path.distance}
+                                        yourlng={lng}
+                                        yourlat={lat}
+                                        longitude={path.longitude}
+                                        latitude={path.latitude}
+                                        trail_id={path.id}
+                                        key={i}
+                                    />
+                                ))}
+                            </TabPanel>
+                            <TabPanel value={value} index={2}>
+                                {searchSpring.map((path, i) => (
+                                    <PathwayDistance
+                                        favorite={false}
+                                        avatar={path.coverImage}
+                                        title={path.title}
+                                        location={path.location}
+                                        miles={path.distance}
+                                        yourlng={lng}
+                                        yourlat={lat}
+                                        longitude={path.longitude}
+                                        latitude={path.latitude}
+                                        trail_id={path.id}
+                                        key={i}
+                                    />
+                                ))}
+                            </TabPanel>
+                            <TabPanel value={value} index={3}>
+                                {searchFamily.map((path, i) => (
+                                    <PathwayDistance
+                                        favorite={false}
+                                        avatar={path.coverImage}
+                                        title={path.title}
+                                        location={path.location}
+                                        miles={path.distance}
+                                        yourlng={lng}
+                                        yourlat={lat}
+                                        longitude={path.longitude}
+                                        latitude={path.latitude}
+                                        trail_id={path.id}
+                                        key={i}
+                                    />
+                                ))}
+                            </TabPanel>
+                        </>
+                        :
+                        <div >
+                            <div className={classes.mapBox}>
+                                <Map /><br />GPS未開啓<br />請至『設定』並開啟位置設定
                         </div>
-                    </div>
-                }
-                <Navigation dfValue={2}/>
-                <Dialog
-                    fullWidth
-                    open={openDialog}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">GPS 未開啟</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">請至『設定』並開啟位置設定。</DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <ThemeProvider theme={theme}>
+                        </div>
+                    }
+                    <Navigation dfValue={2} />
+                    <Dialog
+                        fullWidth
+                        open={openDialog}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">GPS 未開啟</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">請至『設定』並開啟位置設定。</DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
                             <Button color="secondary" onClick={handleCancel}>
                                 取消
                             </Button>
                             <Button color="secondary" onClick={handleSetting}>
                                 設定
                             </Button>
-                        </ThemeProvider>
-                    </DialogActions>
-                </Dialog>
-            </div>
+                        </DialogActions>
+                    </Dialog>
+                </div>
+            </ThemeProvider>
         </>
     );
 }

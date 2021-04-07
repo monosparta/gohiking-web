@@ -136,6 +136,8 @@ export default function SignIn() {
       responsedJSON = response.data;
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('userId', response.data.userId)
+      const now = new Date()
+      localStorage.setItem('expireTime', now.getTime() + response.data.expireTime)
       GoHome()
     })
     .catch(function (error) {
