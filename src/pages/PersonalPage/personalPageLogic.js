@@ -1,7 +1,9 @@
 import demoapi from "axios/api";
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 
 const PersonalPageLogic = (info = null) => {
+  const history = useHistory();
   const [isLoading, setisLoading] = useState(info ? false : true);
   const [personalInfo, setpersonalInfo] = useState(info ? info : {});
   const [nameValidation, setnameValidation] = useState("");
@@ -14,10 +16,12 @@ const PersonalPageLogic = (info = null) => {
     if (!info) getPersonalInfo();
   }, [info]);
   const getPersonalInfo = async () => {
-    // const uid = localStorage.getItem("userId")
-    //   ? localStorage.getItem("userId")
-    //   : 1;
-    const uid = 1;
+    let uid = 0;
+    if (localStorage.getItem("userId")) {
+      uid = localStorage.getItem("userId");
+    } else {
+      history.push({ pathname: "/signin" });
+    }
     await demoapi.get("/api/user/" + uid).then(res => {
       setisLoading(false);
       res.data.users.gender = res.data.users.gender ? "男" : "女";
@@ -95,10 +99,12 @@ const PersonalPageLogic = (info = null) => {
 
   const updateInfo = async data => {
     setisLoading(true);
-    // const uid = localStorage.getItem("userId")
-    //   ? localStorage.getItem("userId")
-    //   : 1;
-    const uid = 1;
+    let uid = 0;
+    if (localStorage.getItem("userId")) {
+      uid = localStorage.getItem("userId");
+    } else {
+      history.push({ pathname: "/signin" });
+    }
     if (data.croppedImage) {
       let blob = await fetch(data.croppedImage).then(r => r.blob());
       const file = new File([blob], "1234567890.jpg", {
