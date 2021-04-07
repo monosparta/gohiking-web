@@ -440,7 +440,7 @@ import axios from 'axios';
                             <Typography style={{fontSize:'14px', color: '#00d04c', fontWeight:'900'}} >顯示更多</Typography>
                             <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push({
                                 pathname:'/trailComment',
-                                state: {trail_id: {trail_id}},
+                                state: {trail_id: trail_id},
                                 })}}>
                                 <ChevronRightIcon></ChevronRightIcon>
                             </IconButton>                                            
@@ -494,7 +494,7 @@ import axios from 'axios';
                             >
                             <BottomNavigationAction onClick={() => (history.push({
                                 pathname:'/commentPage',
-                                state: {trail_id: {trail_id}},
+                                state: {trail_id: trail_id},
                                 }))} 
                                 label={<Typography className={`${classes.descText} ${classes.noWrap}`} color={'textPrimary'}>評論步道</Typography>} icon={<CommentIcon color={'secondary'} />} className={classes.leftNavigation} />
                             <BottomNavigationAction label={
