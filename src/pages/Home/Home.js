@@ -125,6 +125,8 @@ const useStyles = makeStyles((theme) => ({
   retitle: {
     fontWeight: "bold",
     fontSize: "22px",
+    paddingLeft:"5%",
+    paddingTop:"3%",
     color: "#232323",
   },
 
