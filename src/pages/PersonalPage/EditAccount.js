@@ -150,7 +150,7 @@ function EditAccount(props) {
             edge="start"
             color="inherit"
             aria-label="back"
-            onClick={() => history.push({pathname:"/personalPage"})}
+            onClick={() => history.push({ pathname: "/personalPage" })}
           >
             <ArrowBackIcon />
           </IconButton>
@@ -203,6 +203,7 @@ function EditAccount(props) {
                     : ""
                 }
                 className={classes.avatar}
+                alt=""
               />
               <div
                 class={classes.avatarOverlay}

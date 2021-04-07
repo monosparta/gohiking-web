@@ -161,7 +161,7 @@ export default function ImageDrawer(props) {
                 <div className="customSwiper">
                   <Swiper {...params} ref={swiperRef}>
                     {images.map(image => (
-                      <img src={image} />
+                      <img src={image} alt="" />
                     ))}
                   </Swiper>
                 </div>
