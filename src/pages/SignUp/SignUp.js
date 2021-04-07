@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button'
 import React, { useRef } from 'react'
 import Input from '@material-ui/core/Input'
 import { makeStyles } from '@material-ui/core/styles'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
@@ -152,7 +152,7 @@ const SignUp = () => {
                                                                 })} />
         <div className={classes.errorInfo}>{errors.password_repeat && <p>{errors.password_repeat.message}</p>}</div>
         <div className={classes.privacyInfo}>使用這個應用程式前，請先詳閱「Go Hiking」的
-        《<span style={{ color: '#007aff' }}>隱私權政策</span>》及《<span style={{ color: '#007aff' }}>服務條款</span>》
+        《<Link to="/privacyPolicy" style={{ color: '#007aff' }}>隱私權政策</Link>》及《<Link to="/aboutUs" style={{ color: '#007aff' }}>服務條款</Link>》
       </div>
         
         <Button
