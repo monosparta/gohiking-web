@@ -50,20 +50,15 @@ const Trailhead = lazy(()=>import('../pages/HikingFrontend/Trailhead'));
 
 
 const routes = [
-  <UnauthorizedRoute path="/signin" redirectTo="/" exact component={SignIn} />,
-  <UnauthorizedRoute path="/signup" redirectTo="/" exact component={SignUp} />,
-  <UnauthorizedRoute path="/verify2" redirectTo="/" exact component={Verify2} />,
-  <UnauthorizedRoute path="/login1_1" redirectTo="/" exact component={Login1_1} />,
-  <UnauthorizedRoute path="/login1_2" redirectTo="/" exact component={Login1_2} />,
-  <UnauthorizedRoute path="/register0_1" redirectTo="/" exact component={Register0_1} />,
-  <UnauthorizedRoute path="/resetPassword" redirectTo="/" exact component={ResetPassword} />,
+  <Route path="/signin" redirectTo="/" exact component={SignIn} />,
+  <Route path="/signup" redirectTo="/" exact component={SignUp} />,
+  <Route path="/verify2" redirectTo="/" exact component={Verify2} />,
+  <Route path="/login1_1" redirectTo="/" exact component={Login1_1} />,
+  <Route path="/login1_2" redirectTo="/" exact component={Login1_2} />,
+  <Route path="/register0_1" redirectTo="/" exact component={Register0_1} />,
+  <Route path="/resetPassword" redirectTo="/" exact component={ResetPassword} />,
+  <Route path="/password_reset" redirectTo="/" exact component={PasswordReset} />,
 
-  <UnauthorizedRoute
-    path="/password_reset"
-    redirectTo="/"
-    exact
-    component={PasswordReset}
-  />,
   <Route path="/trailComment" exact component={TrailComment} />,
   <Route path="/trailComment2" exact component={TrailComment2} />,
   <Route path="/searchPage" exact component={SearchPage} />,
@@ -87,17 +82,6 @@ const routes = [
   <Route path="/trailhead" exact component={Trailhead}/>,
   <Route path="/commentPage" exact component={CommentPage} />,
   <Route path="/test" exact component={TestSwiper} />,
-
-  <AuthorizedRoute path="/my_account" exact component={MyAccount} />,
-  <AuthorizedRoute path="/home" exact component={Home} />,
-
-  <AuthorizedRoute path="/dialog_demo" exact component={DialogDemo} />,
-  <AuthorizedRoute path="/toast_demo" exact component={ToastDemo} />,
-  <AuthorizedRoute path="/filter_demo" exact component={FilterDemo} />,
-  <AuthorizedRoute path="/list_page_demo" exact component={ListPageDemo} />,
-  <AuthorizedRoute path="/tabs_demo" exact component={TabsDemo} />,
-
-
 
 ]
 

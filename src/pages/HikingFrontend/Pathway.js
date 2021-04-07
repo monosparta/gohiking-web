@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React , {useState, useLayoutEffect, useRef} from 'react';
 import Slider from "react-slick";
 import {makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import fontStyle from '../../assets/jss/fontStyle';
@@ -38,9 +38,10 @@ import Rating from "@material-ui/lab/Rating";
 import CommentIcon from '@material-ui/icons/Comment';
 import GPSMapLink from '../components/GPSMapLink/GPSMapLink';
 import MuiAlert from '@material-ui/lab/Alert';
-import demoapi from "../../axios/api";
+import demoapi from "axios/api";
 import { Checkbox } from "@material-ui/core";
 import { Favorite, FavoriteBorder, RadioButtonUnchecked } from "@material-ui/icons";
+import axios from 'axios';
 
     const style = {
         ...fontStyle,
@@ -82,15 +83,59 @@ import { Favorite, FavoriteBorder, RadioButtonUnchecked } from "@material-ui/ico
         }} />;
       }
 
+      
+
     const Pathway = () =>{
         const classes = useStyles();
         const history = useHistory();        
-        const trail_id = pathwayInfo.trail_id; // 這邊應該要吃axios回傳的後端資料
+        const trail_id = pathwayInfo.trail_id; // 這邊應該要吃axios回傳的後端資料        
         const [checked, setChecked] = useState(); //這邊應該要吃axios回傳的後端資料
         const [open, setOpen] = React.useState(true);
         const handleClose = () => {
             setOpen(false);
-          };
+        };
+
+        const checkFavorite = async() =>{
+            console.log('checkFavortite starts!');            
+            const userId = localStorage.getItem("userId")
+                ? localStorage.getItem("userId")
+                : 1;
+            console.log('userId: ', userId);
+            await demoapi.get("/api/favorites" + "?uuid=" + userId) // 查詢使用者收藏的步道
+            .then(res =>{
+                console.log('enter res');
+                console.log('res', res);
+                console.log('trail_id', trail_id);
+                res.data.map(element =>{
+                    console.log('element: ', element);
+                    let counter = element.trail_id;
+                    if (counter == trail_id){
+                        console.log("this trail has already been liked!");
+                        setChecked('checked');
+                    }
+                })
+            })
+            .catch(function (error){
+                console.log('====error==== ',error);
+                setChecked('checked');
+                console.log('checked is checked!');
+              })
+
+            
+        }
+        checkFavorite();
+        console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+
+        // const firstUpdate = useRef(true);
+        // useLayoutEffect(()=>{
+        //     if (firstUpdate.current){
+        //         firstUpdate.current = false;
+        //         checkFavorite();
+        //         return;
+        //       }          
+        // },[])
+
+        
 
          
         const handleChange = trail_id => {
