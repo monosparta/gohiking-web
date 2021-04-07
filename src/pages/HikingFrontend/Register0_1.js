@@ -9,12 +9,14 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useHistory } from "react-router-dom";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+
+import { countryInfo } from "../../data/countryInfo";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -103,12 +105,12 @@ const useStyles = makeStyles((theme) => ({
       color: '#ff3b30',
     },
   }));
-  const usePlaceholderStyles = makeStyles(theme => ({
-    placeholder: {
-      color: "#aaa"
-    }
-  }));
-  ;
+const usePlaceholderStyles = makeStyles(theme => ({
+  placeholder: {
+    color: "#aaa"
+  }
+}));
+;
 
 export default function SignIn() {
   const classes = useStyles();
@@ -119,12 +121,8 @@ export default function SignIn() {
   const [selectedDate, setSelectedDate] = React.useState('');
   const [inputValue, setInputValue] = useState([]);
   const [county, setCounty] = React.useState('');
-  const { register, handleSubmit, errors, watch } = useForm()
+  const { register, handleSubmit, errors, control } = useForm()
   const history = useHistory();
-  const [genderError, setGenderError] = React.useState(false);
-  const [countryError, setCountryError] = React.useState(false);
-  const [birthError, setBirthError] = React.useState(false);
-  const [countyError, setCountyError] = React.useState(false);
 
   const handleChange = (event) => {
     setGender(event.target.value);
@@ -196,69 +194,79 @@ export default function SignIn() {
           onChange={event => setName(event.target.value)}//Get value in Email
         />
         <Typography className={classes.errorInfo}>{errors.name && "請輸入姓名"}</Typography>
+        
         <Typography className={classes.Text} >
           性別
         </Typography>
-        <FormControl error={genderError}>
-        <Select
-          className={classes.InputBackground}
-          value={gender}
-          displayEmpty
-          renderValue={
-            gender !== "" ? undefined : () => <Placeholder>請輸入您的性別</Placeholder>
+        <Controller
+          as={
+           <Select
+              className={classes.InputBackground}
+              value={gender}
+              displayEmpty
+              renderValue={
+                gender !== "" ? undefined : () => <Placeholder>請輸入您的性別</Placeholder>
+              }
+              onChange={handleChange}
+            >   
+              <MenuItem value={1}>男</MenuItem>
+              <MenuItem value={0}>女</MenuItem>
+            </Select>
           }
-          naitve
-          inputProps={register({ required: true })}
-          onChange={handleChange}
-        >   
-          <MenuItem value={1}>男</MenuItem>
-          <MenuItem value={0}>女</MenuItem>
-        </Select>
-        {genderError && <Typography className={classes.errorInfo}>This is required!</Typography>}
-        </FormControl>
+          name="gender"
+          control={control}
+          rules={{ required: true }}
+        />
+        <div>{errors.gender && <Typography className={classes.errorInfo}>This is required!</Typography>}</div>
+        
         <Typography className={classes.Text} >
           手機
         </Typography>
-        <div>
-        <FormControl error={countryError}>
-          <Select
-          className={classes.PhoneRegionBackground}
-          value={phoneRegion}
-          displayEmpty
-          renderValue={
-            phoneRegion !== "" ? undefined : () => <Placeholder>台灣+886</Placeholder>
+        <Controller
+          as={
+            <Select
+              className={classes.PhoneRegionBackground}
+              value={phoneRegion}
+              displayEmpty
+              renderValue={
+                phoneRegion !== "" ? undefined : () => <Placeholder>台灣+8860</Placeholder>
+              }
+              onChange={handlePhoneRegion}
+              >   
+                {countryInfo.map((region,i) => (
+                <MenuItem key={i} value={region.countryName+region.phoneCode}>
+                  {region.countryName}{region.phoneCode}
+                </MenuItem>
+              ))}
+              </Select>
           }
-          onChange={handlePhoneRegion}
-          >   
-            <MenuItem value={4}>台灣+886</MenuItem>
-            <MenuItem value={424}>香港+852</MenuItem>
-          </Select>
-          {countryError && <Typography className={classes.errorInfo}>This is required!</Typography>}
-          </FormControl>
-          <Input 
-            name="phoneNumber"
-            className={classes.PhoneNumberBackground} 
-            placeholder="請輸您的手機號碼"  
-            onChange={event => setPhoneNumeber(event.target.value)}//Get value in Email
-            fullWidth
-            inputRef={register({ required: true })}
-          />
-          <Typography className={classes.errorInfo}>{errors.phoneNumber && "請輸入手機號碼"}</Typography>
-        </div>
+          name="contry"
+          control={control}
+          rules={{ required: true }}
+        />
+        <div>{errors.contry && <Typography className={classes.errorInfo}>This is required!</Typography>}</div>
+        
+        <Input 
+          name="phoneNumber"
+          className={classes.PhoneNumberBackground} 
+          placeholder="請輸您的手機號碼"  
+          onChange={event => setPhoneNumeber(event.target.value)}//Get value in Email
+          fullWidth
+          inputRef={register({ required: true })}
+        />
+        <Typography className={classes.errorInfo}>{errors.phoneNumber && "請輸入手機號碼"}</Typography>
+        
         <Typography className={classes.Text} >
           生日
         </Typography>
-        <FormControl error={birthError}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
           placeholder="請選擇"
           className={classes.InputBackground}
-          disableToolbar
-          variant="inline"
           format="yyyy/MM/dd"
           margin="normal"
           invalidDateMessage=''
-          id="date-picker-inline"
+          id="date-picker-dialog"
           value={selectedDate}
           inputValue={inputValue}
           onChange={handleDateChange}
@@ -267,26 +275,30 @@ export default function SignIn() {
           }}
         />
         </MuiPickersUtilsProvider>
-        {birthError && <Typography className={classes.errorInfo}>This is required!</Typography>}
-        </FormControl>
+        {/* {birthError && <Typography className={classes.errorInfo}>This is required!</Typography>} */}
         <Typography className={classes.Text} >
           居住地
         </Typography>
-        <FormControl error={countyError}>
-        <Select
-          className={classes.InputBackground}
-          value={county}
-          displayEmpty
-          renderValue={
-            county !== "" ? undefined : () => <Placeholder>請選擇</Placeholder>
+        <Controller
+          as={
+            <Select
+              className={classes.InputBackground}
+              value={county}
+              displayEmpty
+              renderValue={
+                county !== "" ? undefined : () => <Placeholder>請選擇</Placeholder>
+              }
+              onChange={handleCountyChange}
+            >   
+              <MenuItem value={"4"}>台北市</MenuItem>
+              <MenuItem value={"14"}>台中市</MenuItem>
+            </Select>
           }
-          onChange={handleCountyChange}
-        >   
-          <MenuItem value={"4"}>台北市</MenuItem>
-          <MenuItem value={"14"}>台中市</MenuItem>
-        </Select>
-        {countyError && <Typography className={classes.errorInfo}>This is required!</Typography>}
-        </FormControl>
+          name="county"
+          control={control}
+          rules={{ required: true }}
+        />
+        {errors.county && <Typography className={classes.errorInfo}>This is required!</Typography>}
         <Button
           type="button"
           fullWidth
