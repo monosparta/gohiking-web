@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     right: "3%",
   },
+  number: {
+    fontWeight: "bold",
+    fontFamily: "Roboto",
+    fontSize: "14px",
+  },
   fraction: {
     fontSize: "64px",
   },
@@ -87,7 +92,7 @@ export default function TrailCommit() {
   const [comment, setComment] = useState([]);
   const [comments, setComments] = useState([]);
   const commentApi = async (id) => {
-    await demoapi.get("/api/comment/" + id).then((res) => {
+    await demoapi.get("/api/comment/" + id+"?uuid=1").then((res) => {
       setComment(res.data); //步道總討論 api
       setStars(res.data.stars); //星星等級api
       setComments(res.data.comments); //步道討論 api
@@ -101,6 +106,10 @@ export default function TrailCommit() {
   }
   var avgStar = comment.avgStar;
   avgStar = financial(avgStar);
+
+  var mathStar;
+  mathStar = Math.ceil(avgStar);
+  console.log(mathStar);
 
   return (
     <>
@@ -144,7 +153,7 @@ export default function TrailCommit() {
             </ListItem>
 
             <ListItem>
-              <ThemeProvider>4</ThemeProvider>
+              <ThemeProvider className={classes.number}>4</ThemeProvider>
               <BorderLinearProgress
                 variant="determinate"
                 value={(stars.four * 100) / comment.totalPeople}
@@ -178,7 +187,10 @@ export default function TrailCommit() {
           </List>
         </Grid>
         <Grid className={classes.tangle} />
-        <Comment data={comments} />
+
+        {comments.map((trail) => (
+          <Comment data={trail} />
+        ))}
       </div>
     </>
   );
