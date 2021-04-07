@@ -158,8 +158,8 @@ export default function PathwayCard(props) {
 
     const checkFavorite = async() =>{
         console.log('checkFavortite starts!');            
-        const userId = localStorage.getItem("userid")
-            ? localStorage.getItem("userid")
+        const userId = localStorage.getItem("userId")
+            ? localStorage.getItem("userId")
             : 1;
         console.log('userId: ', userId);
         await demoapi.get("/api/favorites" + "?uuid=" + userId) // 查詢使用者收藏的步道
@@ -190,8 +190,8 @@ export default function PathwayCard(props) {
     },[checked])
 
     const handleFavoriteChange = id => {
-        const uid = localStorage.getItem("userid")
-            ? localStorage.getItem("userid")
+        const uid = localStorage.getItem("userId")
+            ? localStorage.getItem("userId")
             : 1;
         setChecked(!checked);
         console.log('uid: ',uid);
@@ -201,7 +201,6 @@ export default function PathwayCard(props) {
                 console.log(res.status);
             });
     };
-    console.log(data.favorite);
     return (
         <div>
             <Grid container className={classes.gridcontain} spacing={2} direction='row'

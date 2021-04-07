@@ -62,7 +62,7 @@ export default function AnnouncementCard(props) {
       >
         <Grid item className={classes.gridItem} xs={3} >
           <ButtonBase className={classes.buttonBase}>
-          <img src={coverImage} className={classes.img}/>
+          <img alt={''} src={coverImage} className={classes.img}/>
           </ButtonBase>
         </Grid>
         <Grid item  xs={9} >
