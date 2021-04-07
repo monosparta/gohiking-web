@@ -83,18 +83,17 @@ import axios from 'axios';
         }} />;
       }
 
-      
-
     const Pathway = () =>{
         const classes = useStyles();
-        const history = useHistory();        
-        const trail_id = pathwayInfo.trail_id; // 這邊應該要吃axios回傳的後端資料        
-        const [checked, setChecked] = useState(); //這邊應該要吃axios回傳的後端資料
+        const history = useHistory();             
+        const trail_id = pathwayInfo.trail_id; // 這邊應該要吃axios回傳的後端資料
+        const [nothing, setNothing] = useState(false);         
+        const [checked, setChecked] = useState(nothing); //這邊應該要吃axios回傳的後端資料        
         const [open, setOpen] = React.useState(true);
         const handleClose = () => {
             setOpen(false);
         };
-
+        
         const checkFavorite = async() =>{
             console.log('checkFavortite starts!');            
             const userId = localStorage.getItem("userId")
@@ -111,29 +110,30 @@ import axios from 'axios';
                     let counter = element.trail_id;
                     if (counter == trail_id){
                         console.log("this trail has already been liked!");
-                        setChecked('checked');
+                        setNothing(true);
+                        setChecked(true);                        
+                        
                     }
                 })
+                
             })
             .catch(function (error){
                 console.log('====error==== ',error);
-                setChecked('checked');
                 console.log('checked is checked!');
               })
 
             
         }
-        checkFavorite();
-        console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
 
-        // const firstUpdate = useRef(true);
-        // useLayoutEffect(()=>{
-        //     if (firstUpdate.current){
-        //         firstUpdate.current = false;
-        //         checkFavorite();
-        //         return;
-        //       }          
-        // },[])
+        const firstUpdate = useRef(true);
+        useLayoutEffect(()=>{
+            if (firstUpdate.current){
+                firstUpdate.current = false;
+                checkFavorite();
+                return;
+              }                
+              console.log('Checked is like: ', checked);        
+        },[checked])
 
         
 
@@ -146,8 +146,10 @@ import axios from 'axios';
             demoapi
                 .post("/api/favorite/?user_id=" + userId + "&trail_id=" + trail_id)
                 .then(res => {
+                console.log('res', res);
                 console.log(res.status);
                 });
+                
         };
       
         const handleShare = () => {
