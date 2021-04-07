@@ -13,7 +13,6 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import commit from "../../asset/img/icon-comment.svg";
-import demoapi from "axios/api"; //引入api
 const lightTheme = createMuiTheme({
   palette: {
     type: "light",
@@ -93,7 +92,7 @@ export default function CollectPage() {
             <div className={classes.img}>
               <img src={commit} className={classes.iconImg} />
             </div>
-            <div className={classes.text}>必須先登入可以收藏並查看喜愛步道</div>
+            <div className={classes.text}>必須先登入才可以查看評論步道</div>
 
             <Button
               variant="contained"
