@@ -11,7 +11,8 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    height: `100%`,
+    width: '100%',
+    height: '100%',
   },
   arrow: {
     margin: '40px 371px 0px 16px',
@@ -106,12 +107,14 @@ const SignUp = () => {
   // API POST
   const onSubmit = async (data) => {
     console.log(data);
-    await axios.post('https://gohiking-server.herokuapp.com/api/register', data)
+    await axios.post('https://staging-server.gohiking.app/api/register', data)
     .then(function (response) {
+      const now = new Date()
       console.log('correct');
       responsedJSON = response.data
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('userId', response.data.userId)
+      localStorage.setItem('expireTime', now.getTime() + response.data.expireTime)
       history.push("/register0_1");
     })
     .catch(function (error) {

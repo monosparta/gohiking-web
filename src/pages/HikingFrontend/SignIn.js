@@ -172,7 +172,7 @@ export default function ImgMediaCard() {
       'token': response.tokenId,
     }
     console.log('data: ' + data);
-    await axios.post('https://gohiking-server.herokuapp.com/api/auth/social/callback', data).then(function(response2){
+    await axios.post('http://staging-serve.monosparta.org/api/auth/social/callback', data).then(function(response2){
       console.log('====second response==== ',response2);
       console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
@@ -195,7 +195,7 @@ export default function ImgMediaCard() {
       'token': response.accessToken,
     }
     console.log('====data====',data);
-    await axios.post('https://gohiking-server.herokuapp.com/api/auth/social/callback', data).then(function(response2){
+    await axios.post('http://staging-serve.monosparta.org/api/auth/social/callback', data).then(function(response2){
       console.log('====second response==== ', response2);
       console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
@@ -268,7 +268,7 @@ export default function ImgMediaCard() {
 
     const signInWithAppleChangePage = async() =>{ //#####
       console.log('========final data_apple===========', appleData);
-      await axios.post('https://gohiking-server.herokuapp.com/api/auth/social/callback', appleData).then(function(response3){
+      await axios.post('http://staging-serve.monosparta.org/api/auth/social/callback', appleData).then(function(response3){
           console.log("====post success====",response3);
           console.log('====second response token====', response3.data.token);
           localStorage.setItem('token', response3.data.token);
