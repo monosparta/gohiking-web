@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
 // nodejs library to set properties for components
 import PropTypes from 'prop-types';
 // @material-ui/core components
@@ -132,6 +132,7 @@ export default function PathwayCard(props) {
         title,
         location,
         miles,
+        region,
         favorite,
         trail_id,
         yourlng,
@@ -140,10 +141,6 @@ export default function PathwayCard(props) {
         latitude,
     } = props;
     const classes = useStyles();
-    //const [checked, setChecked] = React.useState(favorite);
-    //const handleChange = () => {
-        //setChecked(!checked);
-    //};
     var start = { longitude: yourlng, latitude: yourlat };
     var end = { longitude: longitude, latitude: latitude };
     var m = getDistance(start, end);
@@ -154,18 +151,57 @@ export default function PathwayCard(props) {
     };
     //api回傳資料
     const data = props;
-    const [checked, setChecked] = useState(data.favorite);
+    const [nothing, setNothing] = useState(false);
+    const [checked, setChecked] = useState(nothing);
+
+    
+
+    const checkFavorite = async() =>{
+        console.log('checkFavortite starts!');            
+        const userId = localStorage.getItem("userid")
+            ? localStorage.getItem("userid")
+            : 1;
+        console.log('userId: ', userId);
+        await demoapi.get("/api/favorites" + "?uuid=" + userId) // 查詢使用者收藏的步道
+        .then(res =>{
+            res.data.map(element =>{
+                let counter = element.trail_id;
+                if (counter == trail_id){
+                    console.log("this trail has already been liked!");
+                    setNothing(true);
+                    setChecked(true);          
+                }
+            })
+        })
+        .catch(function (error){
+            console.log('====error==== ',error);
+            console.log('checked is checked!');
+          })
+    }
+
+    const firstUpdate = useRef(true);
+    useLayoutEffect(()=>{
+        if (firstUpdate.current){
+            firstUpdate.current = false;
+            checkFavorite();
+            return;
+          }                
+          console.log('Checked is like: ', checked);        
+    },[checked])
+
     const handleFavoriteChange = id => {
         const uid = localStorage.getItem("userid")
             ? localStorage.getItem("userid")
             : 1;
         setChecked(!checked);
+        console.log('uid: ',uid);
         demoapi
             .post("/api/favorite/?user_id=" + uid + "&trail_id=" + id)
             .then(res => {
                 console.log(res.status);
             });
     };
+    console.log(data.favorite);
     return (
         <div>
             <Grid container className={classes.gridcontain} spacing={2} direction='row'
@@ -181,7 +217,9 @@ export default function PathwayCard(props) {
                             checked={checked}
                             onChange={() =>{handleFavoriteChange(data.trail_id)}}
                             icon={<FavoriteBorder fontSize={'small'} />}
-                            checkedIcon={<Favorite fontSize={'small'} />}
+                            checkedIcon={
+                                <Favorite fontSize={"small"} style={{ color: "#FFF" }} />
+                            }
                             className={classes.favorite}
                             name='favorite' />
                     </ButtonBase>
@@ -190,7 +228,7 @@ export default function PathwayCard(props) {
                     <ButtonBase onClick={handlePage}>
                         <Typography noWrap className={classes.mediaHeading}>{renderContentLimit(title)}</Typography>
                     </ButtonBase>
-                        <Typography className={classes.mediaFooter}>{location}</Typography>
+                        <Typography className={classes.mediaFooter}>{region}{location}</Typography>
                         <Typography className={classes.mediaDistance}>全程約 {miles} km</Typography>
                     
                 </Grid>
