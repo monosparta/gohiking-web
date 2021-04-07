@@ -88,9 +88,10 @@ export default function Commit(props) {
   const classes = useStyles();
 
   const comment = props.data;
+  
   const [checked, setChecked] = useState(comment.likestatus);
   const [checked1, setChecked1] = useState(comment.dislikestatus);
-  console.log(comment.likes);
+  console.log(comment);
 
   const handleChange = id => {
     const uid = localStorage.getItem("userId")
@@ -102,7 +103,7 @@ export default function Commit(props) {
 
       .post(
         "/api/likeComment/?user_id=" +
-          uid +
+          uid+
           "&comment_id=" +
           id +
           "&status=" +
@@ -113,8 +114,8 @@ export default function Commit(props) {
       });
   };
   const handleChange1 = id => {
-    const uid = localStorage.getItem("userid")
-      ? localStorage.getItem("userid")
+    const uid = localStorage.getItem("userId")
+      ? localStorage.getItem("userId")
       : 1;
     setChecked1(!checked1);
     demoapi
@@ -136,11 +137,11 @@ return (
 
     <ThemeProvider theme={lightTheme}>
       <Grid className={classes.comment}>
-        <Grid className={classes.commentName}>{comment.username}</Grid>
+        <Grid className={classes.commentName}>{comment.user.name}</Grid>
         <Rating
           className={classes.rating}
           name="size-small"
-          defaultValue={comment.rating}
+          defaultValue={comment.star}
         />
         <Button
           className={classes.commentButton}
@@ -181,10 +182,9 @@ return (
             <Checkbox
               checked={checked1}
               onChange={() => {
-                
-                if (checked1 == true) {
+              
                   handleChange1(comment.id);
-                }
+               
               }}
               icon={<ThumbDownAltOutlinedIcon />}
               checkedIcon={<ThumbDownIcon style={{ color: "#3c5754" }} />}
@@ -202,7 +202,7 @@ return (
           ))}
         </Grid>
         <Typography className={classes.time}>
-          {comment.date}. 來回時間: {Math.round(comment.costTime/60)}h {comment.costTime%60}m 
+          {comment.date}. 來回時間: {Math.round(comment.duration/60)}h {comment.duration%60}m 
         </Typography>
         <hr />
       </Grid>
