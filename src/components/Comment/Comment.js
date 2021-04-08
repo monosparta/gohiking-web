@@ -10,8 +10,6 @@ import Rating from "@material-ui/lab/Rating";
 import { Grid, Link } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
-import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import Button from "@material-ui/core/Button";
 import { Checkbox } from "@material-ui/core";
 import demoapi from "axios/api";
@@ -94,8 +92,6 @@ export default function Commit(props) {
   const [dislike, setDisLike] = useState(comment.dislike);
   const [likeCheck, setLikeCheck] = useState(comment.likestatus);
   const [dislikeCheck, setDislikeCheck] = useState(comment.dislikestatus);
-  console.log(comment);
- 
 
   const handleChange = (id) => {
     //觸發  likeCheck 喜歡 post status +1
@@ -166,11 +162,11 @@ export default function Commit(props) {
           variant="outlined"
           color="primary"
         >
-          {comment.difficulty == 1 && "非常簡單"}
-          {comment.difficulty == 2 && "簡單"}
+          {comment.difficulty == 1 && "疑?有山嗎?"}
+          {comment.difficulty == 2 && "覺得輕鬆"}
           {comment.difficulty == 3 && "覺得還好"}
-          {comment.difficulty == 4 && "困難"}
-          {comment.difficulty == 5 && "非常困難"}
+          {comment.difficulty == 4 && "有點兒累"}
+          {comment.difficulty == 5 && "根本自虐吧"}
         </Button>
 
         <Grid>{comment.content}</Grid>
@@ -181,7 +177,7 @@ export default function Commit(props) {
               onChange={() => {
                 handleChange(comment.id);
               }}
-              icon={<ThumbUpAltOutlinedIcon />}
+              icon={<ThumbUpIcon />}
               checkedIcon={<ThumbUpIcon style={{ color: "#3c5754" }} />}
             />
 
@@ -194,7 +190,7 @@ export default function Commit(props) {
               onChange={() => {
                 handleChange1(comment.id);
               }}
-              icon={<ThumbDownAltOutlinedIcon />}
+              icon={<ThumbDownIcon />}
               checkedIcon={<ThumbDownIcon style={{ color: "#3c5754" }} />}
             />
 

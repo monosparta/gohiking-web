@@ -86,14 +86,17 @@ const lightTheme = createMuiTheme({
   },
 });
 
-export default function TrailCommit() {
+export default function TrailCommit(props) {
   const classes = useStyles();
   const [stars, setStars] = useState([]);
   const [comment, setComment] = useState([]);
   const [comments, setComments] = useState([]);
-  let uid =localStorage.getItem("userId");
+  const trail_id = props.location.state;
+  console.log(trail_id);
+  let uid = localStorage.getItem("userId");
+
   const commentApi = async (id) => {
-    await demoapi.get("/api/comment/" + 1+"?uuid="+uid).then((res) => {
+    await demoapi.get("/api/comment/" +1 + "?uuid=" + uid).then((res) => {
       setComment(res.data); //步道總討論 api
       setStars(res.data.stars); //星星等級api
       setComments(res.data.comments); //步道討論 api
@@ -110,7 +113,6 @@ export default function TrailCommit() {
 
   let mathStar = 0;
   mathStar = Math.ceil(avgStar);
-  console.log(mathStar);
 
   return (
     <>
