@@ -147,7 +147,10 @@ export default function PathwayCard(props) {
     const history = useHistory();
 
     const handlePage = () =>{
-        history.push('/pathway');
+        history.push({
+            pathname:'/pathway',
+            state: {trail_id: trail_id},
+        });
     };
     //api回傳資料
     const data = props;
@@ -161,7 +164,7 @@ export default function PathwayCard(props) {
         const userId = localStorage.getItem("userId")
             ? localStorage.getItem("userId")
             : 1;
-        console.log('userId: ', userId);
+        //console.log('userId: ', userId);
         await demoapi.get("/api/favorites" + "?uuid=" + userId) // 查詢使用者收藏的步道
         .then(res =>{
             res.data.map(element =>{
@@ -194,7 +197,7 @@ export default function PathwayCard(props) {
             ? localStorage.getItem("userId")
             : 1;
         setChecked(!checked);
-        console.log('uid: ',uid);
+        //console.log('uid: ',uid);
         demoapi
             .post("/api/favorite/?user_id=" + uid + "&trail_id=" + id)
             .then(res => {

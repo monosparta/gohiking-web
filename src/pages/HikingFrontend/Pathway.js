@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import {makeStyles, ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import fontStyle from '../../assets/jss/fontStyle';
 import basicStyle from '../../assets/jss/basicStyle';
-import { pathwayInfo } from '../../data/pathway';
+// import { pathwayInfo } from '../../data/pathway';
 import darkTheme from '../../config/darkTheme';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -41,7 +41,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import demoapi from "axios/api";
 import { Checkbox } from "@material-ui/core";
 import { Favorite, FavoriteBorder, RadioButtonUnchecked } from "@material-ui/icons";
-import axios from 'axios';
 
     const style = {
         ...fontStyle,
@@ -93,10 +92,15 @@ import axios from 'axios';
         },
     });
 
-    const Pathway = () =>{
+
+  
+   
+    const Pathway = (props) =>{
+        var pathwayInfo = {};
+        console.log('props', props);
+        const trail_id = props.location.state.trail_id;
         const classes = useStyles();
         const history = useHistory();             
-        const trail_id = pathwayInfo.trail_id; // 這邊應該要吃axios回傳的後端資料
         const [nothing, setNothing] = useState(false);         
         const [checked, setChecked] = useState(nothing); //這邊應該要吃axios回傳的後端資料        
         const [open, setOpen] = React.useState(true);
@@ -104,6 +108,42 @@ import axios from 'axios';
         const handleClose = () => {
             setOpen(false);
         };
+        const [album, setAlbum] = useState([]);
+        const [chips, setChips] = useState([]);
+        const [trailHead, setTrailHead] = useState([]);
+        const [announcement, setAnnouncement] = useState([]);
+        const [attraction, setAttraction] = useState([]);
+        const [articles, setArticles] = useState([]);
+        const [similar, setSimilar] = useState([]);
+        const [title, setTitle] = useState([]);
+        const [comment, setComment] = useState([]);
+
+
+        const getInfo = async() =>{
+            await demoapi.get("/api/trailinfo/" + trail_id + "?uiud=" + localStorage.getItem("userId"))
+            .then(res =>{
+                console.log('res', res);
+                console.log('res.data', res.data);
+                pathwayInfo = res.data;
+                setAlbum(pathwayInfo.album.slice(0,1));
+                setChips(pathwayInfo.chips);
+                setTrailHead(pathwayInfo.trailHead);
+                setAnnouncement(pathwayInfo.announcement.slice(0,3));
+                setAttraction(pathwayInfo.attraction);
+                setArticles(pathwayInfo.articles);
+                setSimilar(pathwayInfo.similar);
+                setTitle(pathwayInfo.title);
+                setComment(pathwayInfo.comment.comments);
+                console.log('trailHead[1]:   ', trailHead[1].name);
+                console.log('album.slice()', album);
+                console.log('title', title);
+            })
+            .catch(function (error){
+                console.log('====error==== ',error);
+            })
+        }
+
+              
         
         const checkFavorite = async() =>{
             console.log('checkFavortite starts!');            
@@ -113,7 +153,6 @@ import axios from 'axios';
             console.log('userId: ', userId);
             await demoapi.get("/api/favorites" + "?uuid=" + userId) // 查詢使用者收藏的步道
             .then(res =>{
-                console.log('enter res');
                 console.log('res', res);
                 console.log('trail_id', trail_id);
                 res.data.map(element =>{
@@ -124,8 +163,7 @@ import axios from 'axios';
                         setNothing(true);
                         setChecked(true);                        
                     }
-                })
-                
+                })                
             })
             .catch(function (error){
                 console.log('====error==== ',error);
@@ -138,6 +176,7 @@ import axios from 'axios';
         useLayoutEffect(()=>{
             if (firstUpdate.current){
                 firstUpdate.current = false;
+                getInfo(); 
                 checkFavorite();
                 return;
               }                
@@ -150,15 +189,19 @@ import axios from 'axios';
         const handleChange = trail_id => {
             const userId = localStorage.getItem("userId")
             ? localStorage.getItem("userId")
-            : 1;
+            : -1;
+            // 由於沒有userId所以需要讓使用者登入
+            console.log('user')
+            if(userId === -1){
+                history.push('/collectpage');
+            }
             setChecked(!checked);
             demoapi
                 .post("/api/favorite/?user_id=" + userId + "&trail_id=" + trail_id)
                 .then(res => {
                 console.log('res', res);
                 console.log(res.status);
-                });
-                
+                });                
         };
       
         const handleShare = () => {
@@ -227,20 +270,22 @@ import axios from 'axios';
           }else{
             id = null;  //取不到user Id
         }
+
             return(
                 <ThemeProvider theme = {darkTheme}>
                     <div className = {classes.root}>
     
-                        <Slider {...bannerCarousel} className={classes.slider}>
-                        {pathwayInfo.album.slice(0, 8).map((img, i) => (
+                        <Slider {...bannerCarousel} className={classes.slider}>                           
+                        {album.map((img, i) => (
                             <div key={i}>
                             <img src={img} alt={'slider img'} className={classes.sliderImg} />
                             </div>
-                        ))}
+                        )
+                        )}
                         </Slider>
                         <AppBar className = {classes.appBarTransparent}>
                             <Toolbar>
-                                <IconButton style={{color: 'inherit'}} onClick={()=>{history.push('/nearbypathway')}}>
+                                <IconButton style={{color: 'inherit'}} onClick={()=>{history.back()}}>
                                     <ArrowBackIcon> </ArrowBackIcon>
                                 </IconButton>
                                 <span style= {{flexGrow: 1}} /> {/*把剩下的空間全部分配在這個span裡面 */}
@@ -285,7 +330,7 @@ import axios from 'axios';
                         </div>
                         <Divider style={{height:'8px'}} />
                         <div style={{paddingTop: '8px', paddingBottom: '8px'}}>
-                            {pathwayInfo.chips.map((chip,i) =>(
+                            {chips.map((chip,i) =>(
                                  <Chip key= {i} label={chip} href="#chip" variant="outlined" style={{margin: '8px', marginRight: 0, padding: '6px', fontSize: '14px', fontWeight: '700'}} />
                             ))}
                         </div>
@@ -295,7 +340,7 @@ import axios from 'axios';
                                 <div className={classes.hikingInfoLeft}> 海拔 </div>
                             </Grid>
                             <Grid item xs={8} >
-                                <div className={classes.hikingInfoRight}> {pathwayInfo.altitude[0]}~{pathwayInfo.altitude[1]} m</div>
+                                <div className={classes.hikingInfoRight}> {pathwayInfo.altitude} m</div>
                             </Grid>
                             <Grid item xs={12}>
                                 <Divider />
@@ -340,7 +385,7 @@ import axios from 'axios';
                                 <div className={classes.hikingInfoLeft}> 路面狀況 </div>
                             </Grid>
                             <Grid item xs={8} >
-                                <div className={classes.hikingInfoRight}> {pathwayInfo.status.map((condition,i)=>(<span key={i}>{condition}、</span>))} </div>
+                                <div className={classes.hikingInfoRight}> { <span> {pathwayInfo.roadstatus}</span> } </div>
                             </Grid>
                             <Grid item xs={12} style={{marginBottom: '16px'}}>
                                 <Divider />
@@ -350,7 +395,7 @@ import axios from 'axios';
                         <div >
                             <Typography variant = "h6" style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight:'900', lineHeight: '1.5', letterSpacing:'0.5px'}}>登山口</Typography>
                             <Slider {...pathwayCarousel} >
-                                {pathwayInfo.trailhead.map((entry, i) => (
+                                {trailHead.map((entry, i) => (
                                 <div key={i} >
                                     <Button variant={'contained'} style={{ backgroundColor: '#abebdc', }} component={Link} to={'/trailhead'} className={classes.defaultButton} disableElevation>{entry.name}</Button>
                                 </div>
@@ -372,7 +417,7 @@ import axios from 'axios';
                             </IconButton>                        
                         </div>
                         <div style={{marginLeft:'8px',}}>
-                            {pathwayInfo.announcement.slice(0,3).map((news, i) => (
+                            {announcement.slice(0,3).map((news, i) => (
                                 <AnnouncementCard
                                 // pathLink={news.link}
                                 coverImage={news.img}
@@ -407,7 +452,7 @@ import axios from 'axios';
                         <div>
                             <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>步道照片</Typography>
                             <Slider {...pathwayCarousel}>
-                                {pathwayInfo.album.slice(0, 8).map((img, i) => (
+                                {album.slice(0, 1).map((img, i) => (
                                     <ButtonBase onClick={() => Zmage.browsing({ src: img })} >
                                         <div key={i}>
                                         <img src={img} alt={'slider img'} style={{width:'96px', height:'96px', objectFit:'cover', marginLeft:'16px', marginBottom:'16px'}} />
@@ -420,7 +465,7 @@ import axios from 'axios';
                         <div>
                             <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>鄰近景點</Typography>
                             <Slider {...pathwayCarousel}>
-                            {pathwayInfo.attraction.map((item, i) => (
+                            {attraction.map((item, i) => (
                                 <div key={i}>
                                     <Button variant={'contained'} style={{ backgroundColor: '#abddeb', minWidth:'83px', margin:'0 0 16px 16px' }}
                                     onClick={()=>{history.push({
@@ -448,13 +493,13 @@ import axios from 'axios';
                         <Rating defaultValue={4} style={{fontSize:'28px', marginBottom:'16px', marginLeft:'16px',}}></Rating>
                         <Divider />
                         <div>
-                            <Comment data={pathwayInfo.comments}></Comment>
+                            <Comment data={comment}></Comment>
                         </div>
                         <Divider style={{height:'8px'}} />
                         <div>
                             <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>相關文章</Typography>
                                 <Slider {...pathwayCarousel}>
-                                    {pathwayInfo.article.map((item, i) => (
+                                    {articles.map((item, i) => (
                                         <div key={i}>
                                             <img src={item.img} alt = 'related_article_images' style={{width:'174px', height:'96px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
                                             <Typography style={{fontSize:'14px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.title}</Typography>
@@ -468,7 +513,7 @@ import axios from 'axios';
                             <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>相似步道</Typography>
                                 <Slider {...twoRowCarousel}>
     
-                                    {pathwayInfo.similar.map((item, i) => (
+                                    {similar.map((item, i) => (
                                         <div key={i}>
                                             <Grid container spacing={0}>
                                                 <Grid item xs={4}>
@@ -504,7 +549,7 @@ import axios from 'axios';
                                     打開GPS路線
                                     </Typography>
                                 }
-                                destination={pathwayInfo.name + pathwayInfo.trailhead[1].name}
+                                destination={title}
                                 />
                             } className={classes.rightNavigation} />
                         </BottomNavigation>

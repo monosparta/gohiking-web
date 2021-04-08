@@ -118,7 +118,7 @@ export default function SignIn() {
   // API POST
   const onSubmit = async (data) => {
     console.log(data);
-    await axios.post('https://gohiking-server.herokuapp.com/api/password/forget', data)
+    await axios.post('https://staging-server.gohiking.app/api/password/forget', data)
     .then(function (response) {
       console.log('correct');
       const { token } = response.data;
