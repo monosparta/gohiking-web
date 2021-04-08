@@ -178,6 +178,8 @@ const CommentPage = props => {
       .then(res => {
         if (res.status === 200) {
           history.push("/trailComment");
+        } else {
+          history.push({ pathname: "/pathway", state: { trail_id: trail_id } });
         }
       });
   };

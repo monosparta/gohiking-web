@@ -315,15 +315,23 @@ function EditAccount(props) {
                   <option
                     key={"default"}
                     value={
-                      personalInfo.countrycodes[
-                        personalInfo.users.country_code_id - 1
-                      ].id
+                      personalInfo.countrycodes === undefined
+                        ? ""
+                        : personalInfo.users.country_code_id === null
+                        ? ""
+                        : personalInfo.countrycodes[
+                            personalInfo.users.country_code_id - 1
+                          ].phone_code
                     }
                   >
                     {
-                      personalInfo.countrycodes[
-                        personalInfo.users.country_code_id - 1
-                      ].phone_code
+                      personalInfo.countrycodes === undefined
+                      ? ""
+                      : personalInfo.users.country_code_id === null
+                      ? ""
+                      : personalInfo.countrycodes[
+                          personalInfo.users.country_code_id - 1
+                        ].phone_code
                     }
                   </option>
                   {personalInfo.countrycodes.map(info => (
