@@ -15,7 +15,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Rating from "@material-ui/lab/Rating";
-import { Link } from "react-router-dom";
+import { Link, useHistory  } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import demoapi from "../../axios/api";
 const BorderLinearProgress = withStyles((theme) => ({
@@ -90,13 +90,14 @@ export default function TrailCommit(props) {
   const classes = useStyles();
   const [stars, setStars] = useState([]);
   const [comment, setComment] = useState([]);
+  const history = useHistory(); 
   const [comments, setComments] = useState([]);
   const trail_id = props.location.state;
   console.log(trail_id);
   let uid = localStorage.getItem("userId");
 
   const commentApi = async (id) => {
-    await demoapi.get("/api/comment/" +1 + "?uuid=" + uid).then((res) => {
+    await demoapi.get("/api/comment/" + 1 + "?uuid=" + uid).then((res) => {
       setComment(res.data); //步道總討論 api
       setStars(res.data.stars); //星星等級api
       setComments(res.data.comments); //步道討論 api
@@ -120,16 +121,20 @@ export default function TrailCommit(props) {
         <ThemeProvider theme={lightTheme}>
           <AppBar position="static">
             <Toolbar>
-              <Link to={{ pathname: "/pathway" }}>
+         
                 <IconButton
                   edge="start"
                   className={classes.menuButton}
                   color="inherit"
                   aria-label="menu"
+                  onClick={() => {history.push({
+                    pathname:'/pathway',
+                    state: {trail_id: trail_id},
+                    })}}
                 >
                   <ArrowBackIcon style={{ color: "white" }} />
                 </IconButton>
-              </Link>
+            
               <Typography variant="h6" className={classes.title}>
                 步道評論與討論
               </Typography>
