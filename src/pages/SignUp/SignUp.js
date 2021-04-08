@@ -76,7 +76,7 @@ const useStyles = makeStyles({
   privacyInfo: {
     width: '-webkit-fill-available',
     height: '45px',
-    margin: '16px 0px 0px',
+    margin: '75px 0px 0px',
     fontFamily: 'NotoSansCJKtc',
     fontSize: '14px',
     fontWeight: 'normal',
@@ -102,6 +102,13 @@ const SignUp = () => {
   const password = useRef({});
   password.current = watch("password", "");
   const axios = require('axios');
+  const [serverState, setServerState] = React.useState();
+  const handleServerResponse = (signup, msg) => {
+    setServerState({
+      signup,
+      msg
+    });
+  };
   let responsedJSON;
 
   // API POST
@@ -120,6 +127,7 @@ const SignUp = () => {
     .catch(function (error) {
       console.log('error');
       responsedJSON = error.response.data;
+      handleServerResponse(false, responsedJSON.error)
     })
     .finally(function () {
       console.log(responsedJSON);
@@ -150,10 +158,15 @@ const SignUp = () => {
                                                                 validate: value =>
                                                                 value === password.current || "密碼不一致！" 
                                                                 })} />
-        <div className={classes.errorInfo}>{errors.password_repeat && <p>{errors.password_repeat.message}</p>}</div>
+        <div className={classes.errorInfo}>
+          {errors.password_repeat && <p>{errors.password_repeat.message}</p>}
+          {serverState && (
+          <div className={classes.errorInfo}>{serverState.msg}</div>
+          )}
+        </div>
         <div className={classes.privacyInfo}>使用這個應用程式前，請先詳閱「Go Hiking」的
         《<Link to="/privacyPolicy" style={{ color: '#007aff' }}>隱私權政策</Link>》及《<Link to="/aboutUs" style={{ color: '#007aff' }}>服務條款</Link>》
-      </div>
+        </div>
         
         <Button
           type="submit"

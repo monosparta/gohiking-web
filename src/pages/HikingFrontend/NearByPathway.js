@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import axios from "axios";
 import {
-    makeStyles,withStyles ,
+    makeStyles, withStyles,
 } from "@material-ui/core/styles";
 // Import Swiper React components
 // Import Swiper styles
@@ -38,9 +38,9 @@ const theme = createMuiTheme({
 
 const WhiteTextTypography = withStyles({
     root: {
-      color: "#FFFFFF"
+        color: "#FFFFFF"
     }
-  })(Typography);
+})(Typography);
 
 const styles = {
     indicator: {
@@ -130,7 +130,6 @@ function NearByPathway() {
     const [searchSpring, setSearchSpring] = useState([]);
     const [searchFamily, setSearchFamily] = useState([]);
     const [yes, setYes] = useState("");
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -149,27 +148,27 @@ function NearByPathway() {
 
     //call trails and set trails data in search and id is category
     const initial = async () => {
-        await axios.get('http://minyen.monosparta.org/api/collection/1')
+        await axios.get('https://staging-server.gohiking.app/api/classification/1&uuid=1')
             .then((response) => {
-                console.log(response.data.trails);
+                //console.log(response.data.trails);
                 setSearchMaple(response.data.trails);
             });
-        await axios.get('http://minyen.monosparta.org/api/collection/2')
+        await axios.get('https://staging-server.gohiking.app/api/classification/2&uuid=1')
             .then((response) => {
-                console.log(response.data.trails);
+                //console.log(response.data.trails);
                 setSearchChallenge(response.data.trails);
             });
-        await axios.get('http://minyen.monosparta.org/api/collection/3')
+        await axios.get('https://staging-server.gohiking.app/api/classification/3&uuid=1')
             .then((response) => {
-                console.log(response.data.trails);
+                //console.log(response.data.trails);
                 setSearchSpring(response.data.trails);
             });
-        await axios.get('http://minyen.monosparta.org/api/collection/4')
+        await axios.get('https://staging-server.gohiking.app/api/classification/4&uuid=1')
             .then((response) => {
-                console.log(response.data.trails);
+                //console.log(response.data.trails);
                 setSearchFamily(response.data.trails);
             });
-        console.log('======success========', searchChallenge);
+        console.log('======success========');
     }
 
     const firstUpdate = useRef(true);
@@ -214,10 +213,6 @@ function NearByPathway() {
         console.warn("ERROR(" + err.code + "): " + err.message);
     }
 
-    useEffect(() => {
-        console.log('searchChallenge:    ', searchMaple)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchFamily])
 
     return (
         <>
@@ -247,16 +242,16 @@ function NearByPathway() {
                             <TabPanel value={value} index={0}>
                                 {searchMaple.map((path, i) => (
                                     <PathwayDistance
-                                        favorite={false}
-                                        avatar={path.img}
-                                        title={path.pathTitle}
-                                        location={path.pathLocation}
-                                        miles={path.pathMiles}
+                                        favorite={path.favorite}
+                                        avatar={path.coverImage}
+                                        title={path.title}
+                                        region={path.location.county.name}
+                                        location={path.location.name}
+                                        miles={path.distance}
                                         yourlng={lng}
                                         yourlat={lat}
                                         longitude={path.longitude}
                                         latitude={path.latitude}
-                                        // link = {path.pathLink}
                                         trail_id={path.id}
                                         key={i}
                                     />
@@ -265,10 +260,11 @@ function NearByPathway() {
                             <TabPanel value={value} index={1}>
                                 {searchChallenge.map((path, i) => (
                                     <PathwayDistance
-                                        favorite={false}
+                                        favorite={path.favorite}
                                         avatar={path.coverImage}
                                         title={path.title}
-                                        location={path.location}
+                                        region={path.location.county.name}
+                                        location={path.location.name}
                                         miles={path.distance}
                                         yourlng={lng}
                                         yourlat={lat}
@@ -282,10 +278,11 @@ function NearByPathway() {
                             <TabPanel value={value} index={2}>
                                 {searchSpring.map((path, i) => (
                                     <PathwayDistance
-                                        favorite={false}
+                                        favorite={path.favorite}
                                         avatar={path.coverImage}
                                         title={path.title}
-                                        location={path.location}
+                                        region={path.location.county.name}
+                                        location={path.location.name}
                                         miles={path.distance}
                                         yourlng={lng}
                                         yourlat={lat}
@@ -299,10 +296,11 @@ function NearByPathway() {
                             <TabPanel value={value} index={3}>
                                 {searchFamily.map((path, i) => (
                                     <PathwayDistance
-                                        favorite={false}
+                                        favorite={path.favorite}
                                         avatar={path.coverImage}
                                         title={path.title}
-                                        location={path.location}
+                                        region={path.location.county.name}
+                                        location={path.location.name}
                                         miles={path.distance}
                                         yourlng={lng}
                                         yourlat={lat}
