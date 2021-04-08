@@ -40,7 +40,7 @@ import GPSMapLink from '../components/GPSMapLink/GPSMapLink';
 import MuiAlert from '@material-ui/lab/Alert';
 import demoapi from "axios/api";
 import { Checkbox } from "@material-ui/core";
-import { Favorite, FavoriteBorder, RadioButtonUnchecked } from "@material-ui/icons";
+import { Favorite, FavoriteBorder, RadioButtonUnchecked, SettingsInputAntennaRounded } from "@material-ui/icons";
 import axios from 'axios';
 
     const style = {
@@ -97,7 +97,7 @@ import axios from 'axios';
   
    
     const Pathway = (props) =>{
-        var pathwayInfo = {};
+        var pathwayInfo = [];
         console.log('props', props);
         const trail_id = props.location.state.trail_id;
         const classes = useStyles();
@@ -105,7 +105,6 @@ import axios from 'axios';
         const [nothing, setNothing] = useState(false);         
         const [checked, setChecked] = useState(nothing); //這邊應該要吃axios回傳的後端資料        
         const [open, setOpen] = React.useState(true);
-        const [searchResult, setSearchResult] = useState([]);
         const handleClose = () => {
             setOpen(false);
         };
@@ -118,6 +117,10 @@ import axios from 'axios';
         const [similar, setSimilar] = useState([]);
         const [title, setTitle] = useState([]);
         const [comment, setComment] = useState([]);
+        const [comments, setComments] = useState([]);
+        const [basicInfo, setBasicInfo] = useState('');
+        const [radar, setRadar] = useState([]);
+        const [star, setStar] = useState();
 
 
         const getInfo = async() =>{
@@ -126,6 +129,7 @@ import axios from 'axios';
                 console.log('res', res);
                 console.log('res.data', res.data);
                 pathwayInfo = res.data;
+                setBasicInfo(res.data);
                 setAlbum(pathwayInfo.album.slice(0,1));
                 setChips(pathwayInfo.chips);
                 setTrailHead(pathwayInfo.trailHead);
@@ -134,10 +138,11 @@ import axios from 'axios';
                 setArticles(pathwayInfo.articles);
                 setSimilar(pathwayInfo.similar);
                 setTitle(pathwayInfo.title);
-                setComment(pathwayInfo.comment.comments);
-                console.log('trailHead[1]:   ', trailHead[1].name);
-                console.log('album.slice()', album);
-                console.log('title', title);
+                setComment(pathwayInfo.comment);
+                setStar(pathwayInfo.comment.avgStar);    
+                setRadar(pathwayInfo.chart);        
+                setComments(pathwayInfo.comment.comments);         
+                console.log('star', star);
             })
             .catch(function (error){
                 console.log('====error==== ',error);
@@ -226,7 +231,7 @@ import axios from 'axios';
         const chartSetting={
             series: [{
                 name: 'Series 1',
-                data: [5, 5, 5, 2, 2],
+                data: radar,
               }],
             options: {
                 chart: {
@@ -315,7 +320,7 @@ import axios from 'axios';
                         
                         <div style={{display: 'flex',}}>
                             <Typography variant="h6" className={classes.titleXLL} style={{marginLeft: '8px', marginTop: '8px', fontWeight: '900'}} >
-                                {pathwayInfo.name}
+                                {basicInfo.title}
                             </Typography>
                             <span style= {{flexGrow: 1}} />
                             <Button
@@ -326,7 +331,7 @@ import axios from 'axios';
                                 startIcon={<LocationOnIcon />}
                                 style={{marginRight: '16px', marginTop:'16px'}}
                             >
-                                {pathwayInfo.distance} km
+                                {basicInfo.distance} km
                             </Button>
                         </div>
                         <Divider style={{height:'8px'}} />
@@ -341,7 +346,7 @@ import axios from 'axios';
                                 <div className={classes.hikingInfoLeft}> 海拔 </div>
                             </Grid>
                             <Grid item xs={8} >
-                                <div className={classes.hikingInfoRight}> {pathwayInfo.altitude} m</div>
+                                <div className={classes.hikingInfoRight}> {basicInfo.altitude} m</div>
                             </Grid>
                             <Grid item xs={12}>
                                 <Divider />
@@ -350,7 +355,7 @@ import axios from 'axios';
                                 <div className={classes.hikingInfoLeft}> 全長 </div>
                             </Grid>
                             <Grid item xs={8} >
-                                <div className={classes.hikingInfoRight}> {pathwayInfo.miles} km </div>
+                                <div className={classes.hikingInfoRight}> {basicInfo.distance} km </div>
                             </Grid>
                             <Grid item xs={12}>
                                 <Divider />
@@ -359,7 +364,7 @@ import axios from 'axios';
                                 <div className={classes.hikingInfoLeft}> 分類 </div>
                             </Grid>
                             <Grid item xs={8} >
-                                <div className={classes.hikingInfoRight}> {pathwayInfo.class} </div>
+                                <div className={classes.hikingInfoRight}> {basicInfo.class} </div>
                             </Grid>
                             <Grid item xs={12}>
                                 <Divider />
@@ -368,7 +373,7 @@ import axios from 'axios';
                                 <div className={classes.hikingInfoLeft}> 行程時間 </div>
                             </Grid>
                             <Grid item xs={8} >
-                                <div className={classes.hikingInfoRight}> {Math.floor(pathwayInfo.costTime/60)}h {pathwayInfo.costTime % 60} m</div>
+                                <div className={classes.hikingInfoRight}> {Math.floor(basicInfo.costTime/60)}h {basicInfo.costTime % 60} m</div>
                             </Grid>
                             <Grid item xs={12}>
                                 <Divider />
@@ -377,7 +382,7 @@ import axios from 'axios';
                                 <div className={classes.hikingInfoLeft}> 地區 </div>
                             </Grid>
                             <Grid item xs={8} >
-                                <div className={classes.hikingInfoRight}> {pathwayInfo.location} </div>
+                                <div className={classes.hikingInfoRight}> {basicInfo.location} </div>
                             </Grid>
                             <Grid item xs={12}>
                                 <Divider />
@@ -386,7 +391,7 @@ import axios from 'axios';
                                 <div className={classes.hikingInfoLeft}> 路面狀況 </div>
                             </Grid>
                             <Grid item xs={8} >
-                                <div className={classes.hikingInfoRight}> { <span> {pathwayInfo.roadstatus}</span> } </div>
+                                <div className={classes.hikingInfoRight}> { <span> {basicInfo.roadstatus}</span> } </div>
                             </Grid>
                             <Grid item xs={12} style={{marginBottom: '16px'}}>
                                 <Divider />
@@ -421,7 +426,7 @@ import axios from 'axios';
                             {announcement.slice(0,3).map((news, i) => (
                                 <AnnouncementCard
                                 // pathLink={news.link}
-                                coverImage={news.img}
+                                coverImage={news.imgUrl}
                                 title={news.title}
                                 date={news.date}
                                 source={news.source}
@@ -432,7 +437,7 @@ import axios from 'axios';
                         <Divider style={{height:'8px'}} />
                         <div style={{padding: '16px 16px 0 16px'}}>
                             <Typography style={{marginBottom: '16px', fontSize:'16px', fontWeight: '700'}}>步道介紹</Typography>
-                            <Typography style={{marginBottom: '24px', fontSize:'14px'}}>{pathwayInfo.intro}</Typography>
+                            <Typography style={{marginBottom: '24px', fontSize:'14px'}}>{basicInfo.intro}</Typography>
     
                             {/* <a className={classes.buttonBase} onClick={() => Zmage.browsing({ src: imagePath })}>                
                                 <img style={{position:'absolute', width:'100%', height:'224px', objectFit:'cover'}}alt={'map'} src={pathwayInfo.map}/>
@@ -441,8 +446,8 @@ import axios from 'axios';
                                 <div className={classes.overlay} />
                                 <div className={classes.mapIcon}><ZoomInIcon fontSize="large" /></div>                            
                                 </a> */}
-                            <ButtonBase className={classes.buttonBase} onClick={() => Zmage.browsing({ src: pathwayInfo.map })} >
-                                <img alt={'map'} src={pathwayInfo.map} className={classes.map} />
+                            <ButtonBase className={classes.buttonBase} onClick={() => Zmage.browsing({ src: basicInfo.map })} >
+                                <img alt={'map'} src={basicInfo.map} className={classes.map} />
                                 <div className={classes.overlay} />
                                 <div className={classes.mapIcon}>
                                     <ZoomInIcon fontSize="large" />
@@ -482,7 +487,7 @@ import axios from 'axios';
                         <Divider style={{height:'8px'}} />
                         <div style={{padding:'16px 0 0 16px', marginBottom:'16px', display:'flex'}}>
                         <Typography style={{fontSize:'16px', fontWeight: '700'}}>步道紀錄與評價</Typography>
-                            <span style= {{flexGrow: 1}} />
+                            <span style= {{flexGrow: 4}} />
                             <Typography style={{fontSize:'14px', color: '#00d04c', fontWeight:'900'}} >顯示更多</Typography>
                             <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push({
                                 pathname:'/trailComment',
@@ -491,10 +496,10 @@ import axios from 'axios';
                                 <ChevronRightIcon></ChevronRightIcon>
                             </IconButton>                                            
                         </div>
-                        <Rating defaultValue={4} style={{fontSize:'28px', marginBottom:'16px', marginLeft:'16px',}}></Rating>
+                        <Rating defaultValue= {star} style={{fontSize:'28px', marginBottom:'16px', marginLeft:'16px',}}></Rating>
                         <Divider />
                         <div>
-                            <Comment data={comment}></Comment>
+                            <Comment data={comments}></Comment>
                         </div>
                         <Divider style={{height:'8px'}} />
                         <div>
@@ -502,7 +507,7 @@ import axios from 'axios';
                                 <Slider {...pathwayCarousel}>
                                     {articles.map((item, i) => (
                                         <div key={i}>
-                                            <img src={item.img} alt = 'related_article_images' style={{width:'174px', height:'96px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
+                                            <img src={item.image} alt = 'related_article_images' style={{width:'174px', height:'96px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
                                             <Typography style={{fontSize:'14px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.title}</Typography>
                                             <Typography style={{fontSize:'10px', color:'979797', marginBottom:'16px',marginLeft:'16px',}}>{item.date}</Typography>
                                         </div>
@@ -518,12 +523,12 @@ import axios from 'axios';
                                         <div key={i}>
                                             <Grid container spacing={0}>
                                                 <Grid item xs={4}>
-                                                    <img src={item.img} alt = 'similar_pathway_images' style={{width:'104px', height:'72px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
+                                                    <img src={item.coverImage} alt = 'similar_pathway_images' style={{width:'104px', height:'72px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
                                                 </Grid>
                                                 <Grid item xs={8}>
-                                                    <Typography style={{fontSize:'16px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.pathTitle}</Typography>
-                                                    <Typography style={{fontSize:'14px',marginLeft:'16px', color: '#979797', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden',}}>{item.pathLocation}</Typography>
-                                                    <Typography style={{fontSize:'12px', color:'#979797', marginBottom:'16px',marginLeft:'16px',}}>全程約 {item.pathMiles} km</Typography>
+                                                    <Typography style={{fontSize:'16px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.title}</Typography>
+                                                    <Typography style={{fontSize:'14px',marginLeft:'16px', color: '#979797', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden',}}>{item.location.name}</Typography>
+                                                    <Typography style={{fontSize:'12px', color:'#979797', marginBottom:'16px',marginLeft:'16px',}}>全程約 {item.distance} km</Typography>
                                                 </Grid>
                                             </Grid>
                                         </div>
