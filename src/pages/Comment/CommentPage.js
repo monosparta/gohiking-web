@@ -21,6 +21,7 @@ import * as yup from "yup";
 import ImageDrawer from "./ImageDrawer";
 import demoapi from "axios/api";
 import { useHistory } from "react-router";
+import Helper from "helper/helper";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,10 +62,12 @@ const useStyles = makeStyles(theme => ({
 
 const CommentPage = props => {
   const history = useHistory();
+  const helper=Helper();
+  if(!helper.verifyToken()) history.push({pathname:"/trailComment2"})
   const trail_id =
     props.location.state === undefined ? null : props.location.state.trail_id;
   if (!trail_id) {
-    history.push({ pathname: "/trailComment" });
+    history.push({ pathname: "/home" });
   }
   const classes = useStyles();
   const [showAlert, setshowAlert] = useState("");
