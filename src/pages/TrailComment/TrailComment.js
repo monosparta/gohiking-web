@@ -92,12 +92,12 @@ export default function TrailCommit(props) {
   const [comment, setComment] = useState([]);
   const history = useHistory(); 
   const [comments, setComments] = useState([]);
-  const trail_id = props.location.state;
+  const trail_id = props.location.state.trail_id;
   console.log(trail_id);
   let uid = localStorage.getItem("userId");
 
   const commentApi = async (id) => {
-    await demoapi.get("/api/comment/" + 1 + "?uuid=" + uid).then((res) => {
+    await demoapi.get("/api/comment/" + trail_id + "?uuid=" + uid).then((res) => {
       setComment(res.data); //步道總討論 api
       setStars(res.data.stars); //星星等級api
       setComments(res.data.comments); //步道討論 api
