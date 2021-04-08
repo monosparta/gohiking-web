@@ -41,7 +41,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import demoapi from "axios/api";
 import { Checkbox } from "@material-ui/core";
 import { Favorite, FavoriteBorder, RadioButtonUnchecked } from "@material-ui/icons";
-import axios from 'axios';
 
     const style = {
         ...fontStyle,

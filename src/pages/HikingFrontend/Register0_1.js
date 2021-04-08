@@ -4,8 +4,6 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Input from '@material-ui/core/Input'
 import Typography from '@material-ui/core/Typography';
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from "@material-ui/core/Grid";
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
     width: '-webkit-fill-available',
     height: 768,
     padding: '40px 16px 48px',
-    backgroundColor: '#ffffff'
-
-    //backgroundColor:'#66CBBA'
   },
   Title: {
     width: '-webkit-fill-available',
@@ -67,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     borderColor: '#232323',
   },
   PhoneRegionBackground: {
-    width: 'auto',
+    width: '-webkit-fill-available',
     // height: '40px',
     margin: '8px 0 31px 0',//not correct position
     padding: '8px 0 0',
@@ -82,8 +77,8 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     width: '-webkit-fill-available',
-    // height: '48px',
-    margin: '40px 0px 0px 0px',
+    height: '48px',
+    margin: '10px 0px 0px 0px',
     backgroundColor: '#00d04c',
     color: '#ffffff',
   },
@@ -158,6 +153,7 @@ export default function SignIn() {
   }
   const axios = require('axios');
   let responsedJson; // 將回傳的JSON先定義為變數，後面再賦值
+
   const onSubmit = async (data) => {
     data = testOuputObj;
     console.log(data);
@@ -194,61 +190,45 @@ export default function SignIn() {
           fullWidth
           inputRef={register({ required: true })}
           onChange={event => setName(event.target.value)}//Get value in Email
-        />
+        />  
         <Typography className={classes.errorInfo}>{errors.name && "請輸入姓名"}</Typography>
 
         <Typography className={classes.Text} >
           性別
         </Typography>
-        <Controller
-          as={
             <Select
+              name="gender"              
               className={classes.InputBackground}
+              inputProps={{ 'aria-label': 'Without label' }}
               value={gender}
               displayEmpty
-              renderValue={
-                gender !== "" ? undefined : () => <Placeholder>請輸入您的性別</Placeholder>
-              }
+              inputRef={register({ required: true })}
               onChange={handleChange}
             >
+              
+              <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
               <MenuItem value={1}>男</MenuItem>
               <MenuItem value={0}>女</MenuItem>
             </Select>
-          }
-          name="gender"
-          control={control}
-          rules={{ required: true }}
-        />
-        <div>{errors.gender && <Typography className={classes.errorInfo}>This is required!</Typography>}</div>
-
+            <Typography className={classes.errorInfo}>{errors.gender && "請輸入性別"}</Typography>
         <Typography className={classes.Text} >
           手機
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={4}>
-            <Controller
-              as={
                 <Select
                   className={classes.PhoneRegionBackground}
                   value={phoneRegion}
                   displayEmpty
-                  renderValue={
-                    phoneRegion !== "" ? undefined : () => <Placeholder>台灣+8860</Placeholder>
-                  }
                   onChange={handlePhoneRegion}
                 >
+                   <MenuItem value="" disabled> <Placeholder>台灣+8860</Placeholder></MenuItem>
                   {countryInfo.map((region, i) => (
                     <MenuItem key={i} value={region.countryName + region.phoneCode}>
                       {region.countryName}{region.phoneCode}
                     </MenuItem>
                   ))}
                 </Select>
-              }
-              name="contry"
-              control={control}
-              rules={{ required: true }}
-            />
-            <div>{errors.contry && <Typography className={classes.errorInfo}>This is required!</Typography>}</div>
           </Grid>
           <Grid item xs={8}>
             <Input
@@ -286,27 +266,17 @@ export default function SignIn() {
         <Typography className={classes.Text} >
           居住地
         </Typography>
-        <Controller
-          as={
             <Select
               className={classes.InputBackground}
               value={county}
               displayEmpty
-              renderValue={
-                county !== "" ? undefined : () => <Placeholder>請選擇</Placeholder>
-              }
               onChange={handleCountyChange}
             >
+               <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
               <MenuItem value={"4"}>台北市</MenuItem>
               <MenuItem value={"14"}>台中市</MenuItem>
             </Select>
-          }
-          name="county"
-          control={control}
-          rules={{ required: true }}
-        />
-        {errors.county && <Typography className={classes.errorInfo}>This is required!</Typography>}
-        <Button
+          <Button
           type="button"
           fullWidth
           variant="contained"
