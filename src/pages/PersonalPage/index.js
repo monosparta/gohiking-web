@@ -18,6 +18,7 @@ import AvatarUploadDialog from "components/Dialog/AvatarUploadDialog";
 import AvatarUploadDialogLogic from "components/Dialog/AvatarUploadDialogLogic";
 import PersonalPageLogic from "./personalPageLogic";
 import { useHistory } from "react-router";
+import Helper from "helper/helper";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -108,7 +109,6 @@ const DisabledTextField = withStyles({
 
 function PersonalPage(props) {
   const history = useHistory();
-
   const Logix = PersonalPageLogic();
   const croppedImage =
     props.location.state === undefined
@@ -312,7 +312,9 @@ function PersonalPage(props) {
                   className={classes.textfield_country_code}
                   inputProps={{
                     value:
-                      Logix.personalInfo.users === undefined
+                      Logix.personalInfo.countrycodes === undefined
+                        ? ""
+                        : Logix.personalInfo.users.country_code_id===null
                         ? ""
                         : Logix.personalInfo.countrycodes[
                             Logix.personalInfo.users.country_code_id - 1
