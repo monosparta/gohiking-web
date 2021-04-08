@@ -147,7 +147,10 @@ export default function PathwayCard(props) {
     const history = useHistory();
 
     const handlePage = () =>{
-        history.push('/pathway');
+        history.push({
+            pathname:'/pathway',
+            state: {trail_id: trail_id},
+        });
     };
     //api回傳資料
     const data = props;
