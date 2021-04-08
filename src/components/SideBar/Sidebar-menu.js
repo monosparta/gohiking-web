@@ -16,34 +16,34 @@ import demoapi from "../../axios/api"; //引入api
 const useStyles = makeStyles({
   list: {
     width: "353px",
-    fontFamily: "NotoSansCJKtc",
+    fontFamily: "NotoSansCJKtc"
   },
   fullList: {
-    width: "auto",
+    width: "auto"
   },
   iconButton: {
     padding: 0,
     minHeight: 0,
     minWidth: 0,
-    margin: 0,
+    margin: 0
   },
   avater: {
     height: "64px",
     width: "64px",
     marginTop: "10%",
-    margin: "0 42px 16px 16px",
+    margin: "0 42px 16px 16px"
   },
   name: {
     margin: "16px 59px 16px 16px",
     fontWeight: "bold",
-    fontSize: "18px",
+    fontSize: "18px"
   },
   mail: {
     color: "#919191",
     fontFamily: "Roboto",
     margin: "16px 154px 16px 16px",
     fontSize: "14px",
-    lineHeight: "1.43",
+    lineHeight: "1.43"
   },
   scrim: {
     padding: "10%",
@@ -54,44 +54,44 @@ const useStyles = makeStyles({
     height: "48px",
     "&:hover": {
       backgroundColor: "rgba(0, 208, 76, 0.05)",
-      color: "#00d04c",
+      color: "#00d04c"
     },
     "&:hover ListItemIcon": {
-      color: "#00d04c",
-    },
+      color: "#00d04c"
+    }
   },
 
   icon: {
     color: "black",
-    fontSize: "24px",
+    fontSize: "24px"
   },
   text: {
-    margin: "0 0 0 32px",
+    margin: "0 0 0 32px"
   },
   tangle: {
     width: "100%",
     height: "1px",
 
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
+    backgroundColor: "rgba(0, 0, 0, 0.05)"
   },
   version: {
     fontSize: "14px",
     fontWeight: "bold",
 
-    marginLeft: "15%",
+    marginLeft: "15%"
   },
   versiont: {
     textAlign: "right",
 
-    color: "#919191",
+    color: "#919191"
   },
   log: {
     color: "#007aff",
     fontSize: "16px",
     fontWeight: "bold",
     lineHeight: "1.5",
-    marginLeft: "14%",
-  },
+    marginLeft: "14%"
+  }
 });
 
 export default function Sidebar(props) {
@@ -99,8 +99,10 @@ export default function Sidebar(props) {
   const [user, setuser] = useState([]);
   var id = 0;
   console.log(localStorage.getItem("userId"));
-  const removeToken = (props) => {
+  const removeToken = props => {
     let userId = localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    localStorage.removeItem("expireTime");
     console.log("userId", userId);
     return userId;
   };
@@ -111,8 +113,8 @@ export default function Sidebar(props) {
     id = null; //取不到user Id 假設user id =1
   }
 
-  const userApi = async (id) => {
-    await demoapi.get("/api/user/" + id).then((res) => {
+  const userApi = async id => {
+    await demoapi.get("/api/user/" + id).then(res => {
       setuser(res.data.users);
     });
   };
@@ -186,9 +188,7 @@ export default function Sidebar(props) {
               button
               component="a"
               href="/signin"
-            
-            onClick={() =>removeToken(props)}
-             
+              onClick={() => removeToken(props)}
             >
               <ListItemText primary="登出" className={classes.log} />
             </ListItem>
