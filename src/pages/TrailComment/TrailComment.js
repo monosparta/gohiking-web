@@ -142,7 +142,7 @@ export default function TrailCommit(props) {
         <Grid className={classes.progress}>
           <Grid className={classes.rating}>
             <Grid className={classes.fraction}>{avgStar} </Grid>
-            <Rating name="size-small" defaultValue={4} size="small" />
+            <Rating name="size-small" value={mathStar} size="small" />
             <Grid className={classes.text}> ({comment.totalPeople})</Grid>
           </Grid>
           <List component="nav" aria-label="main mailbox folders">
