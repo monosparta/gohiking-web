@@ -128,7 +128,23 @@ function Column(props) {
       setTrail(res.data.trails);
     });
   };
-
+ const handleShare = () => {
+            if (navigator.share) {
+                console.log("Congrats! Your browser supports Web Share API");
+                navigator
+                    .share({
+                        url: `https://share.toogoodtogo.com/store/1006/milestones/meals-saved/`
+                    })
+                    .then(() => {
+                        console.log("Sharing successfull");
+                    })
+                    .catch(() => {
+                        console.log("Sharing failed");
+                    }); 
+            } else {
+                console.log("Sorry! Your browser does not support Web Share API");
+            }
+        };
   useEffect(() => {
     articleApi(id);
   }, [id]);
@@ -149,7 +165,7 @@ function Column(props) {
             <FavoriteIcon />
           </Grid>
           <Grid className={classes.shareIcon}>
-            <ShareIcon />
+            <ShareIcon  onClick={handleShare} />
           </Grid>
           <div className={classes.title}>{article.title}</div>
           <Grid item xs={12}>
