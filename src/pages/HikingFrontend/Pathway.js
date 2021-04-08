@@ -109,15 +109,15 @@ import axios from 'axios';
         const handleClose = () => {
             setOpen(false);
         };
-        var album = [];
-        var chips = [];
-        var trailHead = [];
-        var announcement = [];
-        var attraction = [];
-        var articles = [];
-        var similar = [];
-        var title = [];
-        var comment = [];
+        const [album, setAlbum] = useState([]);
+        const [chips, setChips] = useState([]);
+        const [trailHead, setTrailHead] = useState([]);
+        const [announcement, setAnnouncement] = useState([]);
+        const [attraction, setAttraction] = useState([]);
+        const [articles, setArticles] = useState([]);
+        const [similar, setSimilar] = useState([]);
+        const [title, setTitle] = useState([]);
+        const [comment, setComment] = useState([]);
 
 
         const getInfo = async() =>{
@@ -126,15 +126,15 @@ import axios from 'axios';
                 console.log('res', res);
                 console.log('res.data', res.data);
                 pathwayInfo = res.data;
-                album = pathwayInfo.album.slice(0,1);
-                chips = pathwayInfo.chips;
-                trailHead = pathwayInfo.trailHead;
-                announcement = pathwayInfo.announcement;
-                attraction = pathwayInfo.attraction;
-                articles = pathwayInfo.articles;
-                similar = pathwayInfo.similar;
-                title = pathwayInfo.title;
-                comment = pathwayInfo.comment;
+                setAlbum(pathwayInfo.album.slice(0,1));
+                setChips(pathwayInfo.chips);
+                setTrailHead(pathwayInfo.trailHead);
+                setAnnouncement(pathwayInfo.announcement.slice(0,3));
+                setAttraction(pathwayInfo.attraction);
+                setArticles(pathwayInfo.articles);
+                setSimilar(pathwayInfo.similar);
+                setTitle(pathwayInfo.title);
+                setComment(pathwayInfo.comment.comments);
                 console.log('trailHead[1]:   ', trailHead[1].name);
                 console.log('album.slice()', album);
                 console.log('title', title);
@@ -144,7 +144,7 @@ import axios from 'axios';
             })
         }
 
-        getInfo();        
+              
         
         const checkFavorite = async() =>{
             console.log('checkFavortite starts!');            
@@ -177,6 +177,7 @@ import axios from 'axios';
         useLayoutEffect(()=>{
             if (firstUpdate.current){
                 firstUpdate.current = false;
+                getInfo(); 
                 checkFavorite();
                 return;
               }                
@@ -276,14 +277,11 @@ import axios from 'axios';
                     <div className = {classes.root}>
     
                         <Slider {...bannerCarousel} className={classes.slider}>                           
-                        {album.map((img, i) => {
-                            console.log("111111111111111111");
-                        }   
-                        // (
-                        //     <div key={i}>
-                        //     <img src={img} alt={'slider img'} className={classes.sliderImg} />
-                        //     </div>
-                        // )
+                        {album.map((img, i) => (
+                            <div key={i}>
+                            <img src={img} alt={'slider img'} className={classes.sliderImg} />
+                            </div>
+                        )
                         )}
                         </Slider>
                         <AppBar className = {classes.appBarTransparent}>
