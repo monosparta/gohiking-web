@@ -18,7 +18,6 @@ import AvatarUploadDialog from "components/Dialog/AvatarUploadDialog";
 import AvatarUploadDialogLogic from "components/Dialog/AvatarUploadDialogLogic";
 import PersonalPageLogic from "./personalPageLogic";
 import { useHistory } from "react-router";
-import Helper from "helper/helper";
 
 const useStyles = makeStyles(theme => ({
   root: {
