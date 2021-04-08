@@ -94,11 +94,11 @@ export default function Commit(props) {
       
     <ThemeProvider theme={lightTheme}>
       <Grid className={classes.comment}>
-        <Grid className={classes.commentName}>{comment.username}</Grid>
+        <Grid className={classes.commentName}>{comment.user.name}</Grid>
         <Rating
           className={classes.rating}
           name="size-small"
-          defaultValue={comment.rating}
+          defaultValue={comment.star}
         />
         <Button
           className={classes.commentButton}
@@ -111,7 +111,7 @@ export default function Commit(props) {
         { comment.difficulty == 4 &&("困難") }
         { comment.difficulty == 5 &&("非常困難") } 
         </Button>
-        <Grid>{comment.comment}</Grid>
+        <Grid>{comment.content}</Grid>
         <Grid item xs={12} sm={6}>
           <IconButton className={classes.thumbup}>
             <ThumbUpIcon />
@@ -129,10 +129,11 @@ export default function Commit(props) {
           </IconButton>
         </Grid>
         <Grid className={classes.gridList}>
-          <img src={magetty} className={classes.magetty} />
-          <img src={magetty} className={classes.magetty} />
-          <img src={magetty} className={classes.magetty} />
-          <img src={magetty} className={classes.magetty} />
+          {comment.comments_images.map((image,i) =>{
+            <div key={i}>
+              <img src={magetty} className={classes.magetty} />
+            </div>
+          })}
         </Grid>
         <Typography className={classes.time}>
           {comment.date}. 來回時間: {Math.round(comment.costTime/60)}h {comment.costTime%60}m 
