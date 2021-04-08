@@ -29,6 +29,7 @@ export default function PathwayCardDistance(props) {
     innerMedias,
     distance,
     favorite,
+    trail_id,
     ...rest
   } = props;
   const classes = useStyles();
