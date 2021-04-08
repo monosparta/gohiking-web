@@ -16,6 +16,7 @@ import {
 } from '@material-ui/pickers';
 
 import { countryInfo } from "../../data/countryInfo";
+import { countryCode } from "../../data/countryCode";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -113,6 +114,7 @@ export default function SignIn() {
   const classes = useStyles();
   const [name, setName] = React.useState('');
   const [gender, setGender] = React.useState('');
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [phoneRegion, setPhoneRegion] = React.useState('');
   const [phoneNumeber, setPhoneNumeber] = React.useState('');
   const [selectedDate, setSelectedDate] = React.useState('');
@@ -120,9 +122,9 @@ export default function SignIn() {
   const [county, setCounty] = React.useState('');
   const { register, handleSubmit, errors, control } = useForm()
   const history = useHistory();
-
   const handleChange = (event) => {
     setGender(event.target.value);
+    setIsLoggedIn(true);
   };
   const handlePhoneRegion = (event) => {
     setPhoneRegion(event.target.value);
@@ -173,7 +175,7 @@ export default function SignIn() {
       });
   }
 
-
+  console.log(testOuputObj);
   return (
     <div className={classes.container}>
       <Typography className={classes.Title}>
@@ -190,45 +192,43 @@ export default function SignIn() {
           fullWidth
           inputRef={register({ required: true })}
           onChange={event => setName(event.target.value)}//Get value in Email
-        />  
+        />
         <Typography className={classes.errorInfo}>{errors.name && "請輸入姓名"}</Typography>
 
         <Typography className={classes.Text} >
           性別
         </Typography>
-            <Select
-              name="gender"              
-              className={classes.InputBackground}
-              inputProps={{ 'aria-label': 'Without label' }}
-              value={gender}
-              displayEmpty
-              inputRef={register({ required: true })}
-              onChange={handleChange}
-            >
-              
-              <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
-              <MenuItem value={1}>男</MenuItem>
-              <MenuItem value={0}>女</MenuItem>
-            </Select>
-            <Typography className={classes.errorInfo}>{errors.gender && "請輸入性別"}</Typography>
+        <Select
+          name="gender"
+          className={classes.InputBackground}
+          inputProps={{ 'aria-label': 'Without label' }}
+          value={gender}
+          displayEmpty
+          onChange={handleChange}
+        >
+          <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
+          <MenuItem value={1}>男</MenuItem>
+          <MenuItem value={0}>女</MenuItem>
+        </Select>
+
         <Typography className={classes.Text} >
           手機
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={4}>
-                <Select
-                  className={classes.PhoneRegionBackground}
-                  value={phoneRegion}
-                  displayEmpty
-                  onChange={handlePhoneRegion}
-                >
-                   <MenuItem value="" disabled> <Placeholder>台灣+8860</Placeholder></MenuItem>
-                  {countryInfo.map((region, i) => (
-                    <MenuItem key={i} value={region.countryName + region.phoneCode}>
-                      {region.countryName}{region.phoneCode}
-                    </MenuItem>
-                  ))}
-                </Select>
+            <Select
+              className={classes.PhoneRegionBackground}
+              value={phoneRegion}
+              displayEmpty
+              onChange={handlePhoneRegion}
+            >
+              <MenuItem value="" disabled> <Placeholder>台灣+8860</Placeholder></MenuItem>
+              {countryInfo.map((region, i) => (
+                <MenuItem key={i} value={i}>
+                  {region.countryName}{region.phoneCode}
+                </MenuItem>
+              ))}
+            </Select>
           </Grid>
           <Grid item xs={8}>
             <Input
@@ -266,17 +266,20 @@ export default function SignIn() {
         <Typography className={classes.Text} >
           居住地
         </Typography>
-            <Select
-              className={classes.InputBackground}
-              value={county}
-              displayEmpty
-              onChange={handleCountyChange}
-            >
-               <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
-              <MenuItem value={"4"}>台北市</MenuItem>
-              <MenuItem value={"14"}>台中市</MenuItem>
-            </Select>
-          <Button
+        <Select
+          className={classes.InputBackground}
+          value={county}
+          displayEmpty
+          onChange={handleCountyChange}
+        >
+          <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
+              {countryCode.map((city, i) => (
+                <MenuItem key={i} value={i}>
+                  {city.name}
+                </MenuItem>
+              ))}
+        </Select>
+        <Button
           type="button"
           fullWidth
           variant="contained"
