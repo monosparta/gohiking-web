@@ -11,10 +11,11 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import basicStyle from 'assets/jss/basicStyle';
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import { pathwayInfo } from 'data/pathway';
-import React from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
+import axios from "axios";
 import { useHistory } from 'react-router-dom';
 import fontStyle from '../../assets/jss/fontStyle';
-import {ThemeProvider} from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import darkTheme from '../../config/darkTheme';
 const style = {
     ...basicStyle,
@@ -26,7 +27,24 @@ const Attraction = () => {
     const history = useHistory();
     const classes = useStyles();
     const attrData = pathwayInfo.announcement;
-
+    const [announcement, setAnnouncement] = useState([]);
+    //let uid = localStorage.getItem("userId");
+    const initial = async () => {
+    await axios.get('https://staging-server.gohiking.app/api/announcement/1')
+        .then((response) => {
+            setAnnouncement(response.data);
+        });
+    }
+    const firstUpdate = useRef(true);
+    useLayoutEffect(() => {
+        if (!firstUpdate.current) {
+            firstUpdate.current = false;
+            return;
+        }
+        console.log('prepare to initial!');
+        initial();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     //return to 7.0 page
     function backhandleClick() {
         history.goBack();
@@ -41,10 +59,10 @@ const Attraction = () => {
                     </Toolbar>
                 </AppBar>
                 <div className={classes.basicPaper} >
-                    {attrData.map((news, i) => (
+                    {announcement.map((news, i) => (
                         <AnnouncementCard
                             pathLink={news.link}
-                            coverImage={news.img}
+                            coverImage={news.imgUrl}
                             title={news.title}
                             date={news.date}
                             source={news.source}
@@ -53,7 +71,7 @@ const Attraction = () => {
                     ))}
                 </div>
             </ThemeProvider>
-       </>
+        </>
     );
 };
 
