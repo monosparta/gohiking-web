@@ -268,7 +268,7 @@ export default function HomePage() {
                     {banners.content}
                   </Typography>
                   <Button
-                    href={banners.link}
+                    href="/pathway"
                     variant="contained"
                     size="small"
                     color="secondary"
