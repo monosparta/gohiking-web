@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 3,
     textAlign: "center",
     fontSize: "12px",
+    backgroundColor:"rgba(0, 208, 76, 0.1)",
   },
   thumbup: {
     paddingRight: "10%",
@@ -109,9 +110,10 @@ export default function Commit(props) {
     } else {
       setLike(like + 1);
     }
+   
     if (dislikeCheck) {
       setDislikeCheck(false);
-      setDisLike(like - 1);
+      setDisLike(dislike - 1);
     } //如果 dislikeCheck 不喜歡 為true 改為false
     demoapi
       .post(
@@ -133,7 +135,7 @@ export default function Commit(props) {
     setDislikeCheck((prev) => !prev);
     if (dislikeCheck) {
       setDisLike(dislike - 1);
-    } else {
+    }else{
       setDisLike(dislike + 1);
     }
     if (likeCheck) {
