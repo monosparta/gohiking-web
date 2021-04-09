@@ -270,7 +270,7 @@ export default function Sidebar(props) {
       <IconButton className={classes.iconButton} onClick={toggleDrawer(true)}>
         <TuneIcon style={{ color: "#00d04c" }} />
       </IconButton>
-      <Drawer anchor={anchor} open={state} onClose={toggleDrawer(false)}>
+      <Drawer className="page" anchor={anchor} open={state} onClose={toggleDrawer(false)}>
         <div className={classes.list} role="presentation">
           <div className="sidebar">
             <div className="sidebar__header">
@@ -278,10 +278,10 @@ export default function Sidebar(props) {
             </div>
             <div className="sidebar__content">{content()}</div>
             <div className="sidebar__footer">
-              <span className="btn-success">
+              <span className="btn-outline-success">
                 <Button onClick={() => resetData()}>重設</Button>
               </span>
-              <span className="btn-outline-success">
+              <span className="btn-success">
                 <Button
                   onClick={() => {
                     search();
