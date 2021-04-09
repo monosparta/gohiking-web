@@ -34,8 +34,10 @@ const useStyles = makeStyles((theme) => ({
     height: "48px",
     lineheight: "1.5",
     fontSize: "16px",
-
     textAlign: "center",
+  },
+  form:{
+    margin: '0 16px 48px 16px',
   },
   button: {
     backgroundColor: "#00d04c",
@@ -61,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     padding: "5%",
   },
+
 }));
 
 export default function CollectPage() {
@@ -93,7 +96,7 @@ export default function CollectPage() {
               <img src={commit} className={classes.iconImg} />
             </div>
             <div className={classes.text}>必須先登入才可以查看評論步道</div>
-
+            <div className={classes.form}>
             <Button
               variant="contained"
               component="a"
@@ -102,6 +105,7 @@ export default function CollectPage() {
             >
               登入
             </Button>
+            </div>
           </Grid>
         </ThemeProvider>
       </div>
