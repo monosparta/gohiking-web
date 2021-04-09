@@ -113,6 +113,15 @@ const usePlaceholderStyles = makeStyles(theme => ({
 export default function SignIn() {
   const classes = useStyles();
 
+  let responsedJSON;
+  const [serverState, setServerState] = React.useState();
+  const handleServerResponse = (signup, msg) => {
+    setServerState({
+      signup,
+      msg
+    });
+  };
+
   const [name, setName] = React.useState('');
 
   const [gender, setGender] = React.useState('');
@@ -174,7 +183,7 @@ export default function SignIn() {
     'Authorization': 'Bearer ' + localStorage.getItem('token')
   }
   const axios = require('axios');
-  let responsedJson; // 將回傳的JSON先定義為變數，後面再賦值
+  //let responsedJson; // 將回傳的JSON先定義為變數，後面再賦值
 
   const onSubmit = async (data) => {
     data = testOuputObj;
@@ -182,15 +191,16 @@ export default function SignIn() {
       await axios.post('https://staging-server.gohiking.app/api/profile', data, { headers })
         .then(function (response) {
           console.log('correct');
-          responsedJson = response.data;
+          responsedJSON = response.data;
           history.push('/signin');
         })
         .catch(function (error) {
           console.log('error');
-          responsedJson = error.response.data;
+          responsedJSON = error.response.data;
+          handleServerResponse(false, responsedJSON.error)
         })
         .finally(function () {
-          console.log(responsedJson);
+          console.log(responsedJSON);
         });
     }
     else {
@@ -383,6 +393,9 @@ export default function SignIn() {
             :
             <div></div>
           }
+          {serverState && (
+            <div className={classes.errorInfo}>{serverState.msg}</div>
+          )}
         </div>
         <div>
           <Button
