@@ -224,7 +224,7 @@ export default function SignIn() {
             >
               <MenuItem value="" disabled> <Placeholder>台灣+8860</Placeholder></MenuItem>
               {countryInfo.map((region, i) => (
-                <MenuItem key={i} value={i}>
+                <MenuItem key={i} value={i+1}>
                   {region.countryName}{region.phoneCode}
                 </MenuItem>
               ))}
@@ -274,7 +274,7 @@ export default function SignIn() {
         >
           <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
               {countryCode.map((city, i) => (
-                <MenuItem key={i} value={i}>
+                <MenuItem key={i} value={i+1}>
                   {city.name}
                 </MenuItem>
               ))}
