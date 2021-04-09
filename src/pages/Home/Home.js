@@ -68,13 +68,19 @@ const useStyles = makeStyles((theme) => ({
     left: "5%",
     color: "white",
   },
+  macolor:{
+    backgroundColor:"black",
+    opacity: "0.6",
+    
+  },
   matitle: {
     fontSize: "22px",
     fontFamily: '"NotoSansCJKtc',
-    fontWeight: "bold",
+    fontWeight: "900",
     lineHeight: 1.5,
     letterSpacing: 0.5,
     textDecoration: "none",
+    
     padding: 8,
   },
   matext: {
@@ -260,13 +266,14 @@ export default function HomePage() {
                 }}
               >
                 <div className={classes.marquee}>
-                  {/* <img src={magetty} className={classes.maimg} /> */}
+                  <div className={classes.macolor}>
                   <Typography className={classes.matitle}>
                     {banners.title}
                   </Typography>
                   <Typography className={classes.matext}>
                     {banners.content}
                   </Typography>
+                  </div>
                   <Button
                     href="/pathway"
                     variant="contained"
