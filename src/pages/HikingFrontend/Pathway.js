@@ -403,7 +403,13 @@ import axios from 'axios';
                             <Slider {...pathwayCarousel} >
                                 {trailHead.map((entry, i) => (
                                 <div key={i} >
-                                    <Button variant={'contained'} style={{ backgroundColor: '#abebdc', }} component={Link} to={'/trailhead'} className={classes.defaultButton} disableElevation>{entry.name}</Button>
+                                    <Button variant={'contained'} style={{ backgroundColor: '#abebdc', }} onClick={() => { history.push({
+                                        pathname: './trailhead',
+                                        state: {
+                                            trail_id: trail_id,
+                                            key: i
+                                        },
+                                        })}} className={classes.defaultButton} disableElevation>{entry.name}</Button>
                                 </div>
                                 ))}
                             </Slider>
