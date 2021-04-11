@@ -100,6 +100,7 @@ import axios from 'axios';
         var pathwayInfo = [];
         console.log('props', props);
         const trail_id = props.location.state.trail_id;
+        console.log('=======trail_id=======: ',trail_id);
         const classes = useStyles();
         const history = useHistory();             
         const [nothing, setNothing] = useState(false);         
@@ -124,6 +125,7 @@ import axios from 'axios';
 
 
         const getInfo = async() =>{
+            console.log('======trail_id======',trail_id);
             await demoapi.get("/api/trailinfo/" + trail_id + "?uiud=" + localStorage.getItem("userId"))
             .then(res =>{
                 console.log('res', res);
@@ -291,7 +293,7 @@ import axios from 'axios';
                         </Slider>
                         <AppBar className = {classes.appBarTransparent}>
                             <Toolbar>
-                                <IconButton style={{color: 'inherit'}} onClick={()=>{history.back()}}>
+                                <IconButton style={{color: 'inherit'}} onClick={()=>{history.goBack()}}>
                                     <ArrowBackIcon> </ArrowBackIcon>
                                 </IconButton>
                                 <span style= {{flexGrow: 1}} /> {/*把剩下的空間全部分配在這個span裡面 */}
@@ -476,7 +478,11 @@ import axios from 'axios';
                                     <Button variant={'contained'} style={{ backgroundColor: '#abddeb', minWidth:'83px', margin:'0 0 16px 16px' }}
                                     onClick={()=>{history.push({
                                         pathname: '/attraction',
-                                        state: { detail: {i} },
+                                        state: { 
+                                            tab: i,
+                                            trail_id: trail_id, 
+                                        },
+                                        
                                     })}}
                                     disableElevation>{item.category}</Button>
                                 </div>

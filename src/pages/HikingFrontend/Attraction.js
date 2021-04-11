@@ -14,7 +14,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 // core components
 import basicStyle from 'assets/jss/basicStyle';
-import { pathwayInfo } from 'data/pathway';
+import demoapi from 'axios/api';
 import * as PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -64,16 +64,30 @@ const Attraction = (props) => {
     const history = useHistory();
     const [tab, setTab] = useState(0);    
     const classes = useStyles();
+    const [basicInfo, setBasicInfo] = useState([]);
     const handleChange = (event, newValue) => {
         setTab(newValue);
     };
-    // 以下console.log是拿來debug用的
-    // console.log('props is like:', props);
-    // console.log('props.location.state.detail is like: ', props.location.state.detail.i);
+    
+    const getInfo = async(trail_id) =>{
+        await demoapi.get("/api/attraction/"+ trail_id)
+        .then(res =>{
+            setBasicInfo(res.data);
+            console.log('======basicInfo======',basicInfo);
+        })
+        .catch(function(error){
+            console.log('======error======',error);
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+
+
     useEffect(() =>{
-        setTab(props.location.state.detail.i);
+        getInfo(props.location.state.trail_id);
+        setTab(props.location.state.tab);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[props])
-    console.log('temp is like: ',tab);
+    console.log('tab number is: ',tab);
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -86,15 +100,15 @@ const Attraction = (props) => {
                         <Typography className={classes.titleText}>鄰近景點</Typography>
                     </Toolbar>
                     <Tabs value={tab} onChange={handleChange} aria-label="attraction-tabs" variant="fullWidth">
-                        {pathwayInfo.attraction.map((tab, i) => (
+                        {basicInfo.map((tab, i) => (
                             <Tab key={i} label={tab.category} {...allyProps(i)} />
                         ))}
                     </Tabs>
                 </AppBar>
                 <img src={ads} alt='ad content' className={classes.ads} />
-                {pathwayInfo.attraction.map((tabPanel, i) => (
+                {basicInfo.map((tabPanel, i) => (
                     <TabPanel key={i} value={tab} index={i} style={{ width: '100vw' }}>
-                        {pathwayInfo.attraction[i].data.map((list, j) => (
+                        {basicInfo[i].data.map((list, j) => (
                             <>
                                 <ListItem button key={j} onClick={() => (window.open(list.link))}>
                                     <ListItemText primary={list.title} primaryTypographyProps={{ className: `${classes.descText} ${classes.noWrap}` }} />
