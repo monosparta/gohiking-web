@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CollectPage() {
   const classes = useStyles();
   const [searchResult, setSearchResult] = useState([]);
-  const kw = "步道";
+  var kw = "步道";
   var uid = 0;
   if(localStorage.getItem('userId')){
      uid= localStorage.getItem('userId'); //取得localstorage ussrId

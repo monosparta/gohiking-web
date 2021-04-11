@@ -48,7 +48,6 @@ const Trailhead = (props) => {
     const [trailName, setTrailName] = useState([]);
     const [description, setDescription] = useState([]);
     const [title, setTitle] = useState([]);
-
     const bannerCarousel = {
         dots: true,
         infinite: true,

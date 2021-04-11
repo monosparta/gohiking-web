@@ -88,6 +88,7 @@ const lightTheme = createMuiTheme({
 export default function Commit(props) {
   const classes = useStyles();
   const data = props.data;
+  const [s3, setS3] =  useState([]);
 //   const data = Array.from(props);
  
   return data.slice(0,2).map((comment) => (
@@ -129,14 +130,13 @@ export default function Commit(props) {
           </IconButton>
         </Grid>
         <Grid className={classes.gridList}>
-          {comment.comments_images.map((image,i) =>{
-            <div key={i}>
-              <img src={magetty} className={classes.magetty} />
-            </div>
-          })}
+          {comment.comments_images.map((img,i) =>(
+              <img key={i} src={img.s3_url} className={classes.magetty} />
+          )
+          )}
         </Grid>
         <Typography className={classes.time}>
-          {comment.date}. 來回時間: {Math.round(comment.costTime/60)}h {comment.costTime%60}m 
+          {comment.date}. 來回時間: {Math.round(comment.duration/60)}h {comment.duration%60}m 
         </Typography>
         <hr />
       </Grid>
