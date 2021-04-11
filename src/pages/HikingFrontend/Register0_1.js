@@ -112,29 +112,58 @@ const usePlaceholderStyles = makeStyles(theme => ({
 
 export default function SignIn() {
   const classes = useStyles();
+
+  let responsedJSON;
+  const [serverState, setServerState] = React.useState();
+  const handleServerResponse = (signup, msg) => {
+    setServerState({
+      signup,
+      msg
+    });
+  };
+
   const [name, setName] = React.useState('');
+
   const [gender, setGender] = React.useState('');
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [gendererror, setGendererror] = React.useState(false);
+  const [gendervalidate, setGendervalidate] = React.useState(false);
+
   const [phoneRegion, setPhoneRegion] = React.useState('');
+  const [phoneRegionError, setPhoneRegionError] = React.useState(false);
+  const [phoneRegionvalidate, setPhoneRegionvalidate] = React.useState(false);
+
   const [phoneNumeber, setPhoneNumeber] = React.useState('');
-  const [selectedDate, setSelectedDate] = React.useState('');
-  const [inputValue, setInputValue] = useState([]);
+
+  //const [selectedDate, setSelectedDate] = React.useState('');
+  const [dateError, setDateError] = React.useState(false);
+  const [dateValidate, setDateValidate] = React.useState(false);
+
   const [county, setCounty] = React.useState('');
+  const [countyError, setCountyError] = React.useState(false);
+  const [countyValidate, setCountyValidate] = React.useState(false);
+
+  const [inputValue, setInputValue] = useState([]);
   const { register, handleSubmit, errors, control } = useForm()
   const history = useHistory();
   const handleChange = (event) => {
     setGender(event.target.value);
-    setIsLoggedIn(true);
+    setGendererror(false);
+    setGendervalidate(true);
   };
   const handlePhoneRegion = (event) => {
     setPhoneRegion(event.target.value);
+    setPhoneRegionError(false);
+    setPhoneRegionvalidate(true);
+  };
+  const handleDateChange = (date, value) => {
+    setInputValue(value);
+    setDateError(false);
+    setDateValidate(true);
   };
   const handleCountyChange = (event) => {
     setCounty(event.target.value);
-  };
-  const handleDateChange = (date, value) => {
-    setSelectedDate(date);
-    setInputValue(value);
+    setCountyError(false);
+    setCountyValidate(true);
   };
 
   const Placeholder = ({ children }) => {
@@ -154,140 +183,231 @@ export default function SignIn() {
     'Authorization': 'Bearer ' + localStorage.getItem('token')
   }
   const axios = require('axios');
-  let responsedJson; // 將回傳的JSON先定義為變數，後面再賦值
+  //let responsedJson; // 將回傳的JSON先定義為變數，後面再賦值
 
   const onSubmit = async (data) => {
     data = testOuputObj;
-    console.log(data);
-    console.log(headers);
-    await axios.post('https://staging-server.gohiking.app/api/profile', data, { headers })
-      .then(function (response) {
-        console.log('correct');
-        responsedJson = response.data;
-        history.push('/signin');
-      })
-      .catch(function (error) {
-        console.log('error');
-        responsedJson = error.response.data;
-      })
-      .finally(function () {
-        console.log(responsedJson);
-      });
+    if (gendervalidate || phoneRegionvalidate || countyValidate || dateValidate) {
+      await axios.post('https://staging-server.gohiking.app/api/profile', data, { headers })
+        .then(function (response) {
+          console.log('correct');
+          responsedJSON = response.data;
+          history.push('/signin');
+        })
+        .catch(function (error) {
+          console.log('error');
+          responsedJSON = error.response.data;
+          handleServerResponse(false, responsedJSON.error)
+        })
+        .finally(function () {
+          console.log(responsedJSON);
+        });
+    }
+    else {
+      if (!gendervalidate) {
+        setGendererror(true);
+      }
+      if (!phoneRegionvalidate) {
+        setPhoneRegionError(true);
+      }
+      if (!dateValidate) {
+        setDateError(true);
+      }
+      if (!countyValidate) {
+        setCountyError(true);
+      }
+    }
+  }
+
+  function handleErrorMessage() {
+    if (gendervalidate) {
+      setGendererror(false);
+    }
+    else {
+      setGendererror(true);
+    }
+    if (phoneRegionvalidate) {
+      setPhoneRegionError(false);
+    }
+    else {
+      setPhoneRegionError(true);
+    }
+    if (dateValidate) {
+      setDateError(false);
+    }
+    else {
+      setDateError(true);
+    }
+    if (countyValidate) {
+      setCountyError(false);
+    }
+    else {
+      setCountyError(true);
+    }
   }
 
   console.log(testOuputObj);
   return (
+
     <div className={classes.container}>
       <Typography className={classes.Title}>
         建立個人資料
       </Typography>
-      <form className={classes.form}>
-        <Typography className={classes.Text}>
-          姓名
-        </Typography>
-        <Input
-          name="name"
-          className={classes.InputBackground}
-          placeholder="請輸入您的名稱"
-          fullWidth
-          inputRef={register({ required: true })}
-          onChange={event => setName(event.target.value)}//Get value in Email
-        />
-        <Typography className={classes.errorInfo}>{errors.name && "請輸入姓名"}</Typography>
-
-        <Typography className={classes.Text} >
-          性別
-        </Typography>
-        <Select
-          name="gender"
-          className={classes.InputBackground}
-          inputProps={{ 'aria-label': 'Without label' }}
-          value={gender}
-          displayEmpty
-          onChange={handleChange}
-        >
-          <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
-          <MenuItem value={1}>男</MenuItem>
-          <MenuItem value={0}>女</MenuItem>
-        </Select>
-
-        <Typography className={classes.Text} >
-          手機
-        </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
-            <Select
-              className={classes.PhoneRegionBackground}
-              value={phoneRegion}
-              displayEmpty
-              onChange={handlePhoneRegion}
-            >
-              <MenuItem value="" disabled> <Placeholder>台灣+8860</Placeholder></MenuItem>
-              {countryInfo.map((region, i) => (
-                <MenuItem key={i} value={i}>
-                  {region.countryName}{region.phoneCode}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
-          <Grid item xs={8}>
-            <Input
-              name="phoneNumber"
-              className={classes.PhoneNumberBackground}
-              placeholder="請輸您的手機號碼"
-              onChange={event => setPhoneNumeber(event.target.value)}//Get value in Email
-              fullWidth
-              inputRef={register({ required: true })}
-            />
-            <Typography className={classes.errorInfo}>{errors.phoneNumber && "請輸入手機號碼"}</Typography>
-          </Grid>
-        </Grid>
-
-        <Typography className={classes.Text} >
-          生日
-        </Typography>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            placeholder="請選擇"
+      <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>
+        <div>
+          <Typography className={classes.Text}>
+            姓名
+          </Typography>
+          <Input
+            id="name"
+            name="name"
             className={classes.InputBackground}
-            format="yyyy/MM/dd"
-            margin="normal"
-            invalidDateMessage=''
-            id="date-picker-dialog"
-            value={selectedDate}
-            inputValue={inputValue}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
+            placeholder="請輸入您的名稱"
+            fullWidth
+            inputRef={register({ required: true })}
+            onChange={event => setName(event.target.value)}//Get value in Email
           />
-        </MuiPickersUtilsProvider>
-        {/* {birthError && <Typography className={classes.errorInfo}>This is required!</Typography>} */}
-        <Typography className={classes.Text} >
-          居住地
-        </Typography>
-        <Select
-          className={classes.InputBackground}
-          value={county}
-          displayEmpty
-          onChange={handleCountyChange}
-        >
-          <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
-              {countryCode.map((city, i) => (
-                <MenuItem key={i} value={i}>
-                  {city.name}
-                </MenuItem>
-              ))}
-        </Select>
-        <Button
-          type="button"
-          fullWidth
-          variant="contained"
-          className={classes.submit}
-          onClick={handleSubmit(onSubmit)}
-        >
-          同意並註冊
+          <Typography className={classes.errorInfo}>{errors.name && "請輸入姓名"}</Typography>
+        </div>
+        <div>
+          <Typography className={classes.Text} >
+            性別
+          </Typography>
+          <Select
+            name="gender"
+            className={classes.InputBackground}
+            inputProps={{ 'aria-label': 'Without label' }}
+            value={gender}
+            displayEmpty
+            onChange={handleChange}
+          >
+            <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
+            <MenuItem value={1}>男</MenuItem>
+            <MenuItem value={0}>女</MenuItem>
+          </Select>
+          {gendererror ?
+            <>
+              <Typography className={classes.errorInfo} >
+                {"請輸入性別"}
+              </Typography>
+            </>
+            :
+            <div></div>
+          }
+        </div>
+        <div>
+          <Typography className={classes.Text} >
+            手機
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <Select
+                className={classes.PhoneRegionBackground}
+                value={phoneRegion}
+                displayEmpty
+                onChange={handlePhoneRegion}
+              >
+                <MenuItem value="" disabled> <Placeholder>台灣+886</Placeholder></MenuItem>
+                {countryInfo.map((region, i) => (
+                  <MenuItem key={i} value={i + 1}>
+                    {region.countryName}{region.phoneCode}
+                  </MenuItem>
+                ))}
+              </Select>
+              {phoneRegionError ?
+                <>
+                  <Typography className={classes.errorInfo} >
+                    {"請輸入區碼"}
+                  </Typography>
+                </>
+                :
+                <div></div>
+              }
+            </Grid>
+            <Grid item xs={8}>
+              <Input
+                name="phoneNumber"
+                className={classes.PhoneNumberBackground}
+                placeholder="請輸您的手機號碼"
+                onChange={event => setPhoneNumeber(event.target.value)}//Get value in Email
+                fullWidth
+                inputRef={register({ required: true })}
+              />
+              <Typography className={classes.errorInfo}>{errors.phoneNumber && "請輸入手機號碼"}</Typography>
+            </Grid>
+          </Grid>
+        </div>
+        <div>
+          <Typography className={classes.Text} >
+            生日
+          </Typography>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              placeholder="請選擇"
+              className={classes.InputBackground}
+              format="yyyy/MM/dd"
+              margin="normal"
+              invalidDateMessage=''
+              id="date-picker-dialog"
+              //value={selectedDate}
+              inputValue={inputValue}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
+          {dateError ?
+            <>
+              <Typography className={classes.errorInfo} >
+                {"請輸入日期"}
+              </Typography>
+            </>
+            :
+            <div></div>
+          }
+        </div>
+        <div>
+          <Typography className={classes.Text} >
+            居住地
+          </Typography>
+          <Select
+            className={classes.InputBackground}
+            value={county}
+            displayEmpty
+            onChange={handleCountyChange}
+          >
+            <MenuItem value="" disabled> <Placeholder>請選擇</Placeholder></MenuItem>
+            {countryCode.map((city, i) => (
+              <MenuItem key={i} value={i + 1}>
+                {city.name}
+              </MenuItem>
+            ))}
+          </Select>
+          {countyError ?
+            <>
+              <Typography className={classes.errorInfo} >
+                {"請輸入日期"}
+              </Typography>
+            </>
+            :
+            <div></div>
+          }
+          {serverState && (
+            <div className={classes.errorInfo}>{serverState.msg}</div>
+          )}
+        </div>
+        <div>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            className={classes.submit}
+            onClick={handleErrorMessage}
+          >
+            同意並註冊
         </Button>
+        </div>
       </form>
     </div>
   );

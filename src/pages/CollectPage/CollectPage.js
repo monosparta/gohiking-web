@@ -35,14 +35,17 @@ const useStyles = makeStyles((theme) => ({
 
     textAlign: "center",
   },
+  form:{
+  margin: '0 16px 48px 16px',
+    
+  },
   button: {
-    backgroundColor: "#00d04c",
-    width: "100%",
-
-    fontSize: "16px",
-    textAlign: "center",
-    height: "48px;",
-    color: "white",
+    width: '-webkit-fill-available',
+    height: '48px',
+    margin: '40px 0px 0px 0px',
+    backgroundColor: '#00d04c',
+    color: '#ffffff',
+    fontSize:"16px",
   },
   iconImg: {
     heigh: "112",
@@ -139,8 +142,9 @@ export default function CollectPage() {
                 <img src={heart} className={classes.iconImg} />
               </div>
               <div className={classes.text}>必須先登入可以收藏並查看喜愛步道</div>
-  
+              <div className={classes.form}>
               <Button
+                fullWidth
                 variant="contained"
                 component="a"
                 href="/signin"
@@ -148,6 +152,7 @@ export default function CollectPage() {
               >
                 登入
               </Button>
+              </div>
               <Navigation />
             </Grid>
           </ThemeProvider>

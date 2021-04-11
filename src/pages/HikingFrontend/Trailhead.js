@@ -19,12 +19,13 @@ import {
 } from '../../assets/jss/material-kit-pro-react';
 import basicStyle from '../../assets/jss/basicStyle';
 import darkTheme from '../../config/darkTheme';
-import { pathwayInfo } from '../../data/pathway';
-// import axios from "axios";
+// import { pathwayInfo } from '../../data/pathway';
+import axios from "axios";
 import demoapi from "axios/api";
 // import react slick css
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Title from 'antd/lib/typography/Title';
 
 const style = {
     ...fontStyle,
@@ -33,13 +34,20 @@ const style = {
 
 const useStyles = makeStyles(style);
 
-const Trailhead = () => {
-
+const Trailhead = (props) => {
+    var pathwayInfo = [];
+    console.log('props', props);
+    const trail_id = props.location.state.trail_id;
+    console.log(trail_id);
+    const key = props.location.state.key;
+    console.log(key);
     const history = useHistory();
     const classes = useStyles();
-    const [trailhead, setTrailhead] = useState([]);
-    const [banner, setBanner] = useState([]);
-
+    const [trailHead, setTrailHead] = useState([]);
+    const [bannerImage, setBannerImage] = useState([]);
+    const [trailName, setTrailName] = useState([]);
+    const [description, setDescription] = useState([]);
+    const [title, setTitle] = useState([]);
     const bannerCarousel = {
         dots: true,
         infinite: true,
@@ -60,21 +68,22 @@ const Trailhead = () => {
 
     // GET API
     const getAPI = async() => {
-        await demoapi.get("/api/trailHead/1")
+        await demoapi.get("/api/trailinfo/" + trail_id + "?uiud=" + localStorage.getItem("userId"))
         .then((response) => {
             console.log('response', response)
             console.log('response.data', response.data);
-            setTrailhead(response.data);
-            setBanner(response.data[0].bannerImage);
+            pathwayInfo = response.data;
+            setTrailHead(pathwayInfo.trailHead);
+            setBannerImage(pathwayInfo.trailHead[key].bannerImage);
+            setTrailName(pathwayInfo.trailHead[key].name);
+            setDescription(pathwayInfo.trailHead[key].description);
+            setTitle(pathwayInfo.title);
         })
-        .catch(function (error){
+        .catch((error) => {
             console.log('====error==== ',error);
         })
     }
 
-    // useLayoutEffect(() => {
-    //     getAPI();
-    // });
 
     const firstUpdate = useRef(false);
     useLayoutEffect(() => {
@@ -86,23 +95,32 @@ const Trailhead = () => {
         }
         console.log('finish');
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [trailhead]);
+    }, []);
 
-    console.log(trailhead);
-    // console.log(trailhead[0].bannerImage);
-    // if (trailhead === undefined) {
-    //     return <>Still loading...</>;
-    // }
+    useEffect(() => {
+        getAPI();
+        console.log('render');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [key])
+
+    console.log(pathwayInfo);
+    console.log(trailHead);
+    console.log(bannerImage);
+    console.log(title);
+    console.log(title + trailName);
+    console.log(description);
 
     return (
         <ThemeProvider theme={darkTheme}>
             <div className={classes.root}>
                 <Slider className={classes.slider} {...bannerCarousel}>
-                    {banner.map((img, i) => (
-                        <div key={i}>
-                            <img src={img} alt={'slider img'} className={classes.sliderImg} />
-                        </div>
-                    ))}
+                    {bannerImage.map((img, i) => {
+                        return (
+                            <div key={i}>
+                                <img src={img} alt={'slider img'} className={classes.sliderImg} />
+                            </div>
+                        )
+                    })}
                 </Slider>
                 <AppBar className={classes.appBarTransparent}>
                     <Toolbar>
@@ -113,30 +131,41 @@ const Trailhead = () => {
                     </Toolbar>
                 </AppBar>
                 <div className={classes.sectionPaper} style={{ marginBottom: 64 }}>
-                    <Typography className={classes.titleXLL}>{pathwayInfo.trailhead[0].name}</Typography>
-                    <Typography className={classes.descText}>{pathwayInfo.trailhead[0].description}</Typography>
+                    <Typography className={classes.titleXLL}>{trailName}</Typography>
+                    <Typography className={classes.descText}>{description}</Typography>
                     <Divider className={classes.divider} />
                     <Typography className={classes.titleXLL}>其他登山口</Typography>
                     <Slider className={classes.slider} {...pathwayCarousel}>
-                        {pathwayInfo.trailhead.map((entry, i) => (
-                            <div key={i}>
-                                <Button 
-                                    variant={'contained'}
-                                    style={{ backgroundColor: infoColor[1] }}
-                                    component={Link} to={'/trailhead'}
-                                    className={classes.defaultButton}
-                                    disableElevation
-                                >
-                                    {entry.name}
-                                </Button>
-                            </div>
-                        ))}
+                        {trailHead.map((entry, i) => {
+                            return (
+                                i !== key ? (
+                                    <div key={i}>
+                                        <Button 
+                                            variant={'contained'}
+                                            style={{ backgroundColor: infoColor[1] }}
+                                            // component={Link} to={'/trailhead'}
+                                            className={classes.defaultButton}
+                                            disableElevation
+                                            onClick={() => { history.push({
+                                                pathname: './trailhead',
+                                                state: {
+                                                    trail_id: trail_id,
+                                                    key: i
+                                                },
+                                                })}}
+                                        >
+                                            {entry.name}
+                                        </Button>
+                                    </div>
+                                ) : null
+                            )  
+                        })}
                     </Slider>
                 </div>
                 <div className={classes.bottomNavigation} style={{ padding: '8px 16px', textAlign: 'center' }}>
                     <Button variant="contained" color="secondary" fullWidth style={{ maxWidth: 1440, height: 48 }} disableElevation>
                         <GPSMapLink
-                            destination={pathwayInfo.name + pathwayInfo.trailhead[0].name}
+                            destination={title + trailName}
                             text={
                                 <Typography className={`${classes.mainText} ${classes.boldFont}`}>
                                     打開GPS路線
