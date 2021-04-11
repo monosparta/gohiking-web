@@ -121,8 +121,8 @@ import axios from 'axios';
         const [comments, setComments] = useState([]);
         const [basicInfo, setBasicInfo] = useState('');
         const [radar, setRadar] = useState([]);
-        const [star, setStar] = useState();
-
+        const [star, setStar] = useState(0);
+        console.log('star', star);
 
         const getInfo = async() =>{
             console.log('======trail_id======',trail_id);
@@ -141,10 +141,9 @@ import axios from 'axios';
                 setSimilar(pathwayInfo.similar);
                 setTitle(pathwayInfo.title);
                 setComment(pathwayInfo.comment);
-                setStar(pathwayInfo.comment.avgStar);    
+                setStar(Math.floor(pathwayInfo.comment.avgStar, -1));    
                 setRadar(pathwayInfo.chart);        
                 setComments(pathwayInfo.comment.comments);         
-                console.log('star', star);
             })
             .catch(function (error){
                 console.log('====error==== ',error);
@@ -196,11 +195,9 @@ import axios from 'axios';
          
         const handleChange = trail_id => {
             const userId = localStorage.getItem("userId")
-            ? localStorage.getItem("userId")
-            : -1;
             // 由於沒有userId所以需要讓使用者登入
             console.log('user')
-            if(userId === -1){
+            if(userId === null || userId === -1 || userId === undefined){
                 history.push('/collectpage');
             }
             setChecked(!checked);
@@ -405,7 +402,14 @@ import axios from 'axios';
                             <Slider {...pathwayCarousel} >
                                 {trailHead.map((entry, i) => (
                                 <div key={i} >
-                                    <Button variant={'contained'} style={{ backgroundColor: '#abebdc', }} component={Link} to={'/trailhead'} className={classes.defaultButton} disableElevation>{entry.name}</Button>
+                                    <Button variant={'contained'} style={{ backgroundColor: '#abebdc', }} onClick={() => {history.push({
+                                    pathname:'/trailhead',
+                                    state: {
+                                        trail_id: trail_id,
+                                        key: i,
+                                    },                                    
+                                    })}} className={classes.defaultButton} disableElevation>{entry.name}
+                                    </Button>
                                 </div>
                                 ))}
                             </Slider>
@@ -502,7 +506,7 @@ import axios from 'axios';
                                 <ChevronRightIcon></ChevronRightIcon>
                             </IconButton>                                            
                         </div>
-                        <Rating defaultValue= {star} style={{fontSize:'28px', marginBottom:'16px', marginLeft:'16px',}}></Rating>
+                        <Rating precision = {0.1} value = {star} readOnly style={{fontSize:'28px', marginBottom:'16px', marginLeft:'16px',}}></Rating>
                         <Divider />
                         <div>
                             <Comment data={comments}></Comment>
