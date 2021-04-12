@@ -98,9 +98,7 @@ import axios from 'axios';
    
     const Pathway = (props) =>{
         var pathwayInfo = [];
-        console.log('props', props);
         const trail_id = props.location.state.trail_id;
-        console.log('=======trail_id=======: ',trail_id);
         const classes = useStyles();
         const history = useHistory();             
         const [nothing, setNothing] = useState(false);         
@@ -122,15 +120,18 @@ import axios from 'axios';
         const [basicInfo, setBasicInfo] = useState('');
         const [radar, setRadar] = useState([]);
         const [star, setStar] = useState(0);
-        console.log('star', star);
-
+        const [trailStatus, setTrailStatus] = useState('');
+        const [test, setTest] = useState([]);
+        console.log('trail_id: ',trail_id);
+        
+        
         const getInfo = async() =>{
-            console.log('======trail_id======',trail_id);
             await demoapi.get("/api/trailinfo/" + trail_id + "?uiud=" + localStorage.getItem("userId"))
             .then(res =>{
-                console.log('res', res);
-                console.log('res.data', res.data);
+                // console.log('res', res);
+                // console.log('res.data', res.data);
                 pathwayInfo = res.data;
+                setTest(res.data.album);
                 setBasicInfo(res.data);
                 setAlbum(pathwayInfo.album.slice(0,1));
                 setChips(pathwayInfo.chips);
@@ -141,9 +142,10 @@ import axios from 'axios';
                 setSimilar(pathwayInfo.similar);
                 setTitle(pathwayInfo.title);
                 setComment(pathwayInfo.comment);
-                setStar(Math.floor(pathwayInfo.comment.avgStar, -1));    
+                setStar(decimalAdjust('floor', pathwayInfo.comment.avgStar, -1));    
                 setRadar(pathwayInfo.chart);        
-                setComments(pathwayInfo.comment.comments);         
+                setComments(pathwayInfo.comment.comments); 
+                setTrailStatus(pathwayInfo.trailstatus);
             })
             .catch(function (error){
                 console.log('====error==== ',error);
@@ -226,6 +228,26 @@ import axios from 'axios';
                 console.log("Sorry! Your browser does not support Web Share API");
             }
         };
+
+        const decimalAdjust = (type, value, exp) => {
+            // If the exp is undefined or zero...
+            if (typeof exp === 'undefined' || +exp === 0) {
+              return Math[type](value);
+            }
+            value = +value;
+            exp = +exp;
+            // If the value is not a number or the exp is not an integer...
+            if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+              return NaN;
+            }
+            // Shift
+            value = value.toString().split('e');
+            value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+            // Shift back
+            value = value.toString().split('e');
+            return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+          }
+
 
         const chartSetting={
             series: [{
@@ -335,9 +357,9 @@ import axios from 'axios';
                         </div>
                         <Divider style={{height:'8px'}} />
                         <div style={{paddingTop: '8px', paddingBottom: '8px'}}>
-                            {chips.map((chip,i) =>(
-                                 <Chip key= {i} label={chip} href="#chip" variant="outlined" style={{margin: '8px', marginRight: 0, padding: '6px', fontSize: '14px', fontWeight: '700'}} />
-                            ))}
+                            {chips.map((chip,i) =>{
+                                return <Chip key= {i} label={chip} href="#chip" variant="outlined" style={{margin: '8px', marginRight: 0, padding: '6px', fontSize: '14px', fontWeight: '700'}} />
+                            })}
                         </div>
                         <Divider style={{height:'8px'}} />                  
                         <Grid container spacing={0}>
@@ -424,7 +446,12 @@ import axios from 'axios';
                             <Typography style={{fontSize:'16px', marginTop:'16px', marginLeft:'16px', fontWeight: '700'}}>步道消息</Typography>
                             <span style= {{flexGrow: 1}} />
                             <Typography style={{fontSize:'14px', color: '#00d04c', marginTop:'16px', fontWeight:'900'}} >顯示更多</Typography>
-                            <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', marginTop:'16px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push('/announcement')}}>
+                            <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', marginTop:'16px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push({
+                                pathname:'/announcement',
+                                state:{
+                                    trail_id: trail_id,
+                                },
+                            })}}>
                                 <ChevronRightIcon></ChevronRightIcon>
                             </IconButton>                        
                         </div>
@@ -546,9 +573,16 @@ import axios from 'axios';
                                 </Slider>                       
                         </div>       
                         <br /><br /><br /><br />
-                        <Snackbar open={open} onClose={handleClose}>
-                        <Alert severity="info" onClose={handleClose}>目前全線封閉，暫停開放。</Alert>
-                        </Snackbar>
+                        {
+                            trailStatus !== null ? (
+                                <Snackbar open={open} onClose={handleClose}>
+                                <Alert severity="info" onClose={handleClose}>目前全線封閉，暫停開放。</Alert>
+                                </Snackbar>
+                            )
+                            :
+                            null
+                        }
+                        
                         <BottomNavigation
                             showLabels
                             className={classes.bottomNavigation}
