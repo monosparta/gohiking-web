@@ -62,8 +62,8 @@ const useStyles = makeStyles(theme => ({
 
 const CommentPage = props => {
   const history = useHistory();
-  const helper=Helper();
-  if(!helper.verifyToken()) history.push({pathname:"/trailComment2"})
+  const helper = Helper();
+  if (!helper.verifyToken()) history.push({ pathname: "/trailComment2" });
   const trail_id =
     props.location.state === undefined ? null : props.location.state.trail_id;
   if (!trail_id) {
@@ -180,7 +180,10 @@ const CommentPage = props => {
       })
       .then(res => {
         if (res.status === 200) {
-          history.push("/trailComment");
+          history.push({
+            pathname: "/trailComment",
+            state: { trail_id: trail_id }
+          });
         } else {
           history.push({ pathname: "/pathway", state: { trail_id: trail_id } });
         }
