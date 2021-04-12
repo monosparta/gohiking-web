@@ -94,8 +94,8 @@ export default function TrailCommit(props) {
   const [comments, setComments] = useState([]);
   const trail_id = props.location.state.trail_id;
   console.log(trail_id);
-  let uid = localStorage.getItem("userId");
-
+  const uid = localStorage.getItem("userId");
+  
   const commentApi = async (id) => {
     await demoapi.get("/api/comment/" + trail_id + "?uuid=" + uid).then((res) => {
       setComment(res.data); //步道總討論 api
@@ -114,8 +114,8 @@ export default function TrailCommit(props) {
 
   let mathStar = 0;
   mathStar = Math.ceil(avgStar);
-
-  return (
+if(comment.avgStar) {return (
+  
     <>
       <div className={classes.root}>
         <ThemeProvider theme={lightTheme}>
@@ -201,5 +201,39 @@ export default function TrailCommit(props) {
         ))}
       </div>
     </>
-  );
+  );}else{
+    return(
+      <>
+      <div className={classes.root}>
+        <ThemeProvider theme={lightTheme}>
+          <AppBar position="static">
+            <Toolbar>
+         
+                <IconButton
+                  edge="start"
+                  className={classes.menuButton}
+                  color="inherit"
+                  aria-label="menu"
+                  onClick={() => {history.goBack({
+                    
+                    state: {trail_id: trail_id},
+                    })}}
+                >
+                  <ArrowBackIcon style={{ color: "white" }} />
+                </IconButton>
+            
+              <Typography variant="h6" className={classes.title}>
+                步道評論與討論
+              </Typography>
+            </Toolbar>
+          </AppBar>
+        </ThemeProvider>
+        <div  style={{  position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)"}}>
+        <h1>查無此評論</h1>
+        </div>
+         
+      </div>
+    </>
+    );
+  }
 }
