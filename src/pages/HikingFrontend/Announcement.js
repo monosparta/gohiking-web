@@ -23,14 +23,15 @@ const style = {
 };
 const useStyles = makeStyles(style);
 
-const Attraction = () => {
+const Attraction = (props) => {
     const history = useHistory();
     const classes = useStyles();
     const attrData = pathwayInfo.announcement;
     const [announcement, setAnnouncement] = useState([]);
+    const trail_id = props.location.state.trail_id;
     //let uid = localStorage.getItem("userId");
     const initial = async () => {
-    await axios.get('https://staging-server.gohiking.app/api/announcement/1')
+    await axios.get('https://staging-server.gohiking.app/api/announcement/'+ trail_id)
         .then((response) => {
             setAnnouncement(response.data);
         });
