@@ -66,9 +66,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "translateY(-50%)",
     left: "5%",
     color: "white",
-    backgroundColor:"rgba(0, 0, 0, .6)",
-    
-
+  
   },
 
   matitle: {
@@ -254,7 +252,10 @@ export default function HomePage() {
             {banners.map((banners) => (
               <SwiperSlide
                 style={{
-                
+                  backgroundColor: "rgba(0, 0, 0, .6)",
+                  // 設置背景混和模式為相乘模式
+                  backgroundBlendMode: "multiply",
+
                   backgroundImage: `url(${banners.image})`,
                 }}
               >
