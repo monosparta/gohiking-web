@@ -101,19 +101,14 @@ const useStyles = makeStyles((theme) => ({
   },
   swiper: {
     backgroundColor: "#fffff",
-    height: "112px",
+    margin:"5%",
     textAlign: "center",
-    margin: "4% ",
   },
   collection: {
-    margin: "0 0 8px",
-    padding: "16px",
     textAlign: "center",
   },
   icontext: {
-    margin: "20%",
     textAlign: "center",
-    width: "29px",
     fontWeight: "bold",
   },
 
@@ -292,9 +287,12 @@ export default function HomePage() {
 
           <Swiper
             className={classes.swiper}
-            spaceBetween={25}
-            slidesPerView={6}
-            breakpoints={{}}
+            spaceBetween={50}
+            slidesPerView={4}
+            breakpoints={{
+              425:{slidesPerView:4},
+              768:{slidesPerView:6}
+            }}
             onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
             showsButtons
