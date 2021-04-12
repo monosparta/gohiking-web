@@ -21,12 +21,12 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import Navigation from "../../components/Bottom/Navigation";
 import family from "../../asset/img/icon-family.svg";
-import  mapple from '../../asset/img/icon-mapple.svg';
+import mapple from "../../asset/img/icon-mapple.svg";
 import chellenge from "../../asset/img/icon-chellenge.svg";
 import hotSpring from "../../asset/img/icon-hot-spring.svg";
 import forest from "../../asset/img/icon-forest.svg";
 import sakura from "../../asset/img/icon-sakura.svg";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import TemporaryDrawer from "../../components/SideBar/Sidebar-menu";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import demoapi from "../../axios/api"; //引入api
@@ -44,8 +44,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "NotoSansCJKtc",
     flexGrow: 1,
     width: "100%",
-    paddingBottom:"120px",
- 
+    paddingBottom: "120px",
   },
   appbar: {
     backgroundColor: "#3c5754",
@@ -67,12 +66,11 @@ const useStyles = makeStyles((theme) => ({
     transform: "translateY(-50%)",
     left: "5%",
     color: "white",
-  },
-  macolor:{
-    backgroundColor:"black",
-    opacity: "0.6",
+    backgroundColor:"rgba(0, 0, 0, .6)",
     
+
   },
+
   matitle: {
     fontSize: "22px",
     fontFamily: '"NotoSansCJKtc',
@@ -80,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: 1.5,
     letterSpacing: 0.5,
     textDecoration: "none",
-    
+
     padding: 8,
   },
   matext: {
@@ -90,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: 0.5,
     textDecoration: "none",
     padding: 6,
-    marginRight:3,
+    marginRight: 3,
   },
   mabutton: {
     fontFamily: '"NotoSansCJKtc',
@@ -131,8 +129,8 @@ const useStyles = makeStyles((theme) => ({
   retitle: {
     fontWeight: "bold",
     fontSize: "22px",
-    paddingLeft:"5%",
-    paddingTop:"3%",
+    paddingLeft: "5%",
+    paddingTop: "3%",
     color: "#232323",
   },
 
@@ -142,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
   },
   swiperslide2: {
     width: "174px",
-    
+
     margin: 20,
   },
   text: {
@@ -165,7 +163,7 @@ const useStyles = makeStyles((theme) => ({
     width: "174px",
     height: "96px",
     borderRadius: 4,
-    height:"96px",
+    height: "96px",
   },
   tangle: {
     width: "100%",
@@ -173,7 +171,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgba(0, 0, 0, 0.05)",
   },
 }));
-
 
 const obj = {
   "mapple.png": mapple,
@@ -190,10 +187,10 @@ export default function HomePage() {
   const [banners, setbanners] = useState([]);
   const [collection, setcollection] = useState([]);
   const [articles, setarticle] = useState([]);
-  collection.length=7;
+  const history = useHistory();
+  collection.length = 7;
   banners.length = 5;
   articles.length = 5;
-
 
   //首頁行程api
   const articleApi = async () => {
@@ -212,10 +209,9 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    
     articleApi();
   }, []);
-  
+
   return (
     <>
       <div className={classes.root}>
@@ -241,14 +237,11 @@ export default function HomePage() {
               <Typography variant="h6" className={classes.title}>
                 Go Hiking
               </Typography>
-              <Button color="inherit"  href="searchResult">
-
+              <Button color="inherit" href="searchResult">
                 <SearchIcon />
               </Button>
             </Toolbar>
           </AppBar>
-
-            
 
           <Swiper
             className={classes.rectangle}
@@ -261,21 +254,26 @@ export default function HomePage() {
             {banners.map((banners) => (
               <SwiperSlide
                 style={{
-                  backgroundColor: "#232323",
+                
                   backgroundImage: `url(${banners.image})`,
                 }}
               >
                 <div className={classes.marquee}>
                   <div className={classes.macolor}>
-                  <Typography className={classes.matitle}>
-                    {banners.title}
-                  </Typography>
-                  <Typography className={classes.matext}>
-                    {banners.content}
-                  </Typography>
+                    <Typography className={classes.matitle}>
+                      {banners.title}
+                    </Typography>
+                    <Typography className={classes.matext}>
+                      {banners.content}
+                    </Typography>
                   </div>
                   <Button
-                    href="/pathway"
+                    onClick={() => {
+                      history.push({
+                        pathname: "/pathway",
+                        state: { trail_id: 1 },
+                      });
+                    }}
                     variant="contained"
                     size="small"
                     color="secondary"
@@ -317,7 +315,7 @@ export default function HomePage() {
               </SwiperSlide>
             ))}
           </Swiper>
-                 
+
           <Grid className={classes.tangle} />
           <Grid className={classes.retitle}>行程推薦</Grid>
           <Swiper
@@ -355,7 +353,7 @@ export default function HomePage() {
                   className={classes.linkstlye}
                 >
                   <img src={articles.image} className={classes.Img} />
-                  
+
                   <div className={classes.text}>{articles.title}</div>
                   <div className={classes.time}>{articles.created_at}</div>
                 </Link>
@@ -364,7 +362,7 @@ export default function HomePage() {
           </Swiper>
 
           <Grid className={classes.tangle} />
-        
+
           <Navigation dfValue={0} />
         </ThemeProvider>
       </div>
