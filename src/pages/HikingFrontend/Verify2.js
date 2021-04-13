@@ -71,8 +71,11 @@ export default function Verify2(props){
     var [number3, setNumber3] = useState(-1);
     var [number4, setNumber4] = useState(-1);
     const [email, setEmail] = useState('');
-    setEmail(localStorage.getItem('email'));
-
+    // setEmail(localStorage.getItem('email'));
+    const headers = {
+      'email': localStorage.getItem('email')
+    }
+    console.log(headers);
 
     const handleCodeChange = (e) => {
       const {id , value} = e.target
@@ -139,7 +142,7 @@ export default function Verify2(props){
         const continueButton = async() => {
           console.log("code is like this before: "+ code);
           setCode({
-            "email": email,
+            "email": localStorage.getItem('email'),
             "verificationCode0": number1,
             "verificationCode1": number2,
             "verificationCode2": number3,
