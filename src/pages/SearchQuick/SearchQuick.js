@@ -97,6 +97,8 @@ function SearchQuick(props) {
     trailApi(id);
   }, [id]);
 
+  localStorage.setItem("previous_pathname", "/SearchQuick/" + id)
+
   return (
     <>
       <div className={classes.root}>
@@ -115,7 +117,7 @@ function SearchQuick(props) {
               className={classes.backArrow}
               aria-label="back to previous page"
               onClick={() => {
-                history.goBack();
+                history.push({ pathname: '/searchPage' });
               }}
           
             >

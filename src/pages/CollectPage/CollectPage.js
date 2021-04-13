@@ -107,6 +107,9 @@ export default function CollectPage() {
         setSearchResult(res.data);
       });
   };
+
+  localStorage.setItem("previous_pathname", "/CollectPage");
+
   if(uid !=null ) {return (
     <>
       <div className={classes.root}>

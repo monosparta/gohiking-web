@@ -99,6 +99,8 @@ import axios from 'axios';
     const Pathway = (props) =>{
         var pathwayInfo = [];
         const trail_id = props.location.state.trail_id;
+        const previous_pathname = localStorage.getItem('previous_pathname');
+        console.log(previous_pathname)
         const classes = useStyles();
         const history = useHistory();             
         const [nothing, setNothing] = useState(false);         
@@ -312,7 +314,7 @@ import axios from 'axios';
                         </Slider>
                         <AppBar className = {classes.appBarTransparent}>
                             <Toolbar>
-                                <IconButton style={{color: 'inherit'}} onClick={()=>{history.goBack()}}>
+                                <IconButton style={{color: 'inherit'}} onClick={()=>{history.push({ pathname: previous_pathname })}}>
                                     <ArrowBackIcon> </ArrowBackIcon>
                                 </IconButton>
                                 <span style= {{flexGrow: 1}} /> {/*把剩下的空間全部分配在這個span裡面 */}
