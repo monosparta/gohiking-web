@@ -445,7 +445,12 @@ import axios from 'axios';
                         <div style={{display:'flex'}}>
                             <Typography style={{fontSize:'16px', marginTop:'16px', marginLeft:'16px', fontWeight: '700'}}>步道消息</Typography>
                             <span style= {{flexGrow: 1}} />
-                            <Typography style={{fontSize:'14px', color: '#00d04c', marginTop:'16px', fontWeight:'900'}} >顯示更多</Typography>
+                            <Button style={{fontSize:'14px', color: '#00d04c', marginTop:'16px', fontWeight:'900', padding:'0'}} onClick={() => {history.push({
+                                pathname:'/announcement',
+                                state:{
+                                    trail_id: trail_id,
+                                },
+                            })}}>顯示更多</Button>
                             <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', marginTop:'16px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push({
                                 pathname:'/announcement',
                                 state:{
@@ -525,7 +530,10 @@ import axios from 'axios';
                         <div style={{padding:'16px 0 0 16px', marginBottom:'16px', display:'flex'}}>
                         <Typography style={{fontSize:'16px', fontWeight: '700'}}>步道紀錄與評價</Typography>
                             <span style= {{flexGrow: 4}} />
-                            <Typography style={{fontSize:'14px', color: '#00d04c', fontWeight:'900'}} >顯示更多</Typography>
+                            <Button style={{fontSize:'14px', color: '#00d04c', fontWeight:'900', padding:'0',}} onClick={() => {history.push({
+                                pathname:'/trailComment',
+                                state: {trail_id: trail_id},
+                                })}}>顯示更多</Button>                                
                             <IconButton edge="end" color="inherit" style = {{color: '#00d04c', marginRight: '6px', padding:'0'}} aria-label="ChevronRightIcon" onClick={() => {history.push({
                                 pathname:'/trailComment',
                                 state: {trail_id: trail_id},
