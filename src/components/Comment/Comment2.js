@@ -14,6 +14,9 @@ import { Grid } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import Button from "@material-ui/core/Button";
+import demoapi from "axios/api";
+import { useHistory } from 'react-router-dom';
+import { Checkbox } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,6 +93,70 @@ export default function Commit(props) {
   const data = props.data;
   const [s3, setS3] =  useState([]);
 //   const data = Array.from(props);
+  const [like, setLike] = useState(0);
+  const [dislike, setDisLike] = useState(0);
+  const [likeCheck, setLikeCheck] = useState(false);
+  const [dislikeCheck, setDislikeCheck] = useState(false);
+  const history = useHistory();
+
+  const handleChange = (id) => {
+    //觸發  likeCheck 喜歡 post status +1
+
+    let uid = 0;
+    if (localStorage.getItem("userId")) {
+      uid = localStorage.getItem("userId");
+    } else {
+      history.push({ pathname: "/signin" });
+    }
+    setLikeCheck((prev) => !prev);
+
+    if (likeCheck) {
+      setLike(like - 1);
+    } else {
+      setLike(like + 1);
+    }
+   
+    if (dislikeCheck) {
+      setDislikeCheck(false);
+      setDisLike(dislike - 1);
+    } //如果 dislikeCheck 不喜歡 為true 改為false
+    demoapi
+      .post(
+        "/api/likeComment/?user_id=" + uid + "&comment_id=" + id + "&status=" + 1
+      )
+      .then((res) => {
+        console.log(res.status);
+      });
+  };
+  
+  const handleChange1 = (id) => {
+    //觸發  didlikeCheck 不喜歡poststatus -1
+    let uid = 0;
+    if (localStorage.getItem("userId")){
+      uid = localStorage.getItem("userId");
+    } else {
+
+      history.push({ pathname: "/signin" });
+    }
+    setDislikeCheck((prev) => !prev);
+    if (dislikeCheck) {
+      setDisLike(dislike - 1);
+    }else{
+      setDisLike(dislike + 1);
+    }
+    if (likeCheck) {
+      setLikeCheck(false);
+      setLike(like - 1);
+    } //如果 likeCheck 喜歡 為true 改為false
+    demoapi
+      .post(
+        "/api/likeComment/?user_id=" + uid + "&comment_id=" + id + "&status=" + -1
+      )
+      .then((res) => {
+        console.log(res.status);
+      });
+  };
+
  
   return data.slice(0,2).map((comment) => (
       
@@ -114,19 +181,44 @@ export default function Commit(props) {
         </Button>
         <Grid>{comment.content}</Grid>
         <Grid item xs={12} sm={6}>
-          <IconButton className={classes.thumbup}>
+          {/* <IconButton className={classes.thumbup}>
             <ThumbUpIcon />
             <Typography className={classes.thumbupText}>         
               {comment.like}
             </Typography>
+          </IconButton> */}
+          <IconButton className={classes.thumbup}>
+            <Checkbox
+              checked={likeCheck}
+              onChange={() => {
+                handleChange(comment.id);
+              }}
+              icon={<ThumbUpIcon />}
+              checkedIcon={<ThumbUpIcon style={{ color: "#3c5754" }} />}
+            />
+
+            <Typography className={classes.thumbupText}>{like}</Typography>
           </IconButton>
 
-          <IconButton className={classes.thumbup}>
+          {/* <IconButton className={classes.thumbup}>
             <ThumbDownIcon />
 
             <Typography className={classes.thumbupText}>
               {comment.dislike}
             </Typography>
+          </IconButton> */}
+
+          <IconButton className={classes.thumbup}>
+            <Checkbox
+              checked={dislikeCheck}
+              onChange={() => {
+                handleChange1(comment.id);
+              }}
+              icon={<ThumbDownIcon />}
+              checkedIcon={<ThumbDownIcon style={{ color: "#3c5754" }} />}
+            />
+
+            <Typography className={classes.thumbupText}>{dislike}</Typography>
           </IconButton>
         </Grid>
         <Grid className={classes.gridList}>
