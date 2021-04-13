@@ -106,19 +106,19 @@ const ColorButton1 = withStyles(() => ({
   },
 }))(Button);
 
-// const ColorButton2 = withStyles(() => ({
-//   root: {
-//     display: 'flex',
-//     backgroundColor: "#4267b2",
-//     letterSpacing: 2,
-//     color: "#ffffff",
-//     width: '92%',
-//     height: '44px',
-//     marginBottom: '16px',
-//     margin: 'auto',  
+const ColorButton2 = withStyles(() => ({
+  root: {
+    display: 'flex',
+    backgroundColor: "#4267b2",
+    letterSpacing: 2,
+    color: "#ffffff",
+    width: '92%',
+    height: '44px',
+    marginBottom: '16px',
+    margin: 'auto',  
     
-//   },
-// }))(Button);
+  },
+}))(Button);
 
 const ColorButton3 = withStyles(() => ({
   root: {
@@ -222,14 +222,39 @@ export default function ImgMediaCard() {
   }
 
   const componentClicked =()=>console.log("clicked!")
-  // const state={
-  //     isLoggedIn:false,
-  //     userID:'',
-  //     name:'',
-  //     email:'',
-  //     picture:''
 
-  // }
+
+// Facebook Firebase
+const signInWithFacebook = () =>{
+  const provider = new firebase.auth.FacebookAuthProvider();
+  console.log('facebook firebase start');
+  // firebase.auth().languageCode = 'it';
+  firebase
+  .auth()
+  .signInWithPopup(provider)
+  .then((result) => {
+    /** @type {firebase.auth.OAuthCredential} */
+    console.log('#######################');
+    console.log('====result==== ',result);
+    var credential = result.credential;
+    // The signed-in user info.
+    var user = result.user;
+    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+    var accessToken = credential.accessToken;
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // The email of the user's account used.
+    var email = error.email;
+    // The firebase.auth.AuthCredential type that was used.
+    var credential = error.credential;
+
+    // ...
+  });
+  console.log('facebook firebase end');
+}
 
 // Apple第三方登入
 
@@ -245,8 +270,8 @@ export default function ImgMediaCard() {
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
+          console.log('====result is like this==== ',result);
           /** @type {firebase.auth.OAuthCredential} */
-          console.log('====result==== ',result);
           //準備data的name
           var s = result.user.providerData[0].email;
           var name ='';
@@ -345,6 +370,9 @@ export default function ImgMediaCard() {
             textButton= "透過FACEBOOK登入"
             icon = {<FacebookIcon style={{color: "#ffffff", marginRight: "5px",fontSize : "24px", paddingBottom: "4px"}}/>}
             />          
+          <ColorButton2 variant = "contained" onClick = {signInWithFacebook} startIcon={<FacebookIcon style={{color: "#ffffff"}}/>}>
+            透過FACEBOOK登入
+          </ColorButton2>  
           <ColorButton3 variant = "contained" onClick = {signInWithApple} startIcon={<AppleIcon style={{color: "#ffffff"}}/>}>
             透過Apple ID登入
           </ColorButton3>
