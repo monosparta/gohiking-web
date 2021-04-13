@@ -155,6 +155,8 @@ const testTheme = createMuiTheme({
   }
 });
 
+const previous_pathname = localStorage.getItem('previous_pathname');
+
 export default function ImgMediaCard() {
   const classes = useStyles();
   let history = useHistory();
@@ -179,7 +181,11 @@ export default function ImgMediaCard() {
       localStorage.setItem('userId',response2.data.userId);
       const now = new Date()
       localStorage.setItem('expireTime', now.getTime() + response2.data.expireTime)
-      history.push('/home');
+      if(previous_pathname == null) {
+        history.push('/home');
+      } else {
+        history.push({ pathname: previous_pathname });
+      }
     })
     .catch(function (error) {
       console.log('====error==== ', error);
@@ -204,7 +210,11 @@ export default function ImgMediaCard() {
       localStorage.setItem('userId',response2.data.userId);
       const now = new Date()
       localStorage.setItem('expireTime', now.getTime() + response2.data.expireTime)
-      history.push('/home');
+      if(previous_pathname == null) {
+        history.push('/home');
+      } else {
+        history.push({ pathname: previous_pathname });
+      }
     })
     .catch(function (error){
       console.log('====error==== ',error);
@@ -279,7 +289,11 @@ export default function ImgMediaCard() {
           localStorage.setItem('userId',response3.data.userId);
           const now = new Date()
           localStorage.setItem('expireTime', now.getTime() + response3.data.expireTime)
-          history.push('/home');
+          if(previous_pathname == null) {
+            history.push('/home');
+          } else {
+            history.push({ pathname: previous_pathname });
+          }
         })
         .catch(function (error){
           console.log('error: ', error);
