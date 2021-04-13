@@ -131,6 +131,7 @@ export default function Verify2(props){
         }
       //這邊開始處理input進來的文字
         var [code, setCode] = useState({
+          "email": null,
           "verificationCode0": null,
           "verificationCode1": null,
           "verificationCode2": null,
@@ -140,6 +141,7 @@ export default function Verify2(props){
         const continueButton = async() => {
           console.log("code is like this before: "+ code);
           setCode({
+            "email": localStorage.getItem('email'),
             "verificationCode0": number1,
             "verificationCode1": number2,
             "verificationCode2": number3,
