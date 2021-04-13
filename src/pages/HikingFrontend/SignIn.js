@@ -14,6 +14,7 @@ import axios from "axios";
 import googleIcon from '.../../asset/img/google-icon.svg'
 
 import firebase from 'firebase/app';
+import "firebase/analytics";
 import 'firebase/firestore';
 import 'firebase/auth';
 
@@ -21,6 +22,7 @@ import 'firebase/auth';
 // import {useCollectionData} from 'react-firebase-hooks/firestore';
 
 const { useState, useRef, useLayoutEffect } = React; //#####
+<script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
