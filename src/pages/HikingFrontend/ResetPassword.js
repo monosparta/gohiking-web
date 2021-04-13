@@ -9,6 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Input from '@material-ui/core/Input'
 import { useForm } from 'react-hook-form';
+import {useHistory} from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -114,6 +115,7 @@ export default function SignIn() {
   const [maxWidth] = React.useState('xs');
   const { register, handleSubmit, errors, watch } = useForm()
   const password = useRef({});
+  const history = useHistory();
   password.current = watch("password", "");
   // const [comfirm, setComfirm] = React.useState('');
   const axios = require('axios');
@@ -126,6 +128,8 @@ export default function SignIn() {
 
   const handleClose = () => {
     setOpen(false);
+    history.push('/signin');
+
     // backhandleClick()
   };
   //get token from verify

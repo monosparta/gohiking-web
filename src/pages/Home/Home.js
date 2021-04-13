@@ -205,6 +205,8 @@ export default function HomePage() {
     articleApi();
   }, []);
 
+  localStorage.removeItem('previous_pathname');
+  
   return (
     <>
       <div className={classes.root}>
