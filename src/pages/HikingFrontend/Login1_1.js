@@ -117,6 +117,7 @@ export default function SignIn() {
   let goNext = useHistory();
   let goHome = useHistory();
   let back = useHistory();
+  let history = useHistory();
   function GoToLogin1_2() {
     goNext.push("/login1_2");
   }
@@ -126,6 +127,9 @@ export default function SignIn() {
   function backhandleClick() {
     back.push("/signin");
   }
+
+  const previous_pathname = localStorage.getItem('previous_pathname');
+
   // API POST
   const onSubmit = async (data) => {
     console.log(data);
@@ -138,7 +142,11 @@ export default function SignIn() {
       localStorage.setItem('userId', response.data.userId)
       const now = new Date()
       localStorage.setItem('expireTime', now.getTime() + response.data.expireTime)
-      GoHome()
+      if(previous_pathname == null) {
+        GoHome()
+      } else {
+        history.push({ pathname: previous_pathname });
+      }
     })
     .catch(function (error) {
       console.log('error');
