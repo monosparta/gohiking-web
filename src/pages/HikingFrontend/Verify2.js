@@ -70,11 +70,9 @@ export default function Verify2(props){
     var [number2, setNumber2] = useState(-1);
     var [number3, setNumber3] = useState(-1);
     var [number4, setNumber4] = useState(-1);
+    const [email, setEmail] = useState('');
+    setEmail(localStorage.getItem('email'));
 
-    const headers = {
-      'email': localStorage.getItem('email')
-    }
-    console.log(headers);
 
     const handleCodeChange = (e) => {
       const {id , value} = e.target
@@ -141,7 +139,7 @@ export default function Verify2(props){
         const continueButton = async() => {
           console.log("code is like this before: "+ code);
           setCode({
-            "email": localStorage.getItem('email'),
+            "email": email,
             "verificationCode0": number1,
             "verificationCode1": number2,
             "verificationCode2": number3,
@@ -218,7 +216,7 @@ export default function Verify2(props){
     return(        
         <div className = {classes.container}>
             <Typography style={{margin: '84px auto 0px', width: '123px', height: '36px', fontSize: '24px', fontWeight: '900'}}>輸入驗證碼</Typography>
-            <Typography style={{margin: '16px auto 0px', width: '379px', height: '42px', fontSize: '15px', fontWeight: '500', color: '#232323'}}>已把驗證碼發至您的信箱 johndoe@example.com，請確認您的信箱及輸入4位數驗證碼。</Typography>
+            <Typography style={{margin: '16px auto 0px', width: '379px', height: '42px', fontSize: '15px', fontWeight: '500', color: '#232323'}}>已把驗證碼發至您的信箱{localStorage.getItem('email')}，請確認您的信箱及輸入4位數驗證碼。</Typography>
 
             <form className={classes.root} noValidate autoComplete="off">
               <ThemeProvider theme={bottomBoard}>
