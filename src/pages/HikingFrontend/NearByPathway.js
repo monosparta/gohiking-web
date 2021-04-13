@@ -213,6 +213,7 @@ function NearByPathway() {
         console.warn("ERROR(" + err.code + "): " + err.message);
     }
 
+    localStorage.setItem("previous_pathname", "/NearByPathway");
 
     return (
         <>
