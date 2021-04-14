@@ -1,6 +1,8 @@
 import demoapi from "axios/api";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router";
+import moment from "moment";
+import setDate from "date-fns/setDate";
 
 const PersonalPageLogic = (info = null) => {
   const history = useHistory();
@@ -24,8 +26,6 @@ const PersonalPageLogic = (info = null) => {
     }
     await demoapi.get("/api/user/" + uid).then(res => {
       setisLoading(false);
-      res.data.users.gender = res.data.users.gender ? "男" : "女";
-
       console.log(res.data.users.name);
       setpersonalInfo(res.data);
     });
@@ -70,12 +70,19 @@ const PersonalPageLogic = (info = null) => {
       setphoneValidation("只允許數字");
     }
   };
-  const handleBirthChange = event => {
-    const value = event.target.value;
+  const handleBirthChange = date => {
+    const value = date;
     setpersonalInfo({
       ...personalInfo,
       users: { ...personalInfo.users, birth: value }
     });
+    if (!moment(date).isValid()) {
+      setbirthValidation("請輸入正確格式日期");
+    } else if (value > moment()) {
+      setbirthValidation("請勿輸入未來日期");
+    } else {
+      setbirthValidation("");
+    }
   };
 
   const handleCountyChange = event => {
@@ -119,7 +126,7 @@ const PersonalPageLogic = (info = null) => {
         name: data.name,
         gender: data.gender,
         phone_number: data.phone_number,
-        birth: data.birth,
+        birth: moment(data.birth).format("YYYY-MM-DD"),
         image: data.croppedImage ? data.croppedImage : "",
         county: data.county,
         country_code_id: data.countryCode

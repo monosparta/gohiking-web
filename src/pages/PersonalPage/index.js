@@ -295,7 +295,7 @@ function PersonalPage(props) {
                   value:
                     Logix.personalInfo.users === undefined
                       ? ""
-                      : Logix.personalInfo.users.gender,
+                      : Logix.personalInfo.users.gender?"男":"女",
                   readOnly: true
                 }}
               />
