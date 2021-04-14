@@ -218,8 +218,12 @@ export default function Verify2(props){
 
     return(        
         <div className = {classes.container}>
-            <Typography style={{margin: '84px auto 0px', width: '123px', height: '36px', fontSize: '24px', fontWeight: '900'}}>輸入驗證碼</Typography>
-            <Typography style={{margin: '16px auto 0px', width: '379px', height: '42px', fontSize: '15px', fontWeight: '500', color: '#232323'}}>已把驗證碼發至您的信箱{localStorage.getItem('email')}，請確認您的信箱及輸入4位數驗證碼。</Typography>
+            <Typography style={{margin: '84px auto 30px', width: '123px', height: '36px', fontSize: '24px', fontWeight: '900'}}>輸入驗證碼</Typography>
+            <Typography style={{margin: '16px auto 0px', height: '10px', fontSize: '15px', fontWeight: '500', color: '#232323'}}>已把驗證碼發至您的信箱：</Typography>
+            <br />
+            <Typography style={{margin: '0px auto 0px', height: '10px', fontSize: '15px', fontWeight: '700', color: '#232323'}}>{localStorage.getItem('email')}</Typography>
+            <br />
+            <Typography style={{margin: '0px auto 0px', height: '10px', fontSize: '15px', fontWeight: '500', color: '#232323'}}>請確認您的信箱及輸入4位數驗證碼。</Typography>
 
             <form className={classes.root} noValidate autoComplete="off">
               <ThemeProvider theme={bottomBoard}>
