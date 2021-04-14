@@ -147,7 +147,7 @@ if(comment.avgStar) {return (
         <Grid className={classes.progress}>
           <Grid className={classes.rating}>
             <Grid className={classes.fraction}>{avgStar} </Grid>
-            <Rating name="size-small" value={mathStar} size="small" />
+            <Rating name="size-small"  precision = {0.1}  value={avgStar}  readOnly size="small" />
             <Grid className={classes.text}> ({comment.totalPeople})</Grid>
           </Grid>
           <List component="nav" aria-label="main mailbox folders">
