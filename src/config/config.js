@@ -1,9 +1,12 @@
 import { lazy } from 'react'
 import locales from './locales'
 import routes from './routes'
+import { Route } from 'react-router-dom'
 import getMenuItems from './menuItems'
 import themes from './themes'
 import parseLanguages from 'base-shell/lib/utils/locale'
+
+const SignIn = lazy(() => import('../pages/HikingFrontend/SignIn'))
 
 const config = {
   auth: {
