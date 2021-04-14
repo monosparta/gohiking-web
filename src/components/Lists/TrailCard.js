@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Divider } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
@@ -64,6 +64,9 @@ const TrailCard = props => {
   //api回傳資料
   const data = props.data;
   const [checked, setChecked] = useState(data.favorite);
+  useEffect(() => {
+    setChecked(data.favorite);
+  }, [props]);
   const handleChange = id => {
     let uid = 0;
     if (localStorage.getItem("userId")) {
