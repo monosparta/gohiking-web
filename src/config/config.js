@@ -6,8 +6,6 @@ import getMenuItems from './menuItems'
 import themes from './themes'
 import parseLanguages from 'base-shell/lib/utils/locale'
 
-const SignIn = lazy(() => import('../pages/HikingFrontend/SignIn'))
-
 const config = {
   auth: {
     signInURL: '/signin',
