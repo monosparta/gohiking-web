@@ -124,7 +124,7 @@ const Trailhead = (props) => {
                 </Slider>
                 <AppBar className={classes.appBarTransparent}>
                     <Toolbar>
-                        <IconButton edge="start" color="inherit" aria-label="back to previous page" onClick={() => { history.goBack(); }}>
+                        <IconButton edge="start" color="inherit" aria-label="back to previous page" onClick={() => { history.push({ pathname: './pathway', state: { trail_id: trail_id }, }); }}>
                             <ArrowBackIcon />
                         </IconButton>
                         <Typography className={classes.titleText}>登山口</Typography>
