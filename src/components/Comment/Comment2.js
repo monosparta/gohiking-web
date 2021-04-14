@@ -1,5 +1,5 @@
 import magetty from "../../asset/img/gettyimages-1197742259-2048x2048.jpg";
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, useLayoutEffect, Fragment } from "react";
 import {
   makeStyles,
   ThemeProvider,
@@ -90,15 +90,19 @@ const lightTheme = createMuiTheme({
 
 export default function Commit(props) {
   const classes = useStyles();
-  const data = props.data;
+  const [comment, setComment] = useState(props.data);
   const [s3, setS3] =  useState([]);
-//   const data = Array.from(props);
-  const [like, setLike] = useState(0);
-  const [dislike, setDisLike] = useState(0);
-  const [likeCheck, setLikeCheck] = useState(false);
-  const [dislikeCheck, setDislikeCheck] = useState(false);
+  const [like, setLike] = useState(comment.like);
+  const [dislike, setDislike] = useState(comment.dislike);
+  const [likeCheck, setLikeCheck] = useState(comment.likestatus);
+  const [dislikeCheck, setDislikeCheck] = useState(comment.dislikestatus);
   const history = useHistory();
 
+console.log('like', like);
+console.log('dislike', dislike);
+console.log('likeCheck', likeCheck);
+console.log('dislikeCheck', dislikeCheck);
+  
   const handleChange = (id) => {
     //觸發  likeCheck 喜歡 post status +1
 
@@ -108,24 +112,29 @@ export default function Commit(props) {
     } else {
       history.push({ pathname: "/signin" });
     }
-    setLikeCheck((prev) => !prev);
-
+    // setLikeCheck((prev) => !prev);
+    console.log('likeCheck1', likeCheck);
     if (likeCheck) {
       setLike(like - 1);
+      setLikeCheck(false);
     } else {
       setLike(like + 1);
+      setLikeCheck(true);
+      console.log('likeCheck2', likeCheck);
     }
+
+    console.log('dislikeCheck', dislikeCheck);
    
     if (dislikeCheck) {
       setDislikeCheck(false);
-      setDisLike(dislike - 1);
+      setDislike(dislike - 1);
     } //如果 dislikeCheck 不喜歡 為true 改為false
     demoapi
       .post(
         "/api/likeComment/?user_id=" + uid + "&comment_id=" + id + "&status=" + 1
       )
       .then((res) => {
-        console.log(res.status);
+        console.log('post sucess', res);
       });
   };
   
@@ -140,9 +149,10 @@ export default function Commit(props) {
     }
     setDislikeCheck((prev) => !prev);
     if (dislikeCheck) {
-      setDisLike(dislike - 1);
+      setDislike(dislike - 1);
     }else{
-      setDisLike(dislike + 1);
+      setDislike(dislike + 1);
+      setDislikeCheck(true);
     }
     if (likeCheck) {
       setLikeCheck(false);
@@ -153,13 +163,12 @@ export default function Commit(props) {
         "/api/likeComment/?user_id=" + uid + "&comment_id=" + id + "&status=" + -1
       )
       .then((res) => {
-        console.log(res.status);
+        console.log('post sucess', res);
       });
   };
 
  
-  return data.slice(0,2).map((comment) => (
-      
+  return (    
     <ThemeProvider theme={lightTheme}>
       <Grid className={classes.comment}>
         <Grid className={classes.commentName}>{comment.user.name}</Grid>
@@ -217,8 +226,7 @@ export default function Commit(props) {
               icon={<ThumbDownIcon />}
               checkedIcon={<ThumbDownIcon style={{ color: "#3c5754" }} />}
             />
-
-            <Typography className={classes.thumbupText}>{dislike}</Typography>
+            <Typography className={classes.thumbupText}>{dislike}</Typography>            
           </IconButton>
         </Grid>
         <Grid className={classes.gridList}>
@@ -233,7 +241,9 @@ export default function Commit(props) {
         <hr />
       </Grid>
     </ThemeProvider>
-));
+
+
+  );
     
 
 }

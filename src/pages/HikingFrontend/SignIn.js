@@ -198,7 +198,7 @@ export default function ImgMediaCard() {
 // Google Firebase
 const signInWithGoogle = () =>{
   var provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().languageCode = 'it';
+  firebase.auth().useDeviceLanguage();
 
   firebase.auth()
   .signInWithPopup(provider)
@@ -266,7 +266,7 @@ const signInWithGoogle = () =>{
 const signInWithFacebook = () =>{
   const provider = new firebase.auth.FacebookAuthProvider();
   console.log('facebook firebase start');
-  firebase.auth().languageCode = 'it';
+  firebase.auth().useDeviceLanguage();
   firebase
   .auth()
   .signInWithPopup(provider)
@@ -299,7 +299,7 @@ const signInWithFacebook = () =>{
       const provider = new firebase.auth.OAuthProvider('apple.com');
       provider.addScope('email')
       provider.addScope('name')
-      
+      firebase.auth().useDeviceLanguage();
       firebase
         .auth()
         .signInWithPopup(provider)

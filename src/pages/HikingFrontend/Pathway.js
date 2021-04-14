@@ -13,14 +13,14 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ShareIcon from '@material-ui/icons/Share';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+// import FavoriteIcon from '@material-ui/icons/Favorite';
 import Button from '@material-ui/core/Button';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Divider from '@material-ui/core/Divider';
 import Chip from '@material-ui/core/Chip';
 import { Grid, GridList } from "@material-ui/core";
 
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
@@ -41,7 +41,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import demoapi from "axios/api";
 import { Checkbox } from "@material-ui/core";
 import { Favorite, FavoriteBorder, RadioButtonUnchecked, SettingsInputAntennaRounded } from "@material-ui/icons";
-import axios from 'axios';
 
     const style = {
         ...fontStyle,
@@ -99,6 +98,7 @@ import axios from 'axios';
     const Pathway = (props) =>{
         var pathwayInfo = [];
         const trail_id = props.location.state.trail_id;
+        const uid = localStorage.getItem('userId');
         const previous_pathname = localStorage.getItem('previous_pathname');
         console.log(previous_pathname)
         const classes = useStyles();
@@ -125,7 +125,7 @@ import axios from 'axios';
         const [trailStatus, setTrailStatus] = useState('');
         const [test, setTest] = useState([]);
         console.log('trail_id: ',trail_id);
-        
+        console.log('userId:', uid);
         
         const getInfo = async() =>{
             await demoapi.get("/api/trailinfo/" + trail_id + "?uiud=" + localStorage.getItem("userId"))
@@ -143,15 +143,18 @@ import axios from 'axios';
                 setArticles(pathwayInfo.articles);
                 setSimilar(pathwayInfo.similar);
                 setTitle(pathwayInfo.title);
-                setComment(pathwayInfo.comment);
                 setStar(decimalAdjust('floor', pathwayInfo.comment.avgStar, -1));    
                 setRadar(pathwayInfo.chart);        
-                setComments(pathwayInfo.comment.comments); 
                 setTrailStatus(pathwayInfo.trailstatus);
             })
             .catch(function (error){
                 console.log('====error==== ',error);
             })
+
+            await demoapi.get("/api/comment/" + trail_id + "?uuid=" + uid).then((res) => {
+                setComment(res.data);
+                setComments(res.data.comments.slice(0,2)); 
+              });
         }
 
               
@@ -299,6 +302,8 @@ import axios from 'axios';
           }else{
             id = null;  //取不到user Id
         }
+
+        console.log('@@@@@@@@@@@@comments@@@@@@@@@@@@',comments);
 
             return(
                 <ThemeProvider theme = {darkTheme}>
@@ -546,7 +551,9 @@ import axios from 'axios';
                         <Rating precision = {0.1} value = {star} readOnly style={{fontSize:'28px', marginBottom:'16px', marginLeft:'16px',}}></Rating>
                         <Divider />
                         <div>
-                            <Comment data={comments}></Comment>
+                            {comments.map((child)=>(
+                                <Comment data ={child}></Comment>
+                            ))}
                         </div>
                         <Divider style={{height:'8px'}} />
                         <div>
