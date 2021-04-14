@@ -161,6 +161,7 @@ const previous_pathname = localStorage.getItem('previous_pathname');
 
 export default function ImgMediaCard() {
   const classes = useStyles();
+  const [socialData, setSocialData] = useState({}); // #####
   let history = useHistory();
   function GoToLogin1_1() {
     history.push("/login1_1");
@@ -176,13 +177,13 @@ export default function ImgMediaCard() {
       'token': response.tokenId,
     }
     console.log('data: ', data);
-    await axios.post('https://staging-server.gohiking.app/api/auth/social/callback', data).then(function(response2){
-      console.log('====second response==== ',response2);
-      console.log('====second response token==== ', response2.data.token);
-      localStorage.setItem('token', response2.data.token);
-      localStorage.setItem('userId',response2.data.userId);
+    await axios.post('https://staging-server.gohiking.app/api/auth/social/callback', data).then(function(response1){
+      console.log('====second response==== ',response1);
+      console.log('====second response token==== ', response1.data.token);
+      localStorage.setItem('token', response1.data.token);
+      localStorage.setItem('userId',response1.data.userId);
       const now = new Date()
-      localStorage.setItem('expireTime', now.getTime() + response2.data.expireTime)
+      localStorage.setItem('expireTime', now.getTime() + response1.data.expireTime)
       if(previous_pathname == null) {
         history.push('/home');
       } else {
@@ -194,6 +195,41 @@ export default function ImgMediaCard() {
       
     })
   };
+// Google Firebase
+const signInWithGoogle = () =>{
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().languageCode = 'it';
+
+  firebase.auth()
+  .signInWithPopup(provider)
+  .then((result) => {
+    /** @type {firebase.auth.OAuthCredential} */
+    console.log('******resul******', result);
+    var credential = result.credential;
+
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    var token = credential.accessToken;
+    // The signed-in user info.
+    var user = result.user;
+    var data = {
+      'email': result.additionalUserInfo.profile.email,
+      'name': result.additionalUserInfo.profile.name,
+      'google_id': result.additionalUserInfo.profile.id,
+      'avatar': result.additionalUserInfo.profile.picture,
+      'token': result.credential.idToken,
+    }
+    console.log('====data====',data);
+    setSocialData(data);
+  }).catch((error) => {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
+}
+
+
+
+
 // Facebook 第三方登入
   const responseFacebook = async(response) => {
     console.log('====response===== ',response)
@@ -230,7 +266,7 @@ export default function ImgMediaCard() {
 const signInWithFacebook = () =>{
   const provider = new firebase.auth.FacebookAuthProvider();
   console.log('facebook firebase start');
-  // firebase.auth().languageCode = 'it';
+  firebase.auth().languageCode = 'it';
   firebase
   .auth()
   .signInWithPopup(provider)
@@ -238,29 +274,25 @@ const signInWithFacebook = () =>{
     /** @type {firebase.auth.OAuthCredential} */
     console.log('#######################');
     console.log('====result==== ',result);
-    var credential = result.credential;
-    // The signed-in user info.
-    var user = result.user;
-    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    var accessToken = credential.accessToken;
+    var data = {
+      'email': result.additionalUserInfo.profile.email,
+      'name': result.additionalUserInfo.profile.name,
+      'facebook_id': result.additionalUserInfo.profile.id,
+      'avatar': result.additionalUserInfo.profile.picture.data.url,
+      'token': result.credential.accessToken,
+    }
+    console.log('====data====',data);
+    setSocialData(data);
   })
   .catch((error) => {
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
-    // The email of the user's account used.
-    var email = error.email;
-    // The firebase.auth.AuthCredential type that was used.
-    var credential = error.credential;
-
-    // ...
   });
   console.log('facebook firebase end');
 }
 
 // Apple第三方登入
-
-  const [appleData, setAppleData] = useState({}); // #####
 
   const signInWithApple = () =>{
       var data_apple ={}; // #####
@@ -286,30 +318,26 @@ const signInWithFacebook = () =>{
             }
             })
           // 準備data
-          data_apple = {
+          var data = {
             'email':result.user.providerData[0].email,
             'name': name,
             'apple_id': result.user.uid,
             'avatar': 'https://imgur.com/gallery/TX5W1uj',
             'token': result.credential.idToken,
           }
-          console.log('data_apple:',data_apple);
-          setAppleData(data_apple);
+          console.log('====data====',data);
+          setSocialData(data);
         })
         .catch((error) => {
           // Handle Errors here.
           console.log('error message:  ', error.message);
-          // The email of the user's account used.
-          // var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          // var credential = error.credential;
         });
         // var headers = {"Access-Control-Allow-Origin": "https://staging-server.gohiking.app:443"} //#####
     }
 
-    const signInWithAppleChangePage = async() =>{ //#####
-      console.log('========final data_apple===========', appleData);
-      await axios.post('https://staging-server.gohiking.app/api/auth/social/callback', appleData).then(function(response3){
+    const signInWithSocialChangePage = async() =>{ //#####
+      console.log('========final data_apple===========', socialData);
+      await axios.post('https://staging-server.gohiking.app/api/auth/social/callback', socialData).then(function(response3){
           console.log("====post success====",response3);
           console.log('====second response token====', response3.data.token);
           localStorage.setItem('token', response3.data.token);
@@ -333,9 +361,9 @@ const signInWithFacebook = () =>{
         firstUpdate.current = false;
         return;
       }
-      signInWithAppleChangePage();
+      signInWithSocialChangePage();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[appleData]);
+    },[socialData]);
 
   return (   
          
@@ -352,7 +380,7 @@ const signInWithFacebook = () =>{
           }} />
         </div>
         <div style={{margin: "16.5px 16px 0px",}}>
-          <GoogleLogin
+          {/* <GoogleLogin
             clientId="184500302467-kn257cjsh71fconchpf7dmd52qmdvkkg.apps.googleusercontent.com"
             render={renderProps => (
               <ColorButton1 className = {classes.google} onClick={renderProps.onClick} disabled={renderProps.disabled} variant = "contained" startIcon={<img src = {googleIcon} alt = 'google_icon' style={{height: '18px', weight: '18px'}}/>}>透過Google登入</ColorButton1>
@@ -361,8 +389,11 @@ const signInWithFacebook = () =>{
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
             cookiePolicy={"single_host_origin"}
-          />
-          <FacebookLogin
+          /> */}
+          <ColorButton1 variant = "contained" onClick = {signInWithGoogle} startIcon={<img src = {googleIcon} alt = 'google_icon' style={{height: '18px', weight: '18px'}}/>}>
+            透過Google登入
+          </ColorButton1>
+          {/* <FacebookLogin
             appId="1311202525878900"
             autoLoad={false}
             onClick={componentClicked}
@@ -371,7 +402,7 @@ const signInWithFacebook = () =>{
             cssClass = {classes.newFacebook}
             textButton= "透過FACEBOOK登入"
             icon = {<FacebookIcon style={{color: "#ffffff", marginRight: "5px",fontSize : "24px", paddingBottom: "4px"}}/>}
-            />          
+            />           */}
           <ColorButton2 variant = "contained" onClick = {signInWithFacebook} startIcon={<FacebookIcon style={{color: "#ffffff"}}/>}>
             透過FACEBOOK登入
           </ColorButton2>  
