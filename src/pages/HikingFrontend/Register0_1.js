@@ -246,7 +246,7 @@ export default function SignIn() {
     }
   }
 
-  console.log(testOuputObj);
+  //console.log(testOuputObj);
   return (
 
     <div className={classes.container}>
