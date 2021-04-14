@@ -10,30 +10,30 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 
 const styles = {
     gridcontain: {
-        marginRight: "-15px",
-        marginLeft: "-15px",
         width: "100%",
     },
     gridItem: {
         position: "relative",
         width: "auto",
         height: "auto",
-        margin: "12px 0 0 0",
         /* flexBasis: "auto" */
+        margin: "16px 0 10px 0"
     },
     titleText:{
         fontSize:"16px",
-        color:"#232323"
+        color:"#232323",
+        margin: "0 0 0 6px"
     },
     mutedText:{
-        color:"#979797"
+        color:"#979797",
+        margin: "0 0 0 7px"
     },
     img: {
         width:'100%',
         height:72,
         objectFit:'cover',
         borderRadius:4,
-        minWidth:72
+        minWidth:72,
     },
     buttonBase:{
         margin: "0 0 0 16px",
@@ -41,6 +41,19 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
+
+//指定title字數多的變"..."避免擋到顯示距離的button
+function renderContentLimit(p){
+  const len = 17; // 超過9個字以"..."取代
+  //console.log(p.length);
+  if(p.length>len){
+      const final=p.substring(0,len-1)+"...";
+      return final
+  }
+  else{
+      return p
+  }
+}
 
 export default function AnnouncementCard(props) {
   const {
@@ -67,7 +80,7 @@ export default function AnnouncementCard(props) {
         </Grid>
         <Grid item  xs={9} >
             <Typography className={classes.titleText}>{title}</Typography>
-            <small className={classes.mutedText}> {date} | {source} </small>
+            <small className={classes.mutedText}> {date} | {renderContentLimit(source)} </small>
         </Grid>
         <Grid item  xs={12}>
           <Divider />
