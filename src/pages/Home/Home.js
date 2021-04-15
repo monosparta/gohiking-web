@@ -268,8 +268,7 @@ export default function HomePage() {
                   <Button
                     onClick={() => {
                       history.push({
-                        pathname: "/pathway",
-                        state: { trail_id: 1 },
+                        pathname: "/columnPage/1",
                       });
                     }}
                     variant="contained"
