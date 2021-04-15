@@ -44,19 +44,23 @@ function SearchResult(props) {
   }, [kw]);
   //搜尋function
   const searchApi = async kw => {
-    let uid="";
+    let uid = "";
     if (localStorage.getItem("userId")) {
       uid = localStorage.getItem("userId");
     }
     await demoapi
-      .get("/api/trail?filters=title:" + kw + "&uuid="+uid)
+      .get("/api/trail?filters=title:" + kw + "&uuid=" + uid)
       .then(res => {
         setSearchResult(res.data);
       });
   };
   //搜尋function2
   const searchApiSlideBar = async url => {
-    await demoapi.get(url).then(res => {
+    let uid = "";
+    if (localStorage.getItem("userId")) {
+      uid = localStorage.getItem("userId");
+    }
+    await demoapi.get(url + "&uuid=" + uid).then(res => {
       setSearchResult(res.data);
     });
   };
