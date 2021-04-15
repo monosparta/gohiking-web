@@ -152,10 +152,16 @@ function EditAccount(props) {
       countryCode: document.getElementById("country-code").value
     };
     const apiResult = await updateInfo(data);
-    if (apiResult == 200)
+    if (apiResult == 200) {
       history.push({
         pathname: "/personalPage"
       });
+    } else {
+      alert("連線錯誤！請檢查網路連線或聯絡技術人員。");
+      history.push({
+        pathname: "/personalPage"
+      });
+    }
   };
   const classes = useStyles();
   return (

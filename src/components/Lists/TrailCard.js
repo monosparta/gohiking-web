@@ -47,8 +47,8 @@ const useStyles = makeStyles(theme => ({
       borderRadius: "4px",
       width: "100%",
       height: "72px",
-      maxWidth: "1000px",
-      minWidth: "104px",
+      maxWidth: "180px",
+      minWidth: "100px",
       objectFit: "cover"
     }
   },
