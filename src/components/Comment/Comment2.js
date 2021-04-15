@@ -113,17 +113,13 @@ console.log('dislikeCheck', dislikeCheck);
       history.push({ pathname: "/signin" });
     }
     // setLikeCheck((prev) => !prev);
-    console.log('likeCheck1', likeCheck);
     if (likeCheck) {
       setLike(like - 1);
       setLikeCheck(false);
     } else {
       setLike(like + 1);
       setLikeCheck(true);
-      console.log('likeCheck2', likeCheck);
     }
-
-    console.log('dislikeCheck', dislikeCheck);
    
     if (dislikeCheck) {
       setDislikeCheck(false);
