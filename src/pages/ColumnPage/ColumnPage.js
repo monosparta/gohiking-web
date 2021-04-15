@@ -149,6 +149,9 @@ function Column(props) {
     articleApi(id);
   }, [id]);
   console.log(article);
+
+  localStorage.setItem("previous_pathname", "/columnPage/" + id);
+
   return (
     <>
       <div className={classes.root}>
