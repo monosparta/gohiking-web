@@ -24,6 +24,7 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
+import { TWCounties } from "data/city_zh";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -147,7 +148,7 @@ function EditAccount(props) {
       birth: personalInfo.users.birth,
       croppedImage: croppedImage,
       image: personalInfo.users.image,
-      county: personalInfo.users.county.name,
+      county: document.getElementById("county").value,
       countryCode: document.getElementById("country-code").value
     };
     const apiResult = await updateInfo(data);
@@ -209,7 +210,7 @@ function EditAccount(props) {
           <Grid item xs={12}>
             <div className={classes.avatarContainer}>
               <Avatar
-                // alt="Profile Picture"
+                alt="Profile Picture"
                 src={
                   croppedImage
                     ? croppedImage
@@ -304,7 +305,7 @@ function EditAccount(props) {
                   id="gender"
                   className={classes.textfield_gender}
                 >
-                  {personalInfo.users.gender===1 ? (
+                  {personalInfo.users.gender === 1 ? (
                     <>
                       <option key={"default"} value={1}>
                         男
@@ -410,7 +411,34 @@ function EditAccount(props) {
               </Typography>
             </Grid>
             <Grid item xs={9}>
-              <TextField
+              <div className={classes.textfield}>
+                <NativeSelect
+                  labelId="county"
+                  id="county"
+                  className={classes.textfield_gender}
+                >
+                  <option
+                    key={"default"}
+                    value={
+                      personalInfo.users
+                        ? personalInfo.users.county
+                          ? personalInfo.users.county.name
+                          : ""
+                        : ""
+                    }
+                  >
+                    {personalInfo.users
+                      ? personalInfo.users.county
+                        ? personalInfo.users.county.name
+                        : "請選擇"
+                      : "請選擇"}
+                  </option>
+                  {TWCounties.counties.map(county => (
+                    <option value={county}>{county}</option>
+                  ))}
+                </NativeSelect>
+              </div>
+              {/* <TextField
                 id="standard-basic"
                 placeholder="居住地"
                 onChange={handleCountyChange}
@@ -422,7 +450,7 @@ function EditAccount(props) {
                       : ""
                     : ""
                 }}
-              />
+              /> */}
             </Grid>
           </Grid>
         </Grid>
