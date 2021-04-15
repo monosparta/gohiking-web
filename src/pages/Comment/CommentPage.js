@@ -123,10 +123,14 @@ const CommentPage = props => {
       .required(),
     timeSpentH: yup
       .number("請輸入正確時間")
+      .integer("請輸入正整數")
+      .positive("請輸入正整數")
       .typeError("請輸入正確時間")
       .required("請填寫花費時間"),
     timeSpentM: yup
       .number()
+      .integer("請輸入正整數")
+      .positive("請輸入正整數")
       .max(60, "請勿超過60分鐘")
       .typeError("請輸入正確時間")
       .required("請填寫花費時間"),
