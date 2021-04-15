@@ -130,6 +130,7 @@ import { Favorite, FavoriteBorder, RadioButtonUnchecked, SettingsInputAntennaRou
         console.log('trail_id: ',trail_id);
         console.log('userId:', uid);
         
+        
         const getInfo = async() =>{
             await demoapi.get("/api/trailinfo/" + trail_id + "?uiud=" + localStorage.getItem("userId"))
             .then(res =>{
@@ -197,7 +198,7 @@ import { Favorite, FavoriteBorder, RadioButtonUnchecked, SettingsInputAntennaRou
                 getInfo(); 
                 checkFavorite();
                 return;
-              }                
+              }               
             //   console.log('Checked is like: ', checked);        
         },[checked])
 
@@ -301,8 +302,9 @@ import { Favorite, FavoriteBorder, RadioButtonUnchecked, SettingsInputAntennaRou
         }
 
         const rerender = (item) =>{
-            var temporary = item.trail_id;
+            var temporary = item.trail_id;            
             window.location.reload();
+            window.scrollTo(0, 0);
             history.push({
                 pathname:'/pathway',
                 state:{trail_id: temporary},
