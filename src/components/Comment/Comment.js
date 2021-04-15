@@ -129,7 +129,7 @@ export default function Commit(props) {
     if (localStorage.getItem("userId")){
       uid = localStorage.getItem("userId");
     } else {
-
+      alert("請先登入");
       history.push({ pathname: "/signin" });
     }
     setDislikeCheck((prev) => !prev);
