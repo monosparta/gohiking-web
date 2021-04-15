@@ -45,6 +45,9 @@ import { Favorite, FavoriteBorder, RadioButtonUnchecked, SettingsInputAntennaRou
     const style = {
         ...fontStyle,
         ...basicStyle,
+        buttonAlign :{
+            padding: 0,
+        },
     };
     
     const useStyles = makeStyles(style)
@@ -187,6 +190,7 @@ import { Favorite, FavoriteBorder, RadioButtonUnchecked, SettingsInputAntennaRou
         }
 
         const firstUpdate = useRef(true);
+        console.log('firstUpdate', firstUpdate);
         useLayoutEffect(()=>{
             if (firstUpdate.current){
                 firstUpdate.current = false;
@@ -194,7 +198,7 @@ import { Favorite, FavoriteBorder, RadioButtonUnchecked, SettingsInputAntennaRou
                 checkFavorite();
                 return;
               }                
-              console.log('Checked is like: ', checked);        
+            //   console.log('Checked is like: ', checked);        
         },[checked])
 
         
@@ -296,14 +300,21 @@ import { Favorite, FavoriteBorder, RadioButtonUnchecked, SettingsInputAntennaRou
             
         }
 
+        const rerender = (item) =>{
+            var temporary = item.trail_id;
+            window.location.reload();
+            history.push({
+                pathname:'/pathway',
+                state:{trail_id: temporary},
+            })
+        }
+
         var id = 0;
         if(localStorage.getItem('userId')){
             id= localStorage.getItem('userId'); //取得localstorage ussrId
           }else{
             id = null;  //取不到user Id
         }
-
-        console.log('@@@@@@@@@@@@comments@@@@@@@@@@@@',comments);
 
             return(
                 <ThemeProvider theme = {darkTheme}>
@@ -573,19 +584,21 @@ import { Favorite, FavoriteBorder, RadioButtonUnchecked, SettingsInputAntennaRou
                             <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>相似步道</Typography>
                                 <Slider {...twoRowCarousel}>
     
-                                    {similar.map((item, i) => (
-                                        <div key={i}>
-                                            <Grid container spacing={0}>
-                                                <Grid item xs={4}>
-                                                    <img src={item.coverImage} alt = 'similar_pathway_images' style={{width:'104px', height:'72px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
+                                    {similar.map((item, i) => (                                       
+                                            
+                                                <Button key={i} className={classes.buttonAlign} onClick={()=>(rerender(item))}>
+                                                <Grid container spacing={0}>
+                                                    <Grid item xs={4}>
+                                                        <img src={item.coverImage} alt = 'similar_pathway_images' style={{width:'104px', height:'72px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
+                                                    </Grid>
+                                                    <Grid item xs={8}>
+                                                        <Typography style={{fontSize:'16px', fontWeight:'900', marginBottom:'1px', textAlign:'left',}}>{item.title}</Typography>
+                                                        <Typography style={{fontSize:'14px', color: '#979797', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', textAlign:'left'}}>{item.location.name}</Typography>
+                                                        <Typography style={{fontSize:'12px', color:'#979797', marginBottom:'16px', textAlign: 'left',}}>全程約 {item.distance} km</Typography>
+                                                    </Grid>
                                                 </Grid>
-                                                <Grid item xs={8}>
-                                                    <Typography style={{fontSize:'16px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.title}</Typography>
-                                                    <Typography style={{fontSize:'14px',marginLeft:'16px', color: '#979797', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden',}}>{item.location.name}</Typography>
-                                                    <Typography style={{fontSize:'12px', color:'#979797', marginBottom:'16px',marginLeft:'16px',}}>全程約 {item.distance} km</Typography>
-                                                </Grid>
-                                            </Grid>
-                                        </div>
+                                                </Button>
+
                                     ))}
                                 </Slider>                       
                         </div>       
