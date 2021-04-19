@@ -155,9 +155,10 @@ export default function Commit(props) {
       <Grid className={classes.comment}>
         <Grid className={classes.commentName}>{comment.user.name}</Grid>
         <Rating
+         
           className={classes.rating}
-          name="size-small"
-          defaultValue={comment.star}
+          value={comment.star}
+          readOnly
         />
         <Button
           className={classes.commentButton}
