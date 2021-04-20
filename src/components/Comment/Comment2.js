@@ -169,6 +169,7 @@ console.log('dislikeCheck', dislikeCheck);
       <Grid className={classes.comment}>
         <Grid className={classes.commentName}>{comment.user.name}</Grid>
         <Rating
+          readOnly
           className={classes.rating}
           name="size-small"
           defaultValue={comment.star}
