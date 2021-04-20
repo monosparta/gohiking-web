@@ -65,6 +65,7 @@ function SearchResult(props) {
     });
   };
 
+  localStorage.setItem("previous_pathname", "/searchResult");
   //useEffect
   return (
     <div className={classes.root}>
