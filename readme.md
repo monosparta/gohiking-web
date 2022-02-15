@@ -2,7 +2,8 @@
 
 It needs back-end tech, but this repo only have website, to start this website please follow steps below.
 
-copy .env_example to create .env file, input your api url.
+1. copy .env_example to create .env file, input your api url.
+2. install node_module and update, then start project.
 
 ```
     yarn install
